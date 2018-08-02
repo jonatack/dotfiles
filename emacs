@@ -4,7 +4,8 @@
 ;; Licence: MIT                                                               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; This file configures a basic Emacs setup. Feel free to customize it.
+;;; This file configures Emacs with an emphasis on Common Lisp and Ruby/Rails.
+;;; Feel free to customize it.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Section I: Generic settings                                                ;;
@@ -31,13 +32,6 @@
 (prefer-coding-system 'utf-8) ;; Prefer UTF-8 encoding
 
 ;; Resize the window to my screen
-;; (setq default-frame-alist '(
-;;   (width . 105) ; characters
-;;   (height . 56)
-;;   (top . 0)
-;;   (left . 0) ; move window x characters to the right (308 = centered over keyboard)
-;;   ))
-
 (if (display-graphic-p)
     (progn
       (setq initial-frame-alist
@@ -245,6 +239,8 @@
   (setq slime-startup-animation nil)
 
   ;; (setq inferior-lisp-program "/usr/bin/sbcl --noinform")
+
+  ;; This speeds up launching the Lisp instance with Slime and Swank
   (setq slime-lisp-implementations
         '((sbcl ("sbcl" "--core" "/home/jon/quicklisp/local-projects/sbcl.core-with-swank")
                 :init (lambda (port-file _)
