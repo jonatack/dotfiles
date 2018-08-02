@@ -1,3 +1,9 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; .sbclrc                                                                    ;;
+;; Author: Jon Atack                                                          ;;
+;; Licence: MIT                                                               ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;; The following lines added by ql:add-to-init-file:
 #-quicklisp
 (let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
@@ -26,8 +32,8 @@
   ;;            :cache-size 4 :threading? t :quicklisp-verbose? t)
 
 
-      ;;; Functional programming default packages
-      ;;; =======================================
+  ;;; Functional programming default packages
+  ;;; =======================================
 
   ;; Pattern Matching
   ;; (asdf:load-system 'optima)
@@ -46,8 +52,8 @@
   ;; (asdf:load-system 'folio)
 
 
-      ;;; Concurrent Programming
-      ;;; ======================
+  ;;; Concurrent Programming
+  ;;; ======================
 
   ;; Actor Model
   ;; (asdf:load-system 'cl-actors)
@@ -60,15 +66,14 @@
   ;; (asdf:load-system 'cl-stm)   ; original
   ;; (asdf:load-system 'cl-stmx)  ; high performance
 
-
   ;; Static Code Analysis
   (asdf:load-system 'lisp-critic)
 
   ;; Appease Paren Critics
   ;; (asdf:load-system 'readable)
 
-      ;;;  Default Namespaces
-      ;;; ==================
+  ;;;  Default Namespaces
+  ;;; ==================
   ;; (use-package :cl-actors)
   ;; (use-package :cells)
   ;; (use-package :optima)
@@ -76,8 +81,8 @@
   ;; (use-package :fset-user)
   (use-package :lisp-critic)
 
-      ;;; Unit testing
-      ;;; ============
+  ;;; Unit testing
+  ;;; ============
   ;; (asdf:load-system 'fiveam)
   ;; (asdf:load-system 'prove) ; another good unit-test library by fukumachi
   ;; (asdf:load-system 'parachute) ; another good unit-test library by fukumachi
