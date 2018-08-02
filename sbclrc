@@ -1,0 +1,85 @@
+;;; The following lines added by ql:add-to-init-file:
+#-quicklisp
+(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                       (user-homedir-pathname))))
+  (when (probe-file quicklisp-init)
+    (load quicklisp-init)))
+
+(setf sb-impl::*default-external-format* :utf-8)
+
+(require 'asdf)
+
+;;; Configure SBCL for Functional & Distributed Programming
+;;; =======================================================
+
+(handler-bind
+    ((sb-ext:implicit-generic-function-warning #'muffle-warning)
+     (sb-kernel:type-proclamation-mismatch-warning #'muffle-warning)
+     (style-warning #'muffle-warning)
+     (warning #'muffle-warning))
+
+  ;;; Load Quicksearch for finding libraries
+  (asdf:load-system 'quicksearch)
+  ;; (ql:quickload :quicksearch)
+  ;; (qs:config :maximum-columns-of-description 104
+  ;;            :maximum-number-of-fetching-repositories 50 :max-repos-supplied 50
+  ;;            :cache-size 4 :threading? t :quicklisp-verbose? t)
+
+
+      ;;; Functional programming default packages
+      ;;; =======================================
+
+  ;; Pattern Matching
+  ;; (asdf:load-system 'optima)
+  ;; (asdf:load-system 'trivia) ; drop-in faster, new replacement for optima
+  ;; (asdf:load-system 'cl-algebraic-data-type)
+  ;; (asdf:load-system 'abacus)
+  ;; (asdf:load-system 'cl-unification)
+
+  ;; FRP (Functional Reactive Programming Framework)
+  ;; (asdf:load-system 'cells)
+
+  ;; Functional Data Structures
+  ;; (asdf:load-system 'fset)
+
+  ;; Functional Idioms Library
+  ;; (asdf:load-system 'folio)
+
+
+      ;;; Concurrent Programming
+      ;;; ======================
+
+  ;; Actor Model
+  ;; (asdf:load-system 'cl-actors)
+
+  ;; CSP Concurrent Process Algebra
+  ;; (asdf:load-system 'chanl)
+  ;; (asdf:load-system 'calispel)
+
+  ;; Software Transactional Memory
+  ;; (asdf:load-system 'cl-stm)   ; original
+  ;; (asdf:load-system 'cl-stmx)  ; high performance
+
+
+  ;; Static Code Analysis
+  (asdf:load-system 'lisp-critic)
+
+  ;; Appease Paren Critics
+  ;; (asdf:load-system 'readable)
+
+      ;;;  Default Namespaces
+      ;;; ==================
+  ;; (use-package :cl-actors)
+  ;; (use-package :cells)
+  ;; (use-package :optima)
+  ;; (use-package :trivia) ; drop-in faster, new replacement for optima
+  ;; (use-package :fset-user)
+  (use-package :lisp-critic)
+
+      ;;; Unit testing
+      ;;; ============
+  ;; (asdf:load-system 'fiveam)
+  ;; (asdf:load-system 'prove) ; another good unit-test library by fukumachi
+  ;; (asdf:load-system 'parachute) ; another good unit-test library by fukumachi
+  ;; (ql:quickload "clunit")
+  )
