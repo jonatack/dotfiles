@@ -123,11 +123,6 @@ alias bo='bundle open'
 
 alias dc='docker-compose '
 
-alias ff='cd ~/projects/fallenfest && l'
-alias ff2='cd '~/projects/fallenfest2-static' && l'
-alias frs='cd '~/projects/fallenfest2-static' && rs'
-alias frc='cd '~/projects/fallenfest2-static' && rc'
-
 alias sbcl='rlwrap sbcl'
 alias cloj='lein repl'
 
@@ -149,7 +144,7 @@ alias cl='cd ~/commmon-lisp/ && l'
 alias ql='cd ~/quicklisp/ && l'
 alias lp='cd ~/quicklisp/local-projects/ && ls'
 # alias tests='cd ~/projects/ruby/tests && l'
-alias dl='cd ~/Download && l'
+alias dl='cd ~/Downloads && l'
 alias doc='cd ~/Documents && l'
 
 alias logs='cd /var/log && l'
@@ -161,7 +156,7 @@ alias adp='cd ~/projects/ruby/cenpil-back'
 alias logclear='bundle exec rake log:clear'
 alias lc='bundle exec rake log:clear'
 
-app="-a fallenfest2"
+app="-a APPNAME"
 alias hps="heroku ps ${app}"
 alias ps1="heroku ps:scale web=1 ${app}"
 alias ps2="heroku ps:scale web=2 ${app}"
