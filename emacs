@@ -240,7 +240,8 @@
 
   ;; (setq inferior-lisp-program "/usr/bin/sbcl --noinform")
 
-  ;; This speeds up launching the Lisp instance with Slime and Swank
+  ;; This speeds up launching the Lisp instance with Slime and Swank as per
+  ;; https://common-lisp.net/project/slime/doc/html/Loading-Swank-faster.html
   (setq slime-lisp-implementations
         '((sbcl ("sbcl" "--core" "/home/jon/quicklisp/local-projects/sbcl.core-with-swank")
                 :init (lambda (port-file _)
