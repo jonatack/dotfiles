@@ -209,6 +209,43 @@ alias ruby_global_vars="ruby -rpp -e'pp global_variables.group_by { |v| eval v.t
 
 alias ruby-globals='ruby_global_vars'
 
+# Find files in our current directory
+alias fhere="find . -name "
+
+# Make free more user-friendly
+alias free="free -mt"
+
+# Upgrade df to pydf with colorized output and text-based usage bars
+alias df="pydf"
+
+# Htop is an ncursed-based process viewer similar to top, but it
+# allows one to scroll the list vertically and horizontally to see
+# all processes and their full command lines.
+# Tasks related to processes (killing, renicing) can be done without
+# entering their PIDs.
+alias top="htop"
+
+# Search process table for a passed argument, i.e. psg bash:
+alias psg="ps aux | grep -v grep | grep -i -e VSZ -e"
+
+# Ncdu presents file and directory sizes in an interactive ncurses display that
+# shows disk usage percentages. You can browse and perform simple file actions.
+alias du="ncdu"
+
+# Search CLI history easily. This is sometimes more useful than using CTRL-R to
+# reverse search because it gives you a list and the command number to do more
+# complex recalls afterwards:
+alias histg="history | grep"
+
+# Most-used command history
+# history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl |  head -n10
+
+# mkdir FILENAME + cd into it
+mcd () {
+    mkdir -p $1
+    cd $1
+}
+
 alias todo="vim +'normal Go' +'r!date' ~/Documents/Text\ files/todo.txt"
 alias did="vim +'normal Go' +'r!date' ~/Documents/Text\ files/did.txt"
 alias ndid="vim +'normal Go' +'r!date' +'normal o' +':exe \"normal i=============================\<Esc>\"' ~/Documents/Text\ files/did.txt"
