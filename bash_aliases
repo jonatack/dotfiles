@@ -246,6 +246,7 @@ mcd () {
     cd $1
 }
 
+# To-do list stuff. Need to decide which to keep, if any.
 alias todo="vim +'normal Go' +'r!date' ~/Documents/Text\ files/todo.txt"
 alias did="vim +'normal Go' +'r!date' ~/Documents/Text\ files/did.txt"
 alias ndid="vim +'normal Go' +'r!date' +'normal o' +':exe \"normal i=============================\<Esc>\"' ~/Documents/Text\ files/did.txt"
