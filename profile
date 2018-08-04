@@ -27,3 +27,5 @@ fi
 # export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
 
 export PATH="$HOME/.rbenv/bin:$PATH"
+
+export PATH="$HOME/.cargo/bin:$PATH"
