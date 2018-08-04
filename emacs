@@ -502,7 +502,7 @@
     ("4486ade2acbf630e78658cd6235a5c6801090c2694469a2a2b4b0e12227a64b9" "645599a2aab022fd7677124515a3104a60ba64d2cafdd77a6e7703f8ae97250c" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "eb25c68d3959c31d34021aa722d5ea1c53ea69714580b2b8c150592becf412cf" "5c9bd73de767fa0d0ea71ee2f3ca6fe77261d931c3d4f7cca0734e2a3282f439" default)))
  '(package-selected-packages
    (quote
-    (grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime better-defaults flx-ido scpaste smex magit paredit whitespace-cleanup-mode select-themes oceanic-theme nzenburn-theme solarized-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace))))
+    (haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime better-defaults flx-ido scpaste smex magit paredit whitespace-cleanup-mode select-themes oceanic-theme nzenburn-theme solarized-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
