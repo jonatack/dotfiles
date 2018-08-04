@@ -1,8 +1,12 @@
 #!/bin/bash
 # ~/.bash_aliases dotfile
 
-alias e='emacs '
-alias ee='emacs &'
+###########
+# Aliases #
+###########
+
+# Open emacs detached from the terminal and allow passing filenames:
+e () { emacs "$@" & }
 
 alias aliases='emacs ~/.bash_aliases &'
 alias profile='emacs ~/.profile &'
