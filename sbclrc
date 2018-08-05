@@ -1,8 +1,16 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; .sbclrc                                                                    ;;
-;; Author: Jon Atack                                                          ;;
-;; Licence: MIT                                                               ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; .sbclrc
+;;;;
+;;;; Cleaned-up and modified from the semi-epic 2014 blog post by Chris Kohlhepp:
+;;;; "Meta-Circular Adventures in Functional Abstraction"
+;;;; "Challenging Clojure in Common Lisp"
+;;;;
+;;;; The original post is down but a mirror can still be found here:
+;;;; https://hackerfall.com/story/challenging-clojure-in-common-lisp
+;;;;
+;;;; Comment or uncomment various libraries below as needed.
+;;;;
+;;;; Jon Atack
+;;;;
 
 ;;; The following lines added by ql:add-to-init-file:
 #-quicklisp
@@ -15,6 +23,7 @@
 
 (require 'asdf)
 
+;;; =======================================================
 ;;; Configure SBCL for Functional & Distributed Programming
 ;;; =======================================================
 
@@ -26,37 +35,42 @@
 
   ;;; Load Quicksearch for finding libraries
   (asdf:load-system 'quicksearch)
-  ;; (ql:quickload :quicksearch)
   ;; (qs:config :maximum-columns-of-description 104
   ;;            :maximum-number-of-fetching-repositories 50 :max-repos-supplied 50
   ;;            :cache-size 4 :threading? t :quicklisp-verbose? t)
 
 
+  ;;; =======================================
   ;;; Functional programming default packages
   ;;; =======================================
 
   ;; Pattern Matching
   ;; (asdf:load-system 'optima)
-  ;; (asdf:load-system 'trivia) ; drop-in faster, new replacement for optima
-  ;; (asdf:load-system 'cl-algebraic-data-type)
-  ;; (asdf:load-system 'abacus)
+  (asdf:load-system 'trivia) ; newer, faster, drop-in replacement for optima
+  (asdf:load-system 'cl-algebraic-data-type)
+  (asdf:load-system 'algebraic-data-library)
+  (asdf:load-system 'abacus)
   ;; (asdf:load-system 'cl-unification)
 
   ;; FRP (Functional Reactive Programming Framework)
-  ;; (asdf:load-system 'cells)
+  (asdf:load-system 'cells)
 
   ;; Functional Data Structures
-  ;; (asdf:load-system 'fset)
+  (asdf:load-system 'sycamore)
+  (asdf:load-system 'fset)
 
   ;; Functional Idioms Library
   ;; (asdf:load-system 'folio)
+  ;; (asdf:load-system 'folio2)
+  ;; (asdf:load-system 'taps)
 
 
+  ;;; =======================================
   ;;; Concurrent Programming
-  ;;; ======================
+  ;;; =======================================
 
   ;; Actor Model
-  ;; (asdf:load-system 'cl-actors)
+  (asdf:load-system 'cl-actors)
 
   ;; CSP Concurrent Process Algebra
   ;; (asdf:load-system 'chanl)
@@ -66,19 +80,27 @@
   ;; (asdf:load-system 'cl-stm)   ; original
   ;; (asdf:load-system 'cl-stmx)  ; high performance
 
-  ;; Static Code Analysis
+  ;;; =======================================
+  ;;; Static Code Analysis
+  ;;; =======================================
   (asdf:load-system 'lisp-critic)
 
   ;; Appease Paren Critics
   ;; (asdf:load-system 'readable)
 
+  ;;; =======================================
   ;;;  Default Namespaces
-  ;;; ==================
-  ;; (use-package :cl-actors)
-  ;; (use-package :cells)
+  ;;; =======================================
   ;; (use-package :optima)
-  ;; (use-package :trivia) ; drop-in faster, new replacement for optima
-  ;; (use-package :fset-user)
+  (use-package :trivia) ; newer, faster, drop-in replacement for optima
+  (use-package :algebraic-data-library)
+  (use-package :abacus)
+  (use-package :cells)
+  (use-package :sycamore)
+  (use-package :fset-user)
+  ;; (use-package :folio2)
+  ;; (use-package :taps)
+  (use-package :cl-actors)
   (use-package :lisp-critic)
 
   ;;; Unit testing
