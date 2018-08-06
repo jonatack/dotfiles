@@ -1,13 +1,12 @@
 ;;;; .sbclrc
 ;;;;
-;;;; Cleaned-up and modified from the semi-epic 2014 blog post by Chris Kohlhepp:
+;;;; Modified and updated from Chris Kohlhepp's 2014 blog post:
 ;;;; "Meta-Circular Adventures in Functional Abstraction"
-;;;; "Challenging Clojure in Common Lisp"
 ;;;;
 ;;;; The original post is down but a mirror can still be found here:
 ;;;; https://hackerfall.com/story/challenging-clojure-in-common-lisp
 ;;;;
-;;;; Comment or uncomment various libraries below as needed.
+;;;; Add or remove various libraries below as needed.
 ;;;;
 ;;;; Jon Atack
 ;;;;
@@ -23,9 +22,9 @@
 
 (require 'asdf)
 
-;;; =======================================================
-;;; Configure SBCL for Functional & Distributed Programming
-;;; =======================================================
+;;; ======================================================
+;;; Configure SBCL with Quicksearch and selected libraries
+;;; ======================================================
 
 (handler-bind
     ((sb-ext:implicit-generic-function-warning #'muffle-warning)
@@ -40,8 +39,9 @@
   ;;            :cache-size 4 :threading? t :quicklisp-verbose? t)
 
 
+
   ;;; =======================================
-  ;;; Functional programming default packages
+  ;;; Functional programming
   ;;; =======================================
 
   ;; Pattern Matching
@@ -80,17 +80,21 @@
   ;; (asdf:load-system 'cl-stm)   ; original
   ;; (asdf:load-system 'cl-stmx)  ; high performance
 
+
   ;;; =======================================
   ;;; Static Code Analysis
   ;;; =======================================
+
   (asdf:load-system 'lisp-critic)
 
   ;; Appease Paren Critics
   ;; (asdf:load-system 'readable)
 
+
   ;;; =======================================
   ;;;  Default Namespaces
   ;;; =======================================
+
   ;; (use-package :optima)
   (use-package :trivia) ; newer, faster, drop-in replacement for optima
   (use-package :algebraic-data-library)
@@ -103,8 +107,11 @@
   (use-package :cl-actors)
   (use-package :lisp-critic)
 
+
+  ;;; =======================================
   ;;; Unit testing
-  ;;; ============
+  ;;; =======================================
+
   ;; (asdf:load-system 'fiveam)
   ;; (asdf:load-system 'prove) ; another good unit-test library by fukumachi
   ;; (asdf:load-system 'parachute) ; another good unit-test library by fukumachi
