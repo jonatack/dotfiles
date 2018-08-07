@@ -11,25 +11,10 @@
 ;; Section I: Generic settings                                                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; No GC while minibuffer is open
-(defun my-minibuffer-setup-hook ()
-  (setq gc-cons-threshold most-positive-fixnum))
-
-(defun my-minibuffer-exit-hook ()
-  (setq gc-cons-threshold 800000))
-
-(add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
-(add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
-
-;; Sacrifice memory for speed by reducing GC globally:
-;; (setq gc-cons-threshold 20000000)
-
-;; Display GC messages
-(setq garbage-collection-messages t)
-
-(set-language-environment "UTF-8")
-;; (setenv "LANG" "en_US.UTF-8")
-(prefer-coding-system 'utf-8) ;; Prefer UTF-8 encoding
+;; Turn off GC during Emacs startup
+(setq gc-cons-threshold most-positive-fixnum)
+;; Resume GC after startup with 100 MB threshold, sacrificing memory for speed
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 100 1000 1000))))
 
 ;; Resize the window to my screen
 (if (display-graphic-p)
@@ -66,12 +51,11 @@
 ;; (set-frame-parameter (selected-frame) 'alpha '(88 70))
 ;; (add-to-list 'default-frame-alist '(alpha 88 70))
 
-;; The following 3 lines disable unnecessary GUI elements, in this case the
-;; menu bar, the tool bar and the scroll bar. If you wish, you can comment out
-;; the menu-bar and keep it, but eventually I recommend you disable it.
+;; Disable the menu bar, the tool bar and the scroll bar
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
 (column-number-mode 1)
 
 ;; Auto-insert newline at end of file
@@ -88,17 +72,15 @@
 (global-linum-mode 1) ; global-linum-mode adds line numbers to all open windows.
 (setq linum-format "%4d ") ;; 4 character and a space for line numbers
 
-(show-paren-mode t) ; Highlight matching parentheses globally.
+ ; Highlight matching parentheses globally.
+(run-with-idle-timer 1 nil (lambda () (show-paren-mode t)))
 
 ;; Display “lambda” as “λ”
-(global-prettify-symbols-mode t)
+(run-with-idle-timer 1 nil (lambda () (global-prettify-symbols-mode t)))
 
 ;; (setq case-fold-search t) ; Make searches case-insensitive
-
 (setq browse-url-browser-function 'eww-browse-url)
-
 ;; (set-face-attribute 'default nil :height 90) ; Make the default font slightly smaller.
-
 (setq-default indent-tabs-mode nil) ; Make indentation use spaces.
 
 ;; Use 2 spaces for indentation everywhere
@@ -116,7 +98,10 @@
 (setq system-uses-terminfo nil) ; Fix weird color escape sequences
 (fset 'yes-or-no-p 'y-or-n-p) ; Answer with y and n instead of yes and no
 ;; (setq confirm-kill-emacs 'yes-or-no-p) ; Ask for confirmation before closing emacs
-(global-auto-revert-mode t) ; Always reload the file if it changed on disk
+
+;; Always reload the file if it changed on disk
+(run-with-idle-timer 2 nil (lambda () (global-auto-revert-mode t)))
+
 ;; (setq-default line-spacing t) ; A nice line height
 ;; (setq mac-command-modifier 'meta) ; Treat the CMD key like meta on OSX
 ;; (setq ns-use-srgb-colorspace t) ; SRGB support for OSX
@@ -168,6 +153,14 @@
 (setq visible-bell nil)
 (setq ring-bell-function (lambda () (message "*beep*")))
 
+;; UTF-8
+(set-language-environment "UTF-8")
+(setenv "LANG" "en_US.UTF-8")
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Section II: Packages                                                       ;;
@@ -176,27 +169,19 @@
 ;; No GC during this memory-heavy init phase
 (let ((gc-cons-threshold most-positive-fixnum))
 
-  ;; Elpa, the default package repository for emacs is fairly conservative, so
-  ;; we'll add the melpa and marmalade repositories
-  (require 'package)
-
+  (package-initialize)
+  (setq use-package-always-ensure t)
   (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")))
-
-  (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/") t)
-  (add-to-list 'package-archives
-               '("marmalade" . "https://marmalade-repo.org/packages/"))
-  (add-to-list 'package-archives
-               '("org" . "https://orgmode.org/elpa/") t)
-
+  (unless (assoc-default "melpa" package-archives)
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+  (unless (assoc-default "marmalade" package-archives)
+    (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/") t))
+  (unless (assoc-default "org" package-archives)
+    (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t))
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
-  ;; Activate all the packages
-  (package-initialize)
-
-  ;; Fetch the list of packages available
-  (unless package-archive-contents
-    (package-refresh-contents))
+  ;; Fetch the list of packages available if needed
+  (unless package-archive-contents (package-refresh-contents))
 
   ;; Install any missing packages
   (dolist (package package-selected-packages)
@@ -204,22 +189,35 @@
       (package-refresh-contents)
       (package-install package)))
 
-  (require 'better-defaults)
+  (unless (package-installed-p 'use-package) (package-install 'use-package))
+  ;; (setq use-package-verbose t)
+  (setq use-package-always-ensure t)
+  (require 'use-package)
+  (use-package auto-compile :config (auto-compile-on-load-mode))
+  (setq load-prefer-newer t)
+
+  (use-package better-defaults)
 
   ;; Save the cursor position between sessions
-  (require 'saveplace)
-  (setq-default save-place t)
-  (setq save-place-file (expand-file-name ".places" user-emacs-directory))
+  (use-package saveplace
+    :defer t
+    :ensure t
+    :init
+    (setq save-place-file (expand-file-name ".places" user-emacs-directory)
+          save-place t))
 
-  (require 'flx-ido)
-  (ido-mode t)
-  (ido-everywhere t)
-  (flx-ido-mode t)
-  (setq ido-enable-flex-matching t)
-  ;; Disable ido faces to see flx highlights:
-  ;; (setq ido-use-faces nil)
-  ;; If you don't want to use the flx's highlights you can turn them off like this:
-  (setq flx-ido-use-faces nil)
+  (use-package flx-ido
+    :defer t
+    :ensure t
+    :init
+    (ido-mode t)
+    (ido-everywhere t)
+    (flx-ido-mode t)
+    (setq ido-enable-flex-matching t
+          ;; Disable ido faces to see flx highlights:
+          ;; (setq ido-use-faces nil)
+          ;; If you don't want to use the flx's highlights you can turn them off like this:
+          flx-ido-use-faces nil))
 
   ;; (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 
@@ -231,9 +229,10 @@
   (require 'slime-autoloads)
 
   (slime-setup '(slime-fancy))
-  (setq slime-contribs '(slime-fancy slime-asdf slime-indentation
-      slime-banner slime-tramp slime-mdot-fu slime-scratch
-      slime-company slime-editing-commands slime-quicklisp))
+  (setq slime-contribs '(slime-fancy slime-repl slime-asdf
+      slime-indentation slime-banner slime-tramp slime-mdot-fu
+      slime-scratch slime-company slime-editing-commands
+      slime-quicklisp))
   ;; (setq slime-contribs '(slime-repl)) ; repl only
 
   (setq slime-startup-animation nil)
@@ -368,19 +367,24 @@
 
   ;; The projectile keymap prefix needs to be called before the mode is required/loaded
   ;; (setq projectile-keymap-prefix (kbd "C-c C-p"))
-  (setq projectile-project-search-path '("~/projects/" "~/lisp/"))
-  (require 'projectile)
-  ;; (projectile-global-mode)
-  (setq projectile-completion-system 'grizzl)
-  (add-hook 'enh-ruby-mode-hook 'projectile-mode)
+  (use-package projectile
+    :defer t
+    :ensure t
+    :init
+    (setq projectile-project-search-path '("~/projects/" "~/lisp/")
+          projectile-completion-system 'grizzl)
+    ;; (projectile-global-mode))
+    (add-hook 'enh-ruby-mode-hook 'projectile-mode))
 
-  (require 'projectile-rails)
-  (setq projectile-rails-vanilla-command "bin/rails"
-        projectile-rails-spring-command "bin/spring"
-        projectile-rails-zeus-command "bin/zeus")
-  ;; (projectile-rails-global-mode)
-  ;; Start projectile-rails
-  (add-hook 'projectile-mode-hook 'projectile-rails-on)
+  (use-package projectile-rails
+    :defer t
+    :ensure t
+    :init
+    (setq projectile-rails-vanilla-command "bin/rails"
+          projectile-rails-spring-command "bin/spring"
+          projectile-rails-zeus-command "bin/zeus")
+    ;; (projectile-rails-global-mode)
+    (add-hook 'projectile-mode-hook 'projectile-rails-on))
 
   (autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
   (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
@@ -390,42 +394,54 @@
   (add-hook 'after-init-hook 'inf-ruby-switch-setup)
 
   ;; rbenv
-  (setq rbenv-modeline-function 'rbenv--modeline-plain) ; remove colors
-  (add-to-list 'load-path "~/emacs.d/vendor/rbenv.el/")
-  (require 'rbenv)
-  ;; (global-rbenv-mode)
-  (add-hook 'enh-ruby-mode-hook 'global-rbenv-mode)
+  (use-package rbenv
+    :defer t
+    :ensure t
+    :init
+    (add-to-list 'load-path "~/emacs.d/vendor/rbenv.el/")
+    ;; searches for .ruby-version and activates the corresponding ruby
+    (rbenv-use-corresponding)
+    (setq rbenv-modeline-function 'rbenv--modeline-plain) ; remove colors
+    ;; (global-rbenv-mode)
+    (add-hook 'enh-ruby-mode-hook 'global-rbenv-mode))
   ;; (setq rbenv-show-active-ruby-in-modeline nil)
-  (rbenv-use-corresponding) ; searches for .ruby-version and activates the corresponding ruby
   ;; (rbenv-use-global) ; activates global ruby
   ;; (rbenv-use) ; allows you to choose what ruby version you want to use
   ;; Optional -- if your RBENV installation is located somewhere besides
   ;; ~/.rbenv, you will need to configure this:
   ;;(setq rbenv-installation-dir "/usr/local/rbenv")
 
+  ;; (use-package bundler)
   ;; (add-to-list 'load-path "~/.emacs.d/vendor/bundler.el")
-  ;; (require 'bundler)
   ;; (add-hook 'ruby-mode-hook 'bundler)
 
-  (require 'minitest)
+  ;; Minitest key bindings:
+  ;;
   ;; M-x minitest-verify     ->  C-c C-, v
   ;; M-x minitest-verify-all ->  C-c C-, a
   ;; M-x minitest-rerun      ->  C-c C-, r
-  (minitest-enable-appropriate-mode)
-  (add-hook 'enh-ruby-mode-hook 'minitest-mode)
+  ;;
+  (use-package minitest
+    :defer t
+    :ensure t
+    :init (add-hook 'enh-ruby-mode-hook 'minitest-mode)
+    :config (minitest-enable-appropriate-mode))
 
   ;; Evaluate tests in the current buffer with “C-c C-,”
+  ;; (use-package 'ruby-test-mode)
   ;; (add-to-list 'load-path "~/.emacs.d/vendor/ruby-test-mode.el")
-  ;; (require 'ruby-test-mode)
   ;; (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
 
-  (require 'rubocop)
+  ;; Rubocop keybindings:
+  ;;
   ;; M-x rubocop-check-project            ->  C-c C-r p
   ;; M-x rubocop-check-current-file       ->  C-c C-r f
   ;;
   ;; M-x rubocop-autocorrect-project      ->  C-c C-r P
   ;; M-x rubocop-autocorrect-current-file ->  C-c C-r F
-  (add-hook 'enh-ruby-mode-hook #'rubocop-mode)
+  ;;
+  (use-package rubocop
+    :defer t :ensure t :init (add-hook 'enh-ruby-mode-hook 'rubocop-mode))
 
   ;; This function switches to the new buffer and permits killing it easily with "k":
   (add-hook 'compilation-finish-functions
@@ -442,13 +458,13 @@
   ;; (add-hook 'enh-ruby-mode-hook 'ruby-refactor-mode-launch)
 
   ;; Easily toggle ruby's hash syntax with "M-x ruby-hash-syntax-toggle"
-  (require 'ruby-hash-syntax)
+  (use-package ruby-hash-syntax :defer t :ensure t)
 
   ;; Ruby rdoc helpers mostly
-  (require 'ruby-additional)
+  (use-package ruby-additional :defer t :ensure t)
 
   ;; Helpers to deal with strings and symbols
-  (require 'ruby-tools)
+  (use-package ruby-tools :defer t :ensure t)
 
   ;; Support for YARD
   ;; (require 'yard-mode)
@@ -466,30 +482,46 @@
   ;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/rails-minor-mode"))
   ;; (require 'rails)
 
-  (require 'whitespace)
-  (setq whitespace-style '(face empty tabs lines-tail trailing))
-  (setq whitespace-global-modes '(not org-mode web-mode fundamental-mode "Web" emacs-lisp-mode))
-  (global-whitespace-mode t)
-
-  ;; (require 'whitespace)
+  (use-package whitespace
+    :defer t
+    :ensure t
+    :init
+    (setq whitespace-style
+          '(face empty tabs lines-tail trailing)
+          whitespace-global-modes
+          '(not org-mode web-mode fundamental-mode "Web" emacs-lisp-mode)
+          whitespace-display-mappings
+          ;; all numbers are Unicode codepoint in decimal. e.g. (insert-char 182 1)
+          '(
+            (space-mark nil) ; 32 SPACE, 183 MIDDLE DOT
+            (newline-mark 10 [172 10]) ; 10 LINE FEED
+            (tab-mark 9 [9654 9] [92 9])
+            (tab-mark 9 [183 9] [92 9]) ; 9 TAB, MIDDLE DOT
+            ))
+    (global-whitespace-mode t))
   ;; (require 'whitespace-cleanup-mode)
   ;; (setq whitespace-line-column 80) ;; limit line length
   ;; (setq whitespace-style '(spaces tabs newline space-mark tab-mark newline-mark face lines-tail))
   ;; (setq whitespace-style '(newline newline-mark face lines-tail))
-  (setq whitespace-display-mappings
-        ;; all numbers are Unicode codepoint in decimal. e.g. (insert-char 182 1)
-        '(
-          (space-mark nil) ; 32 SPACE, 183 MIDDLE DOT
-          (newline-mark 10 [172 10]) ; 10 LINE FEED
-          (tab-mark 9 [9654 9] [92 9])
-          (tab-mark 9 [183 9] [92 9]) ; 9 TAB, MIDDLE DOT
-          ))
   ;; (setq whitespace-global-modes '(not org-mode web-mode fundamental-mode "Web" emacs-lisp-mode))
   ;; (global-whitespace-mode)
 
   (setq ruby-insert-encoding-magic-comment nil) ; disable ruby-mode auto-adding utf-8 magic comments
 
 )
+
+;; No GC while minibuffer is open
+(defun my-minibuffer-setup-hook ()
+  (setq gc-cons-threshold most-positive-fixnum))
+
+(defun my-minibuffer-exit-hook ()
+  (setq gc-cons-threshold (* 100 1000 1000)))
+
+(add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
+(add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
+
+;; Display GC messages in the mini-buffer
+(setq garbage-collection-messages t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
