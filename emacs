@@ -11,6 +11,8 @@
 ;; Section I: Generic settings                                                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(setq user-full-name "Jon Atack" user-mail-address "jon@atack.com")
+
 ;; Turn off GC during Emacs startup
 (setq gc-cons-threshold most-positive-fixnum)
 ;; Resume GC after startup with 100 MB threshold, sacrificing memory for speed
