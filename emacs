@@ -18,6 +18,11 @@
 ;; Resume GC after startup with 100 MB threshold, sacrificing memory for speed
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 100 1000 1000))))
 
+;; Display Emacs startup stats
+(add-hook 'emacs-startup-hook
+          (lambda () (message "Emacs ready in %s with %d garbage collections."
+                         (format (emacs-init-time)) gcs-done)))
+
 ;; Resize the window to my screen
 (if (display-graphic-p)
     (progn
