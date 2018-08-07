@@ -68,6 +68,7 @@
 (setq resize-mini-windows nil) ; Do not resize the mini-buffer to keep it to one line.
 
 (setq inhibit-startup-screen t) ; Don’t display the Emacs splash screen
+(setq initial-scratch-message nil) ; Don't show scratch buffer on startup
 
 (global-linum-mode 1) ; global-linum-mode adds line numbers to all open windows.
 (setq linum-format "%4d ") ;; 4 character and a space for line numbers
