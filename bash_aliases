@@ -8,8 +8,8 @@
 # Open emacs detached from the terminal and allow passing filenames:
 e () { emacs "$@" & }
 
-alias aliases='emacs ~/.bash_aliases &'
-alias profile='emacs ~/.profile &'
+alias aliases='emacs ~/dotfiles/bash_aliases &'
+alias profile='emacs ~/dotfiles/profile &'
 
 # https://bearmetal.eu/theden/rails-garbage-collection-tuning-approaches/
 # launch rails server with the following to get Ruby 2.2 GC suggestions:
@@ -139,7 +139,8 @@ alias home='cd ~ && l'
 alias projects='cd ~/projects && ls'
 alias p='cd ~/projects && l'
 alias ruby='cd ~/projects/ruby && l'
-alias dot='cd ~/projects/dotfiles && l'
+alias dot='cd ~/dotfiles && l'
+alias dotfiles='cd ~/dotfiles/ & l'
 alias btc='cd ~/projects/bitcoin && l'
 alias cl='cd /home/jon/common-lisp && l'
 alias ql='cd ~/quicklisp/ && l'
