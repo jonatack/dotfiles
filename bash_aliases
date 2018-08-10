@@ -77,7 +77,7 @@ alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 # alias localip="ipconfig getifaddr en0"
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
-alias myip="curl http://ipecho.net/plain; echo"
+# alias myip="curl http://ipecho.net/plain; echo"
 
 # Canonical hex dump; some systems have this symlinked
 command -v hd > /dev/null || alias hd="hexdump -C"
@@ -90,7 +90,7 @@ command -v hd > /dev/null || alias hd="hexdump -C"
 # find . -name .gitattributes | map dirname
 # alias map="xargs -n1"
 
-alias be='bundle exec'
+alias be='bundle exec '
 
 alias rs='bin/rails server'
 alias rc='bin/rails console'
@@ -120,7 +120,8 @@ alias sac='sudo apt autoclean'
 
 alias gu='gem update --system && gem update && gem uninstall fileutils'
 alias bu='bundle update'
-alias bo='bundle open'
+alias bo='bundle open '
+alias bs='bundle show '
 
 alias dc='docker-compose '
 
@@ -132,7 +133,7 @@ alias hask='ghci'
 alias ghc='ghci'
 
 alias erlang='erl'
-# alias elixir='iex'
+alias elixir='iex'
 
 alias usr='cd /usr/local && l'
 alias home='cd ~ && l'
@@ -216,6 +217,10 @@ alias free="free -mt"
 # Upgrade df to pydf with colorized output and text-based usage bars
 alias df="pydf"
 
+# Ncdu presents file and directory sizes in an interactive ncurses display that
+# shows disk usage percentages. You can browse and perform simple file actions.
+alias du="ncdu"
+
 # Htop is an ncursed-based process viewer similar to top, but it
 # allows one to scroll the list vertically and horizontally to see
 # all processes and their full command lines.
@@ -225,10 +230,6 @@ alias top="htop"
 
 # Search process table for a passed argument, i.e. psg bash:
 alias psg="ps aux | grep -v grep | grep -i -e VSZ -e"
-
-# Ncdu presents file and directory sizes in an interactive ncurses display that
-# shows disk usage percentages. You can browse and perform simple file actions.
-alias du="ncdu"
 
 # Search CLI history easily. This is sometimes more useful than using CTRL-R to
 # reverse search because it gives you a list and the command number to do more
