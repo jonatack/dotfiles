@@ -161,6 +161,8 @@
 (setq visible-bell nil)
 (setq ring-bell-function (lambda () (message "*beep*")))
 
+(put 'upcase-region 'disabled nil) ; enable using upcase-region without warnings
+
 ;; UTF-8
 (set-language-environment "UTF-8")
 (setenv "LANG" "en_US.UTF-8")
