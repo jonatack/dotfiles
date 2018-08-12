@@ -357,15 +357,21 @@
   (defun lisp-hook-fn ()
     (interactive)
     (slime-mode) ; start slime mode
-    ;; Some useful key-bindings
-    (local-set-key [tab] 'slime-complete-symbol)
+    (local-set-key [tab] 'slime-complete-symbol) ; bind tab key to slime-complete-symbol
+
+    ;; Common Lisp indentation
+    ;;
+    ;; C-M-q on the first paren reindents an expression
+    ;; C-c M-q reindents a function
+    ;;
     (local-set-key (kbd "M-q") 'slime-reindent-defun)
-    ;; We set the indent function so common-lisp-indent-function will indent our code correctly
+    ;;
+    ;; Set indent function so common-lisp-indent-function will indent correctly
     (set (make-local-variable lisp-indent-function) 'common-lisp-indent-function)
     (setq lisp-indent-function 'common-lisp-indent-function)
+
     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-    ;; We tell slime to not load failed compiled code
-    (setq slime-load-failed-fasl 'never))
+    (setq slime-load-failed-fasl 'never)) ; never load code that failed to compile
 
   ;; Finally we tell lisp-mode to run our function on startup
   (add-hook 'lisp-mode-hook 'lisp-hook-fn)
