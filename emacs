@@ -93,6 +93,19 @@
 ;; (set-face-attribute 'default nil :height 90) ; Make the default font slightly smaller.
 (setq-default indent-tabs-mode nil) ; Make indentation use spaces.
 
+;; Save desktop between sessions
+;;
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Emacs-Sessions.html
+;;
+;; M-x desktop-save -> saves the desktop manually
+;;
+(setq desktop-path '("~/.emacs.d/")) ; Load/save desktop in .emacs.d directory
+;; (setq desktop-path '("."))        ; Load/save desktop in dir Emacs opened from
+;;
+(desktop-save-mode t) ; Auto-save desktop on exiting, and reload on startup
+
+;; (setq default-directory "/")
+
 ;; Use 2 spaces for indentation everywhere
 (setq-default tab-width 2)
 (setq-default c-basic-offset 2)
