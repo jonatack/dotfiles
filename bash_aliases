@@ -66,7 +66,7 @@ alias gbr='git branch '
 alias grm='git rm '
 alias gmv='git mv '
 alias gpl='git pull '
-
+alias gcl='git clone '
 alias gct='git commit '
 alias gcm='git commit -m '
 alias gca='git commit -a '
