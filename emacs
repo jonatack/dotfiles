@@ -247,8 +247,32 @@
 
   ;; (setq inferior-lisp-program "/usr/bin/sbcl --noinform")
 
-  ;; This speeds up launching the Lisp instance with Slime and Swank as per
+  ;; Load Swank faster, as per:
   ;; https://common-lisp.net/project/slime/doc/html/Loading-Swank-faster.html
+  ;;
+  ;; For SBCL, we recommend that you create a custom core file with socket
+  ;; support and POSIX bindings included because those modules take the most
+  ;; time to load. To create such a core, execute the following steps:
+  ;;
+  ;; $ sbcl
+  ;; * (mapc 'require '(sb-bsd-sockets sb-posix sb-introspect sb-cltl2 asdf))
+  ;; * (save-lisp-and-die "sbcl.core-for-slime")
+  ;;
+  ;; After that, add something like this to your .emacs:
+  ;;
+  ;; (setq slime-lisp-implementations '((sbcl ("sbcl" "--core" "sbcl.core-for-slime"))))
+  ;;
+  ;; For maximum startup speed you can include the Swank server directly in a core file.
+  ;; This setup is a bit more involved and you need to create a new core file after
+  ;; updating SLIME or SBCL. The steps to execute are:
+  ;;
+  ;; $ cd ~/quicklisp/local-projects
+  ;; $ sbcl
+  ;; * (load "~/quicklisp/local-projects/slime/swank-loader.lisp")
+  ;; * (swank-loader:dump-image "sbcl.core-with-swank")
+  ;;
+  ;; Then add this to your .emacs:
+  ;;
   (setq slime-lisp-implementations
         '((sbcl ("sbcl" "--core" "/home/jon/quicklisp/local-projects/sbcl.core-with-swank")
                 :init (lambda (port-file _)
