@@ -143,7 +143,7 @@ alias dc='docker-compose ' # Docker
 alias tt='source ~/projects/python/tootstream/bin/activate && tootstream'
 # 'toot' to open Toot. Online docs: https://toot.readthedocs.io/
 
-#Mastodon GTK clie nt
+# Mastodon GTK3 client Tootle. More: https://github.com/bleakgrey/tootle
 alias tootle='com.github.bleakgrey.tootle'
 
 # Directories ##################################################################
