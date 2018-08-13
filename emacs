@@ -244,6 +244,16 @@
           ;; If you don't want to use the flx's highlights you can turn them off like this:
           flx-ido-use-faces nil))
 
+  (use-package projectile
+    :defer t
+    :ensure t
+    :init
+    (setq projectile-project-search-path '("~/projects/" "~/common-lisp/")
+          ;; projectile-keymap-prefix (kbd "C-c C-p")
+          projectile-completion-system 'grizzl)
+    (projectile-global-mode))
+    ;; (add-hook 'enh-ruby-mode-hook 'projectile-mode))
+
   ;; (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 
   ;; (setq ns-pop-up-frames nil)
@@ -419,17 +429,6 @@
                '(enh-ruby-mode
                  "\\(class\\|def\\|do\\|if\\)" "\\(end\\)" "#"
                  (lambda (arg) (ruby-end-of-block)) nil))
-
-  ;; The projectile keymap prefix needs to be called before the mode is required/loaded
-  ;; (setq projectile-keymap-prefix (kbd "C-c C-p"))
-  (use-package projectile
-    :defer t
-    :ensure t
-    :init
-    (setq projectile-project-search-path '("~/projects/" "~/lisp/")
-          projectile-completion-system 'grizzl)
-    ;; (projectile-global-mode))
-    (add-hook 'enh-ruby-mode-hook 'projectile-mode))
 
   (use-package projectile-rails
     :defer t
