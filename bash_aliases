@@ -66,6 +66,7 @@ alias gbr='git branch '
 alias grm='git rm '
 alias gmv='git mv '
 alias gpl='git pull '
+alias gc='git clone '
 alias gcl='git clone '
 alias gct='git commit '
 alias gcm='git commit -m '
@@ -136,9 +137,14 @@ alias elixir='iex' # Elixir
 # Misc. Software ###############################################################
 
 alias deb='rlwrap btcdeb' # Bitcoin Script debugger
-alias tt='source ~/projects/python/tootstream/bin/activate && tootstream'
 alias dc='docker-compose ' # Docker
 
+# Mastodon CLI clients
+alias tt='source ~/projects/python/tootstream/bin/activate && tootstream'
+# 'toot' to open Toot. Online docs: https://toot.readthedocs.io/
+
+#Mastodon GTK clie nt
+alias tootle='com.github.bleakgrey.tootle'
 
 # Directories ##################################################################
 
