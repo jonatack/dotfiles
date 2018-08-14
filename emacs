@@ -300,13 +300,19 @@
   ;; This setup is a bit more involved and you need to create a new core file after
   ;; updating SLIME or SBCL. The steps to execute are:
   ;;
-  ;; $ cd ~/quicklisp/local-projects
+  ;; $ cd ~/quicklisp/dists/quicklisp/software
+  ;;  (or ~/quicklisp/local-projects or whichever directory contains Slime)
+  ;;
   ;; $ sbcl
-  ;; * (load "~/quicklisp/local-projects/slime/swank-loader.lisp")
+  ;; * (load "slime/swank-loader.lisp")
   ;; * (swank-loader:dump-image "sbcl.core-with-swank")
   ;;
   ;; Then add this to your .emacs:
   ;;
+  ;; (setq slime-lisp-implementations
+  ;;       '((sbcl ("sbcl" "--core" "path-to.../sbcl.core-with-swank")
+  ;;               :init (lambda (port-file _)
+  ;;                       (format "(swank:start-server %S)\n" port-file)))))
   (setq slime-lisp-implementations
         '((sbcl ("sbcl" "--core" "/home/jon/quicklisp/local-projects/sbcl.core-with-swank")
                 :init (lambda (port-file _)
