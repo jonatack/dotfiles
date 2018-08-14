@@ -29,9 +29,9 @@ The symlinks appear like this in the home directory:
 
 ## How to use
 
-    - Clone the repository into `~/dotfiles/`
+- Clone the repository into `~/dotfiles/`
 
-    - Create symlinks from your home directory to the repository files in `~/dotfiles`
+- Create symlinks for each dotfile from your home directory to the repository file in `~/dotfiles`
 
 For example, to symlink `.bash_aliases` to `~/dotfiles/bash_aliases`, run the following in the terminal:
 
