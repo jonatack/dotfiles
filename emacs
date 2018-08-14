@@ -210,12 +210,18 @@
   (unless package-archive-contents (package-refresh-contents))
 
   ;; Install any missing packages
+  ;;
   (dolist (package package-selected-packages)
     (unless (package-installed-p package)
       (package-refresh-contents)
       (package-install package)))
 
-  (unless (package-installed-p 'use-package) (package-install 'use-package))
+  ;; Ensure Use Package library is installed and configured
+  ;; Repository: https://github.com/jwiegley/use-package
+  ;;
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
   ;; (setq use-package-verbose t)
   (setq use-package-always-ensure t)
   (require 'use-package)
