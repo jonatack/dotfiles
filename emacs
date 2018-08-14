@@ -223,7 +223,7 @@
 
   (use-package better-defaults)
 
-  ;; Save the cursor position between sessions
+  ;; Saveplace saves the cursor position between sessions
   (use-package saveplace
     :defer t
     :ensure t
@@ -560,8 +560,9 @@
   ;; (setq whitespace-global-modes '(not org-mode web-mode fundamental-mode "Web" emacs-lisp-mode))
   ;; (global-whitespace-mode)
 
-  (setq ruby-insert-encoding-magic-comment nil) ; disable ruby-mode auto-adding utf-8 magic comments
-
+  ;; Disable ruby-mode and enh-ruby-mode auto-adding utf-8 magic comments
+  (setq ruby-insert-encoding-magic-comment nil
+        enh-ruby-add-encoding-comment-on-save nil)
 )
 
 ;; No GC while minibuffer is open
