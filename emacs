@@ -64,6 +64,7 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 (column-number-mode 1)
+(visual-line-mode 1) ; Better word wrapping
 
 ;; Auto-insert newline at end of file
 (setq-default require-final-newline t mode-require-final-newline t )
