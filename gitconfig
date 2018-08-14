@@ -1,5 +1,19 @@
 # ~/.gitconfig
 
+################################################################################
+
+[user]
+  name = Jon Atack
+  email = jon@atack.com
+
+[commit]
+  gpgsign = true
+
+[credential]
+  helper = gnome-keyring
+
+################################################################################
+
 [alias]
   # Amend the currently staged files to the latest commit
   amend = commit --amend --reuse-message=HEAD
@@ -102,9 +116,6 @@
   # Detect whitespace errors when applying a patch
   whitespace = fix
 
-[commit]
-  gpgsign = true
-
 [core]
   # Use custom `.gitignore` and `.gitattributes`
   excludesfile = ~/.gitignore
@@ -205,7 +216,3 @@
 
 #[url "git://gist.github.com/"]
   #	insteadOf = "gist:"
-
-[user]
-  name = Jon Atack
-  email = jon@atack.com
