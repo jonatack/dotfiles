@@ -2,8 +2,6 @@
 
 This repository is where I manage my primary dotfiles. They are a perpetual work-in-progress and are currently optimized for my professional Ruby work and personal Lisp projects.
 
-I have put a bit of time into `.emacs`, `.bash_aliases`, and `.gitconfig`.
-
 
 ## Introduction
 
