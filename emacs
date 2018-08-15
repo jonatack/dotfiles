@@ -103,7 +103,7 @@
 (setq desktop-path '("~/.emacs.d/")) ; Load/save desktop in .emacs.d directory
 ;; (setq desktop-path '("."))        ; Load/save desktop in dir Emacs opened from
 ;;
-(desktop-save-mode t) ; Auto-save desktop on exiting, and reload on startup
+;; (desktop-save-mode t) ; Auto-save desktop on exiting, and reload on startup
 
 ;; (setq default-directory "/")
 
