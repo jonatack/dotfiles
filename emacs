@@ -15,8 +15,8 @@
 
 ;; Turn off GC during Emacs startup
 (setq gc-cons-threshold most-positive-fixnum)
-;; Resume GC after startup with 100 MB threshold, sacrificing memory for speed
-(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 100 1000 1000))))
+;; Resume GC after startup with 50 MB threshold, sacrificing memory for speed
+(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 50 1000 1000))))
 
 ;; Display Emacs startup stats
 (add-hook 'emacs-startup-hook
@@ -583,7 +583,7 @@
   (setq gc-cons-threshold most-positive-fixnum))
 
 (defun my-minibuffer-exit-hook ()
-  (setq gc-cons-threshold (* 100 1000 1000)))
+  (setq gc-cons-threshold (* 50 1000 1000)))
 
 (add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
 (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
