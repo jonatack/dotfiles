@@ -127,7 +127,7 @@ alias copa='rubocop --auto-gen-config'
 # Programming Languages ########################################################
 
 alias sbcl='rlwrap sbcl' # Steel Bank Common Lisp
-alias cloj='lein repl' # Clojure
+alias cloj='clojure' # Clojure
 alias ghc='ghci' # Haskell GCH interactive console
 alias erlang='erl' # Erlang
 alias elixir='iex' # Elixir
