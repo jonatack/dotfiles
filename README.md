@@ -14,6 +14,7 @@ The symlinks appear like this in the home directory:
 ```bash
 .bash_aliases -> /home/jon/dotfiles/bash_aliases
 .bashrc -> /home/jon/dotfiles/bashrc
+.editorconfig -> /home/jon/dotfiles/editorconfig
 .emacs -> /home/jon/dotfiles/emac
 .exports -> /home/jon/dotfiles/exports
 .gitconfig -> /home/jon/dotfiles/gitconfig
