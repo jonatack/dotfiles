@@ -106,7 +106,7 @@ alias rubyglobals="ruby -rpp -e $PP_RUBY_GLOBALS"
 alias pippi='USE_PIPPI=true bundle exec rake test && cat log/pippi.log'
 
 # Rubygems/bundler
-alias gu='gem update --system && gem update && gem uninstall fileutils'
+alias gu='gem update --system && gem update'
 alias be='bundle exec '
 alias bu='bundle update'
 alias bo='bundle open '
