@@ -15,13 +15,13 @@ set mark-symlinked-directories on
 "\e[B": history-search-forward
 "\e[A": history-search-backward
 
-# Do not autocomplete hidden files unless the pattern explicitly begins with a dot
+# Do not autocomplete hidden files unless pattern explicitly begins with a dot
 set match-hidden-files on
 
 # Show all autocomplete results at once
 set page-completions off
 
-# If there are more than 200 possible completions for a word, ask to show them all
+# If there are more than 200 possible completions, ask to show them all
 set completion-query-items 200
 
 # Show extra file information when completing, like `ls -F` does
@@ -56,6 +56,8 @@ set convert-meta off
 
 # "\C-dL": kill-line
 # "\C-da": kill-line
+
+"\C-w": backward-kill-word
 
 # "\C-dw": backward-kill-word
 # "\C-dl": backward-kill-line
