@@ -94,7 +94,7 @@
   (asdf:load-system 'cells)
 
   ;; Functional Data Structures
-  (asdf:load-system 'sycamore)
+  ;; (asdf:load-system 'sycamore)
   (asdf:load-system 'fset)
 
   ;; Functional Idioms Library
@@ -138,7 +138,7 @@
   (use-package :algebraic-data-library)
   (use-package :abacus)
   (use-package :cells)
-  (use-package :sycamore)
+  ;; (use-package :sycamore)
   (use-package :fset-user)
   ;; (use-package :folio2)
   ;; (use-package :taps)
