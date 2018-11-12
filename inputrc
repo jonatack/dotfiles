@@ -58,6 +58,7 @@ set convert-meta off
 # "\C-da": kill-line
 
 "\C-w": backward-kill-word
+"\C-o": rlwrap-call-editor
 
 # "\C-dw": backward-kill-word
 # "\C-dl": backward-kill-line
