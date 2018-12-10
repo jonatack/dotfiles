@@ -207,6 +207,18 @@ alias mem='memcached -vv'
 
 alias fhere="find . -name " # Find files in current directory
 
+# Change monitor display resolution
+alias r34='xrandr --output HDMI-1 --mode "3440x1440_44.00"' # 3440x1440 44 fps
+alias r38='xrandr --output HDMI-1 --mode "3840x1600_35.00"' # 3840x1600 35 fps
+# See available resolutions. * = in use, + = preferred:
+alias res='xrandr'
+# Resolutions are set in /etc/X11/xorg.conf.d/10-monitor.conf
+# Use cvt command (Coordinated Video Timing) to get settings: cvt 3840 1600 26
+# cvt --help for more info
+#
+# Detailed info here: https://wiki.archlinux.org/index.php/Xrandr
+# and here: https://tracker.pureos.net/T298#8485
+
 alias free="free -mt" # Make free more user-friendly
 
 alias df="pydf" # Upgrade df to pydf: colorized output and text-based usage bars
