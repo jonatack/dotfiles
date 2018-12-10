@@ -363,6 +363,9 @@
   (keyboard-translate ?\C-t ?\C-x)
   ;; (keyboard-translate ?\C-x ?\C-t) ; inversely, make "C-x" act like "C-t"
 
+  ;; Make function-8 act like "C-x" as a shortcut to avoid left pinky stress
+  (global-set-key (kbd "<f8>") ctl-x-map)
+
   ;; Control-i to open a Ruby/Rails console in a new buffer
   ;; (global-set-key (kbd "C-i") 'inf-ruby-console-rails)
 
