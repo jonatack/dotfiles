@@ -30,7 +30,7 @@
             '(
               ; (tool-bar-lines . 0)
               (width . 105) ; chars
-              (height . 56) ; lines
+              (height . 88) ; lines
               ; (background-color . "honeydew")
               (left . 0)
               (top . 0)))
@@ -38,7 +38,7 @@
             '(
               ; (tool-bar-lines . 0)
               (width . 105)
-              (height . 56)
+              (height . 88)
               ; (background-color . "honeydew")
               (left . 0)
               (top . 0))))
