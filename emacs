@@ -457,6 +457,12 @@
                  "\\(class\\|def\\|do\\|if\\)" "\\(end\\)" "#"
                  (lambda (arg) (ruby-end-of-block)) nil))
 
+  ;; Projectile-rails key bindings:
+  ;;
+  ;; M-x projectile-rails-find-model         ->  C-c r m
+  ;; M-x projectile-rails-find-current-model ->  C-c r M
+  ;; M-x projectile-rails-find-current-test  ->  C-c r T
+  ;;
   (use-package projectile-rails
     :defer t
     :ensure t
@@ -464,7 +470,7 @@
     (setq projectile-rails-vanilla-command "bin/rails"
           projectile-rails-spring-command "bin/spring"
           projectile-rails-zeus-command "bin/zeus")
-    ;; (projectile-rails-global-mode)
+    ;; (projectile-rails-global-mode))
     (add-hook 'projectile-mode-hook 'projectile-rails-on))
 
   (autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
