@@ -83,7 +83,7 @@
 (global-linum-mode 1) ; global-linum-mode adds line numbers to all open windows.
 (setq linum-format "%4d ") ;; 4 character and a space for line numbers
 
- ; Highlight matching parentheses globally.
+;; Highlight matching parentheses globally.
 (run-with-idle-timer 1 nil (lambda () (show-paren-mode t)))
 
 ;; Display “lambda” as “λ”
