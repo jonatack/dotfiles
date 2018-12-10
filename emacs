@@ -359,6 +359,10 @@
   (global-set-key (kbd "C-o") 'other-window)
   (global-set-key (kbd "C-x o") 'open-line)
 
+  ;; Make "C-t" act like "C-x", so it's easier to type on Dvorak layout
+  (keyboard-translate ?\C-t ?\C-x)
+  ;; (keyboard-translate ?\C-x ?\C-t) ; inversely, make "C-x" act like "C-t"
+
   ;; Control-i to open a Ruby/Rails console in a new buffer
   ;; (global-set-key (kbd "C-i") 'inf-ruby-console-rails)
 
