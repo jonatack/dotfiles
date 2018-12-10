@@ -251,14 +251,21 @@
           ;; If you don't want to use the flx's highlights you can turn them off like this:
           flx-ido-use-faces nil))
 
+  ;; Projectile key bindings:
+  ;;
+  ;; Grep             ->  C-c p s g
+  ;; Grep all project ->  M-- C-c p s g
   (use-package projectile
-    :defer t
+    ;; :defer t
     :ensure t
-    :init
-    (setq projectile-project-search-path '("~/projects/" "~/common-lisp/")
+    :config
+    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+    (setq projectile-project-search-path '("~/projects/" "~/common-lisp/"))
           ;; projectile-keymap-prefix (kbd "C-c C-p")
-          projectile-completion-system 'grizzl)
-    (projectile-global-mode))
+          ;; projectile-completion-system 'grizzl)
+    (projectile-mode +1))
+    ;; (projectile-global-mode))
     ;; (add-hook 'enh-ruby-mode-hook 'projectile-mode))
 
   (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
