@@ -504,9 +504,9 @@
 
   ;; Minitest key bindings:
   ;;
-  ;; M-x minitest-verify     ->  C-c C-, v
-  ;; M-x minitest-verify-all ->  C-c C-, a
-  ;; M-x minitest-rerun      ->  C-c C-, r
+  ;; M-x minitest-verify     ->  C-c , v
+  ;; M-x minitest-verify-all ->  C-c , a
+  ;; M-x minitest-rerun      ->  C-c , r
   ;;
   (use-package minitest
     :defer t
