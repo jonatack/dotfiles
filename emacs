@@ -538,7 +538,7 @@
               (goto-char (point-max))
               (local-set-key (kbd "k")
                              (lambda () (interactive) (kill-buffer-and-window))))) ; kills it
-                      ; (lambda () (interactive) (quit-restore-window))))) ; closes window
+                     ;; (lambda () (interactive) (quit-restore-window))))) ; closes window
 
   ;; Functions to help with refactoring
   ;; (require 'ruby-refactor)
