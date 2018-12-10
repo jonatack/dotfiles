@@ -137,7 +137,7 @@
 (set-fringe-mode '(5 . 4)) ; Show a fringe
 
 ;; Remove the fringe indicators
- (when (boundp 'fringe-indicator-alist)
+(when (boundp 'fringe-indicator-alist)
   (setq-default fringe-indicator-alist
 		'(
 		  (continuation . nil)
