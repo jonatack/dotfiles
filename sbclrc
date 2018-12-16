@@ -84,7 +84,7 @@
 
   ;; Pattern Matching
   ;; (asdf:load-system 'optima)
-  (asdf:load-system 'trivia) ; newer, faster, drop-in replacement for optima
+  ;; (asdf:load-system 'trivia) ; newer, faster, drop-in replacement for optima
   (asdf:load-system 'cl-algebraic-data-type)
   (asdf:load-system 'algebraic-data-library)
   (asdf:load-system 'abacus)
@@ -134,7 +134,7 @@
   ;;; =======================================
 
   ;; (use-package :optima)
-  (use-package :trivia) ; newer, faster, drop-in replacement for optima
+  ;; (use-package :trivia) ; newer, faster, drop-in replacement for optima
   (use-package :algebraic-data-library)
   (use-package :abacus)
   (use-package :cells)
