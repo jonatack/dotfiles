@@ -26,6 +26,11 @@
 ;;; Configure SBCL with Quicksearch and selected libraries
 ;;; ======================================================
 
+;; Readline-style line-editor for Common Lisp
+;; Repository and more info at: https://github.com/sharplispers/linedit
+;; (ql:quickload :linedit)
+;; (linedit:install-repl :wrap-current t :eof-quits t)
+
 (handler-bind
     ((sb-ext:implicit-generic-function-warning #'muffle-warning)
      (sb-kernel:type-proclamation-mismatch-warning #'muffle-warning)
