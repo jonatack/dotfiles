@@ -29,3 +29,5 @@ fi
 export PATH="$HOME/.rbenv/bin:$PATH"
 
 export PATH="$HOME/.cargo/bin:$PATH"
+
+export PATH="$HOME/.local/bin:$PATH"
