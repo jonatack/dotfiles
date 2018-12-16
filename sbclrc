@@ -150,8 +150,9 @@
   ;;; Unit testing
   ;;; =======================================
 
+  (asdf:load-system 'rove)
+  ;; (asdf:load-system 'prove)
   ;; (asdf:load-system 'fiveam)
-  ;; (asdf:load-system 'prove) ; another good unit-test library by fukumachi
-  ;; (asdf:load-system 'parachute) ; another good unit-test library by fukumachi
+  ;; (asdf:load-system 'parachute)
   ;; (ql:quickload "clunit")
   )
