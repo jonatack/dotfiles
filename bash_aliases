@@ -72,7 +72,6 @@ alias gcm='git commit -m '
 alias gca='git commit -a '
 alias gcam='git commit --amend'
 
-alias gp='git push origin master'
 alias gpom='git push origin master'
 alias gphm='git push heroku master'
 
