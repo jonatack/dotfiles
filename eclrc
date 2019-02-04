@@ -1,0 +1,31 @@
+;;;;
+;;;; .eclrc
+;;;;
+;;;; Config file for ECL - Embedded Common Lisp.
+;;;;
+;;;; Copyright (C) 2019 Jon Atack <jon@atack.com>
+
+;;; Compile and load ASDF - for the first run only.
+;;; (load (compile-file "~/quicklisp/asdf.lisp"))
+
+;;; Load ASDF compiled by the first command above.
+(load "~/quicklisp/asdf.fas")
+
+;;; Load Quicklisp and common settings.
+(load "~/.lisprc")
+
+;;; Load and enable Readline.
+(asdf:operate 'asdf:load-op 'ecl-readline)
+(ecl-readline::enable)
+
+;;; Non-verbosely load Quicksearch, Lisp Critic, and the Rove test library.
+(handler-bind ((style-warning #'muffle-warning) (warning #'muffle-warning))
+  (asdf:load-system 'quicksearch)
+  (asdf:load-system 'lisp-critic)
+  (asdf:load-system 'rove))
+
+;;; Compile and load CL-Kraken using ASDF (alternative to Quickload below).
+;;; (asdf:operate 'asdf:load-bundle-op 'cl-kraken)
+
+;;; Quickload CL-Kraken.
+(ql:quickload :cl-kraken)
