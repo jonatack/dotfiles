@@ -1,23 +1,27 @@
+;;;;
 ;;;; .sbclrc
 ;;;;
-;;;; Modified and updated from Chris Kohlhepp's 2014 blog post:
-;;;; "Meta-Circular Adventures in Functional Abstraction"
+;;;; Config file for SBCL - Steel Bank Common Lisp.
 ;;;;
-;;;; The original post is down but a mirror can still be found here:
-;;;; https://hackerfall.com/story/challenging-clojure-in-common-lisp
-;;;;
-;;;; Add or remove various libraries below as needed.
-;;;;
-;;;; Jon Atack
-;;;;
+;;;; Copyright (C) 2019 Jon Atack <jon@atack.com>
 
-;;; The following lines added by ql:add-to-init-file:
-#-quicklisp
-(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
-                                       (user-homedir-pathname))))
-  (when (probe-file quicklisp-init)
-    (load quicklisp-init)))
+(load "~/.lisprc")
 
+(defvar *last-package* nil)
+(defvar *cached-prompt* nil)
+
+(defun package-prompt (stream)
+  (when (not (eq *last-package* *package*))
+    (setf *cached-prompt*
+          (format nil "~%[SBCL] ~A> "
+                  (or (first (package-nicknames *package*))
+                      (package-name *package*))))
+    (setf *last-package* *package*))
+  (terpri)
+  (princ *cached-prompt* stream))
+
+(setf sb-int:*repl-prompt-fun* #'package-prompt)
+(setf sb-debug:*debug-beginner-help-p* nil)
 (setf sb-impl::*default-external-format* :utf-8)
 
 (require 'asdf)
@@ -90,17 +94,17 @@
   ;; Pattern Matching
   ;; (asdf:load-system 'optima)
   ;; (asdf:load-system 'trivia) ; newer, faster, drop-in replacement for optima
-  (asdf:load-system 'cl-algebraic-data-type)
-  (asdf:load-system 'algebraic-data-library)
-  (asdf:load-system 'abacus)
+  ;; (asdf:load-system 'cl-algebraic-data-type)
+  ;; (asdf:load-system 'algebraic-data-library)
+  ;; (asdf:load-system 'abacus)
   ;; (asdf:load-system 'cl-unification)
 
   ;; FRP (Functional Reactive Programming Framework)
-  (asdf:load-system 'cells)
+  ;; (asdf:load-system 'cells)
 
   ;; Functional Data Structures
   ;; (asdf:load-system 'sycamore)
-  (asdf:load-system 'fset)
+  ;; (asdf:load-system 'fset)
 
   ;; Functional Idioms Library
   ;; (asdf:load-system 'folio)
@@ -113,7 +117,7 @@
   ;;; =======================================
 
   ;; Actor Model
-  (asdf:load-system 'cl-actors)
+  ;; (asdf:load-system 'cl-actors)
 
   ;; CSP Concurrent Process Algebra
   ;; (asdf:load-system 'chanl)
@@ -133,22 +137,28 @@
   ;; Appease Paren Critics
   ;; (asdf:load-system 'readable)
 
+  ;;; =======================================
+  ;;; Benchmarking
+  ;;; =======================================
+
+  ;; (asdf:load-system 'trivial-benchmark)
 
   ;;; =======================================
   ;;;  Default Namespaces
   ;;; =======================================
 
+  ;; (use-package :trivial-benchmark)
   ;; (use-package :optima)
   ;; (use-package :trivia) ; newer, faster, drop-in replacement for optima
-  (use-package :algebraic-data-library)
-  (use-package :abacus)
-  (use-package :cells)
+  ;; (use-package :algebraic-data-library)
+  ;; (use-package :abacus)
+  ;; (use-package :cells)
   ;; (use-package :sycamore)
-  (use-package :fset-user)
+  ;; (use-package :fset-user)
   ;; (use-package :folio2)
   ;; (use-package :taps)
-  (use-package :cl-actors)
-  (use-package :lisp-critic)
+  ;; (use-package :cl-actors)
+  ;; (use-package :lisp-critic)
 
 
   ;;; =======================================
@@ -161,3 +171,9 @@
   ;; (asdf:load-system 'parachute)
   ;; (ql:quickload "clunit")
   )
+
+;;; =======================================
+;;; Load current side project
+;;; =======================================
+
+(ql:quickload :cl-kraken)
