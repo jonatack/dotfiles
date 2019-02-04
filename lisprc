@@ -1,0 +1,32 @@
+;;;;
+;;;; .lisprc
+;;;;
+;;;; General Common Lisp config loaded by each implementation init file.
+;;;;
+;;;; Copyright (C) 2019 Jon Atack <jon@atack.com>
+
+#-quicklisp
+(let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                       (user-homedir-pathname))))
+  (when (probe-file quicklisp-init)
+    (load quicklisp-init)))
+
+(setf *print-pretty* t
+      *print-escape* t
+      *print-right-margin* 100
+      *print-miser-width* nil
+      *print-length* 1000
+      *print-level* 250)
+
+;; (defun prefix= (needle haystack)
+;;   (string= needle haystack :end2 (min (length haystack) (length needle))))
+;;
+;; (defun https-please (url &rest args)
+;;   ;; http://beta.quicklisp.org/
+;;   (if (prefix= "http://beta.quicklisp.org/" url)
+;;     (setf url (concatenate 'string "https://beta.quicklisp.org:443/"
+;;                            (subseq url 26))))
+;;   (print `(fetching ,url))
+;;   (apply #'ql-http:http-fetch url args))
+;;
+;; (setf ql-http:*fetch-scheme-functions* '(("http" . https-please)))
