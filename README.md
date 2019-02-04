@@ -1,6 +1,14 @@
 # Dotfiles
 
-This repository is where I manage my primary dotfiles. They are a perpetual work-in-progress and are currently optimized for my professional Ruby work and personal Lisp projects.
+This repository is where I manage my primary dotfiles. They are a perpetual work-in-progress and are currently optimized for my Ruby and Common Lisp work.
+
+There are Common Lisp init files for the following implementations:
+
+- Armed Bear Common Lisp (ABCL)
+- Clozure Common Lisp (CCL)
+- CLISP
+- Embedded Common Lisp (ECL)
+- Steel Bank Common Lisp (SBCL)
 
 
 ## Introduction
@@ -12,18 +20,24 @@ They are symlinked to from their dot-prefixed versions in the home directory at 
 The symlinks appear like this in the home directory:
 
 ```bash
-.bash_aliases -> /home/jon/dotfiles/bash_aliases
-.bashrc -> /home/jon/dotfiles/bashrc
-.editorconfig -> /home/jon/dotfiles/editorconfig
-.emacs -> /home/jon/dotfiles/emac
-.exports -> /home/jon/dotfiles/exports
-.gitconfig -> /home/jon/dotfiles/gitconfig
+.abcl_completions -> /home/jon/dotfiles/abcl_completions
+.abclrc           -> /home/jon/dotfiles/abclrc
+.bash_aliases     -> /home/jon/dotfiles/bash_aliases
+.bashrc           -> /home/jon/dotfiles/bashrc
+.ccl-init.lisp    -> /home/jon/dotfiles/ccl-init.lisp
+.clisprc          -> /home/jon/dotfiles/clisprc
+.eclrc            -> /home/jon/dotfiles/eclrc
+.editorconfig     -> /home/jon/dotfiles/editorconfig
+.emacs            -> /home/jon/dotfiles/emac
+.exports          -> /home/jon/dotfiles/exports
+.gitconfig        -> /home/jon/dotfiles/gitconfig
 .gitignore_global -> /home/jon/dotfiles/gitignore_global
-.inputrc -> /home/jon/dotfiles/inputrc
-.irbrc -> /home/jon/dotfiles/irbrc
-.profile -> /home/jon/dotfiles/profile
-.sbclrc -> /home/jon/dotfiles/sbclrc
-.vimrc -> /home/jon/dotfiles/vimrc
+.inputrc          -> /home/jon/dotfiles/inputrc
+.irbrc            -> /home/jon/dotfiles/irbrc
+.lisprc           -> /home/jon/dotfiles/lisprc
+.profile          -> /home/jon/dotfiles/profile
+.sbclrc           -> /home/jon/dotfiles/sbclrc
+.vimrc            -> /home/jon/dotfiles/vimrc
 ```
 
 ## How to use
@@ -42,5 +56,5 @@ Happy dotfile-ing!
 
 ------------------------------------------------------------------------------
 
-Copyright © 2018 Jon Atack - email jon@atack.com - https://keybase.io/jonatack
+Copyright © 2019 Jon Atack - email jon@atack.com - https://keybase.io/jonatack
 
