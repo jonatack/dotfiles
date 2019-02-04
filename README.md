@@ -25,7 +25,7 @@ The symlinks appear like this in the home directory:
 .bash_aliases     -> /home/jon/dotfiles/bash_aliases
 .bashrc           -> /home/jon/dotfiles/bashrc
 .ccl-init.lisp    -> /home/jon/dotfiles/ccl-init.lisp
-.clisprc          -> /home/jon/dotfiles/clisprc
+.clisprc.lisp     -> /home/jon/dotfiles/clisprc.lisp
 .eclrc            -> /home/jon/dotfiles/eclrc
 .editorconfig     -> /home/jon/dotfiles/editorconfig
 .emacs            -> /home/jon/dotfiles/emac
