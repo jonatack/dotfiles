@@ -11,6 +11,8 @@
   (when (probe-file quicklisp-init)
     (load quicklisp-init)))
 
+(setf *read-default-float-format* 'single-float)
+
 (setf *print-pretty* t
       *print-escape* t
       *print-right-margin* 100
