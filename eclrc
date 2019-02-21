@@ -5,7 +5,9 @@
 ;;;;
 ;;;; Copyright (C) 2019 Jon Atack <jon@atack.com>
 
-;;; Compile and load ASDF - for the first run only.
+;;; To install ECL: sudo apt install ecl
+
+;;; Compile and load ASDF - for the first run only:
 ;;; (load (compile-file "~/quicklisp/asdf.lisp"))
 
 ;;; Load ASDF compiled by the first command above.
@@ -14,11 +16,14 @@
 ;;; Load Quicklisp and common settings.
 (load "~/.lisprc")
 
-;;; Load and enable Readline.
+;;; Load and enable ECL-READLINE for the REPL.
+;;; If ECL cannot compile the file ECL-READLINE.FAS, try running:
+;;; sudo chmod 777 /usr/local/lib/ecl-16.1.3
+;;;
 (asdf:operate 'asdf:load-op 'ecl-readline)
 (ecl-readline::enable)
 
-;;; Non-verbosely load Quicksearch, Lisp Critic, and the Rove test library.
+;;; Load QUICKSEARCH, LISP-CRITIC, and ROVE unit test library.
 (handler-bind ((style-warning #'muffle-warning) (warning #'muffle-warning))
   (asdf:load-system 'quicksearch)
   (asdf:load-system 'lisp-critic)
