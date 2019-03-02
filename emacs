@@ -289,6 +289,8 @@
   (setq slime-startup-animation nil)
 
   ;; (setq inferior-lisp-program "/usr/bin/sbcl --noinform")
+  ;; (setq inferior-lisp-program "/usr/local/bin/ccl -K utf-8")
+  ;; (setq inferior-lisp-program "ecl")
 
   ;; Load Swank faster, as per:
   ;; https://common-lisp.net/project/slime/doc/html/Loading-Swank-faster.html
