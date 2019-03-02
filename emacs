@@ -430,6 +430,11 @@
     (set (make-local-variable lisp-indent-function) 'common-lisp-indent-function)
     (setq lisp-indent-function 'common-lisp-indent-function)
 
+    ;;; Available styles are: basic, classic, modern and sbcl.
+    ;;; All of them are defined in slime-cl-indent.el file,
+    ;;; but you can define your own style as well.
+    (setq common-lisp-style "sbcl")
+
     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
     (setq slime-load-failed-fasl 'never)) ; never load code that failed to compile
 
