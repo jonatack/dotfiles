@@ -406,8 +406,17 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (add-to-list 'auto-mode-alist
-      '("\\(?:\\.elisp\\|emacs\\|sbclrc\\|/\\(?:emacs\\|sbclrc\\)\\)\\'"
-      . emacs-lisp-mode))
+               '("\\(?:\\.elisp\\|emacs\\|/\\(?:emacs\\)\\)\\'"
+               . emacs-lisp-mode))
+
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Section V: Setup Lisp mode behavior                                        ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ;; Ensure Lisp mode for Lisp init files
+  (add-to-list 'auto-mode-alist '("\\clrc" . lisp-mode))
+  (add-to-list 'auto-mode-alist '("\\lisprc" . lisp-mode))
 
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
