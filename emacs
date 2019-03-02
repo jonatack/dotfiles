@@ -280,9 +280,10 @@
 
   (slime-setup '(slime-fancy))
   (setq slime-contribs '(slime-fancy slime-repl slime-asdf
-      slime-indentation slime-banner slime-tramp slime-mdot-fu
-      slime-scratch slime-company slime-editing-commands
-      slime-quicklisp))
+      slime-indentation slime-cl-indent slime-banner slime-tramp
+      slime-mdot-fu slime-scratch slime-company
+      slime-editing-commands slime-quicklisp
+      slime-repl-ansi-color))
   ;; (setq slime-contribs '(slime-repl)) ; repl only
 
   (setq slime-startup-animation nil)
