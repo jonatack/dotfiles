@@ -269,7 +269,7 @@
     ;; (projectile-global-mode))
     ;; (add-hook 'enh-ruby-mode-hook 'projectile-mode))
 
-  (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
+  ;; (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 
   ;; (setq ns-pop-up-frames nil)
 
