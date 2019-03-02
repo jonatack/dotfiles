@@ -116,7 +116,7 @@
 (setq web-mode-code-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
 
-(setq-default fill-column 80) ; Sets a 80 character line width
+(setq-default fill-column 80) ; Set max character line length
 (setq large-file-warning-threshold nil) ; Don’t warn me about opening large files
 (setq x-select-enable-clipboard t) ; Enable copy/past-ing from clipboard
 (setq system-uses-terminfo nil) ; Fix weird color escape sequences
@@ -577,6 +577,7 @@
           '(face empty tabs lines-tail trailing)
           whitespace-global-modes
           '(not org-mode web-mode fundamental-mode "Web" emacs-lisp-mode)
+          ;; whitespace-line-column 80
           whitespace-display-mappings
           ;; all numbers are Unicode codepoint in decimal. e.g. (insert-char 182 1)
           '(
