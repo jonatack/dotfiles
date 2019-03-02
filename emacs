@@ -274,7 +274,7 @@
   ;; (setq ns-pop-up-frames nil)
 
   ;; SLIME
-  ;; (add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/slime-v2.22")
+  ;; (add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/slime-v2.23")
   ;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
   (require 'slime-autoloads)
 
