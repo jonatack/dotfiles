@@ -7,7 +7,7 @@ There are Common Lisp init files for the following implementations:
 - Armed Bear Common Lisp (ABCL)
 - Clozure Common Lisp (CCL)
 - CLISP
-- Embedded Common Lisp (ECL)
+- Embeddable Common Lisp (ECL)
 - Steel Bank Common Lisp (SBCL)
 
 

@@ -1,7 +1,7 @@
 ;;;;
 ;;;; .eclrc
 ;;;;
-;;;; Config file for ECL - Embedded Common Lisp.
+;;;; Config file for ECL - Embeddable Common Lisp.
 ;;;;
 ;;;; Copyright (C) 2019 Jon Atack <jon@atack.com>
 
