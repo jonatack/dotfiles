@@ -116,12 +116,13 @@
 (setq web-mode-code-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
 
-(setq-default fill-column 80) ; Sets a 80 character line width
+(setq-default fill-column 80) ; Set max character line length
 (setq large-file-warning-threshold nil) ; Don’t warn me about opening large files
 (setq x-select-enable-clipboard t) ; Enable copy/past-ing from clipboard
 (setq system-uses-terminfo nil) ; Fix weird color escape sequences
-(fset 'yes-or-no-p 'y-or-n-p) ; Answer with y and n instead of yes and no
 (setq confirm-kill-emacs 'yes-or-no-p) ; Ask for confirmation before closing emacs
+
+(fset 'yes-or-no-p 'y-or-n-p) ; Enable answering with y/n instead of yes/no
 
 ;; Always reload the file if it changed on disk
 (run-with-idle-timer 2 nil (lambda () (global-auto-revert-mode t)))
@@ -268,25 +269,28 @@
     ;; (projectile-global-mode))
     ;; (add-hook 'enh-ruby-mode-hook 'projectile-mode))
 
-  (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
+  ;; (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 
   ;; (setq ns-pop-up-frames nil)
 
   ;; SLIME
-  ;; (add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/slime-v2.22")
+  ;; (add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/slime-v2.23")
   ;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
   (require 'slime-autoloads)
 
   (slime-setup '(slime-fancy))
   (setq slime-contribs '(slime-fancy slime-repl slime-asdf
-      slime-indentation slime-banner slime-tramp slime-mdot-fu
-      slime-scratch slime-company slime-editing-commands
-      slime-quicklisp))
+      slime-indentation slime-cl-indent slime-banner slime-tramp
+      slime-mdot-fu slime-scratch slime-company
+      slime-editing-commands slime-quicklisp
+      slime-repl-ansi-color))
   ;; (setq slime-contribs '(slime-repl)) ; repl only
 
   (setq slime-startup-animation nil)
 
   ;; (setq inferior-lisp-program "/usr/bin/sbcl --noinform")
+  ;; (setq inferior-lisp-program "/usr/local/bin/ccl -K utf-8")
+  ;; (setq inferior-lisp-program "ecl")
 
   ;; Load Swank faster, as per:
   ;; https://common-lisp.net/project/slime/doc/html/Loading-Swank-faster.html
@@ -345,9 +349,10 @@
   ;; Section III: Global Key Bindings                                           ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  ;; (global-set-key (kbd "C-c s") 'slime-selector)
-  ;; (global-set-key (kbd "C-c h") 'clhs-lookup)
-  ;; (global-set-key (kbd "C-c r") 'slime-pop-find-definition-stack)
+  (global-set-key (kbd "<f12>") #'slime-selector)
+  (global-set-key (kbd "C-c s") #'slime-selector)
+  (global-set-key (kbd "C-c h") #'clhs-lookup)
+  (global-set-key (kbd "C-c r") #'slime-pop-find-definition-stack)
 
   ;; Set the enter key to newline-and-indent which inserts a new line and then
   ;; indents according to the major mode. This is very convenient.
@@ -365,6 +370,9 @@
 
   ;; Make function-8 act like "C-x" as a shortcut to avoid left pinky stress
   (global-set-key (kbd "<f8>") ctl-x-map)
+
+  ;; Toggle S-expression comments on/off with auto-formatting
+  (global-set-key (kbd "C-M-;") #'comment-or-uncomment-sexp)
 
   ;; Control-i to open a Ruby/Rails console in a new buffer
   ;; (global-set-key (kbd "C-i") 'inf-ruby-console-rails)
@@ -394,16 +402,25 @@
 
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section IV: Setup Emacs Lisp mode behavior                                 ;;
+  ;; Section IV: Emacs Lisp mode behavior                                       ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (add-to-list 'auto-mode-alist
-      '("\\(?:\\.elisp\\|emacs\\|sbclrc\\|/\\(?:emacs\\|sbclrc\\)\\)\\'"
-      . emacs-lisp-mode))
+               '("\\(?:\\.elisp\\|emacs\\|/\\(?:emacs\\)\\)\\'"
+               . emacs-lisp-mode))
 
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section V: Setup Slime Lisp mode behavior                                  ;;
+  ;; Section V: Lisp mode behavior                                              ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ;; Ensure Lisp mode for Lisp init files
+  (add-to-list 'auto-mode-alist '("\\clrc" . lisp-mode))
+  (add-to-list 'auto-mode-alist '("\\lisprc" . lisp-mode))
+
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Section V: Slime Lisp mode behavior                                        ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (defun lisp-hook-fn ()
@@ -422,6 +439,11 @@
     (set (make-local-variable lisp-indent-function) 'common-lisp-indent-function)
     (setq lisp-indent-function 'common-lisp-indent-function)
 
+    ;;; Available styles are: basic, classic, modern and sbcl.
+    ;;; All of them are defined in slime-cl-indent.el file,
+    ;;; but you can define your own style as well.
+    (setq common-lisp-style "sbcl")
+
     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
     (setq slime-load-failed-fasl 'never)) ; never load code that failed to compile
 
@@ -430,7 +452,7 @@
 
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section VI: Ruby mode                                                       ;;
+  ;; Section VI: Ruby mode behavior                                             ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   ;; Doubt this is needed with the auto hooks in the next section
@@ -577,6 +599,7 @@
           '(face empty tabs lines-tail trailing)
           whitespace-global-modes
           '(not org-mode web-mode fundamental-mode "Web" emacs-lisp-mode)
+          ;; whitespace-line-column 80
           whitespace-display-mappings
           ;; all numbers are Unicode codepoint in decimal. e.g. (insert-char 182 1)
           '(
@@ -622,7 +645,7 @@
     ("5c9bd73de767fa0d0ea71ee2f3ca6fe77261d931c3d4f7cca0734e2a3282f439" default)))
  '(package-selected-packages
    (quote
-    (haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime better-defaults flx-ido scpaste smex magit paredit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
+    (comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime better-defaults flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
  '(safe-local-variable-values (quote ((encoding . utf-8)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -630,3 +653,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; A vulnerability was introduced in Emacs 21.1.  To work around that
+;; in Emacs versions before 25.3, append the following to your ~/.emacs
+;; init file:
+(eval-after-load "enriched"
+  '(defun enriched-decode-display-prop (start end &optional param)
+     (list start end)))
