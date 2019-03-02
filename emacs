@@ -351,7 +351,7 @@
 
   (global-set-key (kbd "<f12>") #'slime-selector)
   (global-set-key (kbd "C-c s") #'slime-selector)
-  ;; (global-set-key (kbd "C-c h") 'clhs-lookup)
+  (global-set-key (kbd "C-c h") #'clhs-lookup)
   ;; (global-set-key (kbd "C-c r") 'slime-pop-find-definition-stack)
 
   ;; Set the enter key to newline-and-indent which inserts a new line and then
