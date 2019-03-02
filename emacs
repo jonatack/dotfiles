@@ -120,8 +120,9 @@
 (setq large-file-warning-threshold nil) ; Don’t warn me about opening large files
 (setq x-select-enable-clipboard t) ; Enable copy/past-ing from clipboard
 (setq system-uses-terminfo nil) ; Fix weird color escape sequences
-(fset 'yes-or-no-p 'y-or-n-p) ; Answer with y and n instead of yes and no
 (setq confirm-kill-emacs 'yes-or-no-p) ; Ask for confirmation before closing emacs
+
+(fset 'yes-or-no-p 'y-or-n-p) ; Enable answering with y/n instead of yes/no
 
 ;; Always reload the file if it changed on disk
 (run-with-idle-timer 2 nil (lambda () (global-auto-revert-mode t)))
