@@ -52,7 +52,8 @@
   ;;
   ;; (qs:? 'cell :du 5)
   ;;
-  ;; => search all sources for "cell", display first 5 results with descriptions + URLs
+  ;; => searches all sources for "cell"
+  ;;    and displays first 5 results with descriptions + URLs
   ;;
   ;; The search word must be a string, number or symbol.
   ;; A symbol is converted to a downcased string.
@@ -83,97 +84,94 @@
   ;;            :maximum-number-of-fetching-repositories 50 :max-repos-supplied 50
   ;;            :cache-size 4 :threading? t :quicklisp-verbose? t)
   ;;
-  ;; To see this information: C-c C-d a or M-x slime-apropos, followed by "quicksearch".
+  ;; To see this information:
+  ;; C-c C-d a or M-x slime-apropos, followed by "quicksearch".
 
+
+  ;;; =======================================
+  ;;; Utilities
+  ;;; =======================================
+  (asdf:load-system 'parse-float)
 
 
   ;;; =======================================
   ;;; Functional programming
   ;;; =======================================
-
-  ;; Pattern Matching
-  ;; (asdf:load-system 'optima)
-  ;; (asdf:load-system 'trivia) ; newer, faster, drop-in replacement for optima
-  ;; (asdf:load-system 'cl-algebraic-data-type)
-  ;; (asdf:load-system 'algebraic-data-library)
-  ;; (asdf:load-system 'abacus)
-  ;; (asdf:load-system 'cl-unification)
-
-  ;; FRP (Functional Reactive Programming Framework)
-  ;; (asdf:load-system 'cells)
-
-  ;; Functional Data Structures
-  ;; (asdf:load-system 'sycamore)
-  ;; (asdf:load-system 'fset)
-
-  ;; Functional Idioms Library
-  ;; (asdf:load-system 'folio)
-  ;; (asdf:load-system 'folio2)
-  ;; (asdf:load-system 'taps)
+  ;;; Pattern Matching
+  ;;; (asdf:load-system 'optima)
+  ;;; (asdf:load-system 'trivia) ; newer, faster, drop-in replacement for optima
+  ;;; (asdf:load-system 'cl-algebraic-data-type)
+  ;;; (asdf:load-system 'algebraic-data-library)
+  ;;; (asdf:load-system 'abacus)
+  ;;; (asdf:load-system 'cl-unification)
+  ;;; FRP (Functional Reactive Programming Framework)
+  ;;; (asdf:load-system 'cells)
+  ;;; Functional Data Structures
+  ;;; (asdf:load-system 'sycamore)
+  ;;; (asdf:load-system 'fset)
+  ;;; Functional Idioms Library
+  ;;; (asdf:load-system 'folio)
+  ;;; (asdf:load-system 'folio2)
+  ;;; (asdf:load-system 'taps)
 
 
   ;;; =======================================
   ;;; Concurrent Programming
   ;;; =======================================
-
-  ;; Actor Model
-  ;; (asdf:load-system 'cl-actors)
-
-  ;; CSP Concurrent Process Algebra
-  ;; (asdf:load-system 'chanl)
-  ;; (asdf:load-system 'calispel)
-
-  ;; Software Transactional Memory
-  ;; (asdf:load-system 'cl-stm)   ; original
-  ;; (asdf:load-system 'cl-stmx)  ; high performance
+  ;;; Actor Model
+  ;;; (asdf:load-system 'cl-actors)
+  ;;; CSP Concurrent Process Algebra
+  ;;; (asdf:load-system 'chanl)
+  ;;; (asdf:load-system 'calispel)
+  ;;; Software Transactional Memory
+  ;;; (asdf:load-system 'cl-stm)   ; original
+  ;;; (asdf:load-system 'cl-stmx)  ; high performance
 
 
   ;;; =======================================
   ;;; Static Code Analysis
   ;;; =======================================
-
   (asdf:load-system 'lisp-critic)
 
   ;; Appease Paren Critics
   ;; (asdf:load-system 'readable)
 
+
   ;;; =======================================
   ;;; Benchmarking
   ;;; =======================================
-
   ;; (asdf:load-system 'trivial-benchmark)
+
 
   ;;; =======================================
   ;;;  Default Namespaces
   ;;; =======================================
-
-  ;; (use-package :trivial-benchmark)
-  ;; (use-package :optima)
-  ;; (use-package :trivia) ; newer, faster, drop-in replacement for optima
-  ;; (use-package :algebraic-data-library)
-  ;; (use-package :abacus)
-  ;; (use-package :cells)
-  ;; (use-package :sycamore)
-  ;; (use-package :fset-user)
-  ;; (use-package :folio2)
-  ;; (use-package :taps)
-  ;; (use-package :cl-actors)
-  ;; (use-package :lisp-critic)
+  ;;; (use-package :trivial-benchmark)
+  ;;; (use-package :optima)
+  ;;; (use-package :trivia) ; newer, faster, drop-in replacement for optima
+  ;;; (use-package :algebraic-data-library)
+  ;;; (use-package :abacus)
+  ;;; (use-package :cells)
+  ;;; (use-package :sycamore)
+  ;;; (use-package :fset-user)
+  ;;; (use-package :folio2)
+  ;;; (use-package :taps)
+  ;;; (use-package :cl-actors)
+  ;;; (use-package :lisp-critic)
 
 
   ;;; =======================================
   ;;; Unit testing
   ;;; =======================================
-
   (asdf:load-system 'rove)
-  ;; (asdf:load-system 'prove)
-  ;; (asdf:load-system 'fiveam)
-  ;; (asdf:load-system 'parachute)
-  ;; (ql:quickload "clunit")
+  ;;; (asdf:load-system 'prove)
+  ;;; (asdf:load-system 'fiveam)
+  ;;; (asdf:load-system 'parachute)
+  ;;; (ql:quickload "clunit")
   )
+
 
 ;;; =======================================
 ;;; Load current side project
 ;;; =======================================
-
 (ql:quickload :cl-kraken)
