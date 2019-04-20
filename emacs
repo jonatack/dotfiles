@@ -69,13 +69,13 @@
 (visual-line-mode 1) ; Better word wrapping
 
 ;; Auto-insert newline at end of file
-(setq-default require-final-newline t mode-require-final-newline t )
+(setq-default require-final-newline t mode-require-final-newline t)
 
 ;; Display filepath in window title bar
 (setq-default frame-title-format '((:eval (if (buffer-file-name)
                                               (abbreviate-file-name (buffer-file-name)) "%f"))))
 
-(setq resize-mini-windows nil) ; Do not resize the mini-buffer to keep it to one line.
+(setq resize-mini-windows nil) ; Do not resize the mini-buffer to keep it to one line
 
 (setq inhibit-startup-screen t) ; Don’t display the Emacs splash screen
 (setq initial-scratch-message nil) ; Don't show scratch buffer on startup
@@ -417,13 +417,18 @@
 
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section V: Slime Lisp mode behavior                                        ;;
+  ;; Section VI: Slime Lisp mode behavior                                       ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (defun lisp-hook-fn ()
     (interactive)
     (slime-mode) ; start slime mode
     (local-set-key [tab] 'slime-complete-symbol) ; bind tab key to slime-complete-symbol
+
+    ;; Available styles are: basic, classic, modern and sbcl.
+    ;; All of them are defined in slime-cl-indent.el file,
+    ;; but you can define your own style as well.
+    (setq common-lisp-style "sbcl")
 
     ;; Common Lisp indentation
     ;;
@@ -436,11 +441,6 @@
     (set (make-local-variable lisp-indent-function) 'common-lisp-indent-function)
     (setq lisp-indent-function 'common-lisp-indent-function)
 
-    ;;; Available styles are: basic, classic, modern and sbcl.
-    ;;; All of them are defined in slime-cl-indent.el file,
-    ;;; but you can define your own style as well.
-    (setq common-lisp-style "sbcl")
-
     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
     (setq slime-load-failed-fasl 'never)) ; never load code that failed to compile
 
@@ -449,10 +449,10 @@
 
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section VI: Ruby mode behavior                                             ;;
+  ;; Section VII: Ruby mode behavior                                            ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  ;; Doubt this is needed with the auto hooks in the next section
+  ;; Doubt this is needed with the auto hooks.
   ;; (setq initial-major-mode 'ruby-mode)
 
   ;; Apply enh-ruby-mode to files with these extensions
