@@ -63,6 +63,8 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
+(global-display-line-numbers-mode) ; Globally display line numbers
+
 (column-number-mode 1)
 (visual-line-mode 1) ; Better word wrapping
 
@@ -77,11 +79,6 @@
 
 (setq inhibit-startup-screen t) ; Don’t display the Emacs splash screen
 (setq initial-scratch-message nil) ; Don't show scratch buffer on startup
-
-;; In Emacs 26 this should be a better, faster replacement for global-linum-mode:
-;; (setq 'global-display-line-numbers-mode' t) ; 'display-line-numbers-type'
-(global-linum-mode 1) ; global-linum-mode adds line numbers to all open windows.
-(setq linum-format "%4d ") ;; 4 character and a space for line numbers
 
 ;; Highlight matching parentheses globally.
 (run-with-idle-timer 1 nil (lambda () (show-paren-mode t)))
