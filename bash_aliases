@@ -334,3 +334,8 @@ alias btcblock2="echo \`bitcoin-cli getblockcount 2>&1\`/\`wget -q -O - https://
 alias bcps="ps auxww | grep bitcoind"
 
 alias deb="rlwrap btcdeb" # Bitcoin Script debugger
+
+
+# Tor ##########################################################################
+
+alias tor="cd /usr/local/bin/tor-browser_en-US/ && start-tor-browser.desktop"
