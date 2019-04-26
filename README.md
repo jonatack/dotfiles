@@ -1,6 +1,6 @@
 # Dotfiles
 
-This repository is where I manage my primary dotfiles. They are a perpetual work-in-progress and are currently optimized for my Ruby and Common Lisp work.
+This repository is where I manage my dotfiles and Emacs/Vim configs. They are a continual work-in-progress and are currently optimized for my Common Lisp, Ruby, and C/C++ work.
 
 There are Common Lisp init files for the following implementations:
 
