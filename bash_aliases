@@ -212,7 +212,10 @@ alias mem='memcached -vv'
 
 # System utilities #############################################################
 
-alias fhere="find . -name " # Find files in current directory
+alias ffind="find / 2>/dev/null -name " # Find file
+alias ffile="find / 2>/dev/null -name " # Find file
+
+alias fhere="find . -name " # Find file in current directory
 
 # Change monitor display resolution
 alias r34='xrandr --output HDMI-1 --mode "3440x1440_44.00"' # 3440x1440 44 fps
