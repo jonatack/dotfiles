@@ -139,7 +139,7 @@ alias sbcl='rlwrap sbcl' # SBCL with history but not completion.
 # Other programming languages
 
 alias cloj='clojure' # Clojure
-alias ghc='ghci' # Haskell GCH interactive console
+alias ghc='ghci' # Haskell GHC interactive console
 alias erlang='erl' # Erlang
 alias elixir='iex' # Elixir
 
