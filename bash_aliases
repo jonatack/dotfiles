@@ -145,8 +145,6 @@ alias elixir='iex' # Elixir
 
 
 # Misc. Software ###############################################################
-
-alias deb='rlwrap btcdeb' # Bitcoin Script debugger
 alias dc='docker-compose ' # Docker
 
 # Mastodon CLI clients
@@ -168,7 +166,6 @@ alias py='cd ~/projects/python && l'
 alias rust='cd ~/projects/rust && l'
 alias hask='cd ~/projects/haskell && l'
 alias dot='cd ~/dotfiles && l'
-alias btc='cd ~/projects/bitcoin && l'
 alias cl='cd /home/jon/common-lisp && l'
 alias ql='cd ~/quicklisp/ && l'
 alias lp='cd ~/quicklisp/local-projects/ && ls'
@@ -298,3 +295,42 @@ alias jour=journal
 alias t='python ~/projects/python/t/t.py --task-dir ~/tasks --list tasks'
 alias tasks='emacs ~/tasks/tasks &'
 alias tc='t | wc -l'
+
+
+# Bitcoin  #####################################################################
+
+alias btc='cd ~/projects/bitcoin/bitcoin && l'
+alias btd='cd ~/projects/bitcoin/jon && l'
+
+alias btccomp='./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-lcov --enable-gprof -q ; make -j"$(($(nproc)+1))"'
+
+alias bcdir="cd ~/.bitcoin/"
+alias btdir="cd ~/.bitcoin/testnet" #linux default bitcoin testnet path
+alias brdir="cd ~/.bitcoin/regtest" #linux default bitcoin regtest path
+
+alias btcd="/usr/local/bin/bitcoind -daemon"
+alias bd="bitcoind"
+
+alias bcstart="bitcoind -daemon"
+alias btstart="bitcoind -testnet -daemon"
+alias brstart="bitcoind -regtest -daemon"
+
+alias bci="bitcoin-cli"
+alias bti="bitcoin-cli -testnet"
+alias bri="bitcoin-cli -regtest"
+
+alias bcstop="bitcoin-cli stop"
+alias btstop="bitcoin-cli -testnet stop"
+alias brstop="bitcoin-cli -regtest stop"
+
+alias btcinfo='bitcoin-cli -getinfo |
+               egrep "\"version\"|\"balance\"|\"connections\"" &&
+               bitcoin-cli getmininginfo | egrep "\"blocks\"|\"errors\""'
+
+alias btcblock="echo \`bitcoin-cli getblockcount 2>&1\`/\`wget -O - https://blockchain.info/q/getblockcount 2>/dev/null\`"
+
+alias btcblock2="echo \`bitcoin-cli getblockcount 2>&1\`/\`wget -q -O - https://blockexplorer.com/api/status?q=getBlockCount | cut -d , -f3 | cut -d : -f 2\`"
+
+alias bcps="ps auxww | grep bitcoind"
+
+alias deb="rlwrap btcdeb" # Bitcoin Script debugger
