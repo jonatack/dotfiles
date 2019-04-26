@@ -174,13 +174,12 @@ alias dl='cd ~/Downloads && l'
 alias doc='cd ~/Documents && l'
 alias kraken='cd ~/projects/ruby/kraken_ruby_client && l'
 alias clk='cd ~/common-lisp/cl-kraken && l'
-alias adp='cd ~/projects/ruby/cenpil-back'
-alias inf='cd ~/projects/ruby/cenpil-infra'
+alias ff='cd ~/projects/ruby/fallenfest && l'
 # alias ransack='cd ~/projects/ruby/ransack-activerecord-hackery & l'
 # alias poly='cd ~/projects/ruby/polyamorous-activerecord-hackery & l'
 
 # Heroku
-app="-a APPNAME"
+app="-a fallenfest2"
 alias hps="heroku ps ${app}"
 alias ps1="heroku ps:scale web=1 ${app}"
 alias ps2="heroku ps:scale web=2 ${app}"
