@@ -4,7 +4,7 @@
 ;; Licence: MIT                                                               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; This file configures Emacs with an emphasis on Common Lisp and Ruby/Rails.
+;;; This file configures Emacs 26 with an emphasis on Common Lisp and Ruby.
 ;;; Feel free to customize it.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -653,10 +653,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-;; A vulnerability was introduced in Emacs 21.1.  To work around that
-;; in Emacs versions before 25.3, append the following to your ~/.emacs
-;; init file:
-(eval-after-load "enriched"
-  '(defun enriched-decode-display-prop (start end &optional param)
-     (list start end)))
