@@ -125,7 +125,19 @@ alias copa='rubocop --auto-gen-config'
 
 # Programming Languages ########################################################
 
-alias sbcl='rlwrap sbcl' # Steel Bank Common Lisp
+# Common Lisps
+
+# Comment out ABCL here because we defined a bash script at /usr/local/bin/abcl.
+# abcl_jar=/home/jon/quicklisp/local-projects/abcl/dist/abcl.jar
+# alias abcl='rlwrap java -jar ${abcl_jar}' # Armed Bear Common Lisp on the JVM
+alias ccl='rlwrap ccl' # Clozure Common Lisp with history but not completion.
+alias clasp='rlwrap ~/quicklisp/local-projects/clasp/build/boehm/cclasp-boehm'
+alias clisp='rlwrap --always-readline clisp' # CLISP with history but not completion.
+alias clispc='rlwrap clisp' # CLISP with completion but not history.
+alias sbcl='rlwrap sbcl' # SBCL with history but not completion.
+
+# Other programming languages
+
 alias cloj='clojure' # Clojure
 alias ghc='ghci' # Haskell GCH interactive console
 alias erlang='erl' # Erlang
