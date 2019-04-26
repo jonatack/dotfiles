@@ -4,7 +4,7 @@
 ;; Licence: MIT                                                               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; This file configures Emacs 26 with an emphasis on Common Lisp and Ruby.
+;;; This file configures Emacs 26 with an emphasis on Common Lisp, Ruby, C, C++.
 ;;; Feel free to customize it.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -453,7 +453,25 @@
 
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section VII: Ruby mode behavior                                            ;;
+  ;; Section VII: C mode behavior                                               ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  (add-to-list 'auto-mode-alist '("\\.c$" . c-mode))
+
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Section VIII: C++/CPP mode behavior                                        ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  (add-to-list 'auto-mode-alist '("\\.cpp$" . c++-mode))
+
+  ;; By default Emacs treats files ending in .h as C files.
+  ;; The following line inverses that to treat them as C++ files instead.
+  (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
+
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Section IX: Ruby mode behavior                                             ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   ;; Doubt this is needed with the auto hooks.
