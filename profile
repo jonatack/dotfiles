@@ -27,7 +27,11 @@ fi
 # export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"
 
 export PATH="$HOME/.rbenv/bin:$PATH"
-
 export PATH="$HOME/.cargo/bin:$PATH"
-
 export PATH="$HOME/.local/bin:$PATH"
+export PATH=.:$PATH
+
+export GPG_TTY=$(tty)
+
+# irc
+export IRCNICK=jonatack IRCSERVER=irc.freenode.net
