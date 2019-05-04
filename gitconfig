@@ -201,6 +201,12 @@
   # default = matching
   # default = current
 
+# Enable pulling in remote PRs and testing locally with: git checkout pr/999
+# See this gist: https://gist.github.com/piscisaureus/3342247
+[remote "origin"]
+  fetch = +refs/heads/*:refs/remotes/origin/*
+  fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
+
 #[url "git@github.com:"]
   # insteadOf = "gh:"
   # pushInsteadOf = "github:"
