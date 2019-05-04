@@ -67,8 +67,8 @@
 
   hist = log --graph --pretty=format:'%h %ad | %s%d [%an]' --date=short
 
-  # View abbreviated SHA, description, and history graph of the latest 20 commits
-  l = log --pretty=oneline -n 20 --graph --abbrev-commit
+  # View abbreviated SHA, description and history graph of the latest 50 commits
+  l = log --pretty=oneline -n 50 --graph --abbrev-commit
 
   last = log -1 HEAD
 
