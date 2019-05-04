@@ -12,6 +12,9 @@
 [credential]
   helper = gnome-keyring
 
+[gpg]
+  program = /home/jon/projects/python/opentimestamps-client/ots-git-gpg-wrapper.sh
+
 ################################################################################
 
 [alias]
