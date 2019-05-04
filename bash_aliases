@@ -69,13 +69,13 @@ alias gpl='git pull '
 alias gcl='git clone '
 alias gc='git commit '
 alias gcm='git commit -m '
-alias gca='git commit -a '
+alias gca='git commit -all '
 alias gcam='git commit --amend'
 
 alias gpom='git push origin master'
 alias gphm='git push heroku master'
 
-alias gf='git fetch origin master'
+alias gf='git fetch'
 alias gfom='git fetch origin master'
 
 alias api="g stash; g fetch origin; g rebase origin/master; g stash pop && "`
