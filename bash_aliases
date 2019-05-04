@@ -54,9 +54,11 @@ alias ls="command ls -a -G ${colorflag}"
 
 alias g='git'
 alias gl='git log'
+alias gls='git log --show-signature'
 alias glg='git lg'
 alias gs='git status'
 alias gsh='git show '
+alias gshs='git show --show-signature'
 alias gd='git diff'
 alias gds='git diff --staged'
 alias ga='git add '
@@ -67,16 +69,23 @@ alias grm='git rm '
 alias gmv='git mv '
 alias gpl='git pull '
 alias gcl='git clone '
-alias gc='git commit '
-alias gcm='git commit -m '
-alias gca='git commit -all '
-alias gcam='git commit --amend'
 
-alias gpom='git push origin master'
-alias gphm='git push heroku master'
+alias gcs='git commit -S '      # Signed commits
+alias gcsm='git commit -S -m '
+alias gc='git commit '          # Unsigned commits
+alias gcm='git commit -m '
+alias gca='git commit -all '    # Unsigned commit all
+alias gcam='git commit --amend' # Amend last commit
+
+# Pretty print the content or type of the supplied repository object,
+# often HEAD or a commit hash.
+alias gcf='git cat-file -p '
 
 alias gf='git fetch'
 alias gfom='git fetch origin master'
+
+alias gpom='git push origin master'
+alias gphm='git push heroku master'
 
 alias api="g stash; g fetch origin; g rebase origin/master; g stash pop && "`
          `"g stash list; lc; rs"
