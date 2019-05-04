@@ -186,6 +186,11 @@
   # Automatically correct and execute mistyped commands
   autocorrect = -1
 
+[init]
+  # Git Secrets prevents committing secrets & credentials into git repositories.
+  # https://github.com/awslabs/git-secrets
+  templateDir = /home/jon/.git-templates/git-secrets
+
 [merge]
   # Include summaries of merged commits in newly created merge commit messages
   log = true
@@ -206,6 +211,13 @@
 [remote "origin"]
   fetch = +refs/heads/*:refs/remotes/origin/*
   fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
+
+[secrets]
+  # Git Secrets patterns, see [init] above.
+  patterns = api-key
+  patterns = api-secret
+  patterns = api_key
+  patterns = api_secret
 
 #[url "git@github.com:"]
   # insteadOf = "gh:"
