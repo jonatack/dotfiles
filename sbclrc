@@ -175,3 +175,4 @@
 ;;; Load current side project
 ;;; =======================================
 (ql:quickload :cl-kraken)
+(ql:quickload :bitcoin-core-pr-reviews)
