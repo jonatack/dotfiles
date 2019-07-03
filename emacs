@@ -464,6 +464,8 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (add-to-list 'auto-mode-alist '("\\.cpp$" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.cc$" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.cxx$" . c++-mode))
 
   ;; By default Emacs treats files ending in .h as C files.
   ;; The following line inverses that to treat them as C++ files instead.
