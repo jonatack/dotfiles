@@ -109,9 +109,8 @@
 
 ;; (setq default-directory "/")
 
-;; Use 2 spaces for indentation everywhere
+;; Use 2 spaces for indentation
 (setq-default tab-width 2)
-(setq-default c-basic-offset 2)
 (setq css-indent-offset 2)
 (setq js-indent-level 2)
 (setq web-mode-markup-indent-offset 2)
@@ -453,27 +452,66 @@
 
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section VII: C mode behavior                                               ;;
+  ;; Section VII: C modes (C, C++, Java, etc.) behavior                         ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  (add-to-list 'auto-mode-alist '("\\.c$" . c-mode))
+  ;; CC mode links:
+  ;; https://www.gnu.org/software/emacs/manual/html_node/ccmode/Getting-Started.html
+  ;; http://kirste.userpage.fu-berlin.de/chemnet/use/info/cc-mode/cc-mode_6.html
 
+  ;; CC modes code styles:
+  ;;
+  ;; gnu        - Blessed by the Free Software Foundation for C code in GNU programs.
+  ;;
+  ;; k&r        - Classic Kernighan and Ritchie style for C code. If you're looking
+  ;;              for the style used in the 2nd Ed. of “The C Programming Language”,
+  ;;              then check out the stroustrup style.
+  ;;
+  ;; bsd        - Also known as “Allman style” after Eric Allman.
+  ;;
+  ;; whitesmith - popularized by the examples that came with Whitesmiths C, an early
+  ;;              commercial C compiler.
+  ;;
+  ;; stroustrup - The classic Stroustrup style for C++ code.
+  ;;
+  ;; ellemtel   - Popular C++ style defined in “Programming in C++, Rules and
+  ;;              Recommendations” by Erik Nyquist and Mats Henricson.
+  ;;              Link: https://www.doc.ic.ac.uk/lab/cplus/c++.rules/
+  ;;
+  ;; linux      - C coding standard for Linux (the kernel).
+  ;;
+  ;; python     - C coding standard for Python extension modules.
+  ;;
+  ;; java       - By default c-default-style installs it when you enter java-mode.
+  ;;
+  ;; awk        - By default c-default-style installs it when you enter awk-mode.
+  ;;
+  ;; user       - Consists of the factory defaults for all the style variables as
+  ;;              modified by the customizations you do either with the Customization
+  ;;              interface or by writing setqs and c-set-offsets at the top level of
+  ;;              your .emacs file (see Config Basics). The style system creates this
+  ;;              style as part of its initialization & doesn't modify it afterwards.
+  ;;
+  ;; Customizations for all of c-mode, c++-mode, objc-mode, java-mode, etc.
+  (setq c-default-style '((c-mode    . "stroustrup")
+                          (c++-mode  . "stroustrup")
+                          (java-mode . "java")
+                          (awk-mode  . "awk")
+                          (other     . "linux")))
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section VIII: C++/CPP mode behavior                                        ;;
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; (setq-default c-basic-offset 4) ; Use 4 spaces for indentation
 
+  (add-to-list 'auto-mode-alist '("\\.c$"   . c-mode))
   (add-to-list 'auto-mode-alist '("\\.cpp$" . c++-mode))
-  (add-to-list 'auto-mode-alist '("\\.cc$" . c++-mode))
+  (add-to-list 'auto-mode-alist '("\\.cc$"  . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.cxx$" . c++-mode))
 
   ;; By default Emacs treats files ending in .h as C files.
-  ;; The following line inverses that to treat them as C++ files instead.
-  (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
-
+  ;; The following line inverses that to treat them as C++ files instead:
+  (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode));
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section IX: Ruby mode behavior                                             ;;
+  ;; Section VIII: Ruby mode behavior                                           ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   ;; Doubt this is needed with the auto hooks.
