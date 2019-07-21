@@ -67,7 +67,13 @@
 
 (column-number-mode 1)
 
+;; Word-wrap (filling) in Emacs:
+;; http://johnlaudun.org/20080321-word-wrap-filling-in-emacs/
+;; http://ergoemacs.org/emacs/emacs_unfill-paragraph.html
+;; (setq-default word-wrap t)
+;;
 ;; Visual Line mode provides support for editing by visual lines.
+;; See: http://ergoemacs.org/emacs/emacs_long_line_wrap.html
 ;; It turns on word-wrapping in the buffer, and rebinds C-a, C-e, and C-k
 ;; to commands that operate by visual lines instead of logical lines.
 (global-visual-line-mode 1)
