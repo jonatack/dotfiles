@@ -76,8 +76,8 @@
 ;; See: http://ergoemacs.org/emacs/emacs_long_line_wrap.html
 ;; It turns on word-wrapping in the buffer, and rebinds C-a, C-e, and C-k
 ;; to commands that operate by visual lines instead of logical lines.
-(global-visual-line-mode 1)
-(setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+;; (global-visual-line-mode 1)
+;;(setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
 ;; Auto-insert newline at end of file
 (setq-default require-final-newline t mode-require-final-newline t)
