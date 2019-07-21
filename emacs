@@ -687,7 +687,21 @@
   ;; Disable ruby-mode and enh-ruby-mode auto-adding utf-8 magic comments
   (setq ruby-insert-encoding-magic-comment nil
         enh-ruby-add-encoding-comment-on-save nil)
+
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Section IX: Text mode behavior                                             ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+  ;; (setq default-major-mode 'text-mode)
+  (add-hook 'text-mode-hook 'turn-on-auto-fill 'turn-on-visual-line-mode)
+
+
 )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Section X: General behavior                                                  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; No GC while minibuffer is open
 (defun my-minibuffer-setup-hook ()
