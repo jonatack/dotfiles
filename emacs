@@ -94,7 +94,6 @@
 ;; (setq case-fold-search t) ; Make searches case-insensitive
 (setq browse-url-browser-function 'eww-browse-url)
 ;; (set-face-attribute 'default nil :height 90) ; Make the default font slightly smaller.
-(setq-default indent-tabs-mode nil) ; Make indentation use spaces.
 
 ;; Save desktop between sessions
 ;;
@@ -109,8 +108,11 @@
 
 ;; (setq default-directory "/")
 
+(setq-default indent-tabs-mode nil) ; Make indentation use spaces.
+
 ;; Use 2 spaces for indentation
 (setq-default tab-width 2)
+(setq sh-basic-offset 2)
 (setq css-indent-offset 2)
 (setq js-indent-level 2)
 (setq web-mode-markup-indent-offset 2)
@@ -510,6 +512,7 @@
   ;; The following line inverses that to treat them as C++ files instead:
   (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode));
 
+
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Section VIII: Ruby mode behavior                                           ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -705,7 +708,8 @@
  '(package-selected-packages
    (quote
     (slime-repl-ansi-color gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
- '(safe-local-variable-values (quote ((encoding . utf-8)))))
+ '(safe-local-variable-values (quote ((encoding . utf-8))))
+ '(show-trailing-whitespace t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
