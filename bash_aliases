@@ -154,6 +154,7 @@ alias elixir='iex' # Elixir
 
 
 # Misc. Software ###############################################################
+alias gitk='gitk & ' # Always open gitk as a detached process
 alias dc='docker-compose ' # Docker
 
 # Mastodon CLI clients
@@ -183,6 +184,7 @@ alias dl='cd ~/Downloads && l'
 alias doc='cd ~/Documents && l'
 alias kraken='cd ~/projects/ruby/kraken_ruby_client && l'
 alias clk='cd ~/common-lisp/cl-kraken && l'
+alias bpr='cd ~/common-lisp/bitcoin-core-pr-reviews && l'
 alias ff='cd ~/projects/ruby/fallenfest && l'
 # alias ransack='cd ~/projects/ruby/ransack-activerecord-hackery & l'
 # alias poly='cd ~/projects/ruby/polyamorous-activerecord-hackery & l'
@@ -227,6 +229,7 @@ alias ffile="find / 2>/dev/null -name " # Find file
 alias fhere="find . -name " # Find file in current directory
 
 # Change monitor display resolution
+alias r25='xrandr --output HDMI-1 --mode "2560x1440_50.00"'
 alias r34='xrandr --output HDMI-1 --mode "3440x1440_44.00"' # 3440x1440 44 fps
 alias r38='xrandr --output HDMI-1 --mode "3840x1600_35.00"' # 3840x1600 35 fps
 # See available resolutions. * = in use, + = preferred:
@@ -310,14 +313,23 @@ alias tc='t | wc -l'
 
 # Bitcoin  #####################################################################
 
-alias btc='cd ~/projects/bitcoin/bitcoin && l'
-alias btd='cd ~/projects/bitcoin/jon && l'
+alias btc='cd ~/projects/bitcoin/bitcoin/ ; pwd && l'
+alias btt='cd ~/projects/bitcoin/bitcoin-test/ ; pwd && l'
+alias bts='cd ~/projects/bitcoin/bitcoin-test/src/'
+alias btd='cd ~/projects/bitcoin/jon/ && l'
 
-alias btccomp='./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-lcov --enable-gprof -q ; make -j"$(($(nproc)+1))"'
+alias bcomp='./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-lcov --enable-gprof -q ; make -j"$(($(nproc)+1))"'
+
+alias btccomp='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-lcov --disable-gprof --disable-bench -q ; make -j"$(($(nproc)+1))"'
+
+alias bttcomp='btt ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin-test/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-lcov --enable-gprof --disable-bench -q ; make -j"$(($(nproc)+1))"'
+
+alias pyl="./test/lint/lint-python.sh " # run bitcoin-core python linter
+alias pyld="./test/lint/lint-python-dead-code.sh " # run bitcoin-core python dead code linter
 
 alias bcdir="cd ~/.bitcoin/"
-alias btdir="cd ~/.bitcoin/testnet" #linux default bitcoin testnet path
-alias brdir="cd ~/.bitcoin/regtest" #linux default bitcoin regtest path
+alias btdir="cd ~/.bitcoin/testnet" # linux default bitcoin testnet path
+alias brdir="cd ~/.bitcoin/regtest" # linux default bitcoin regtest path
 
 alias btcd="/usr/local/bin/bitcoind -daemon"
 alias bd="bitcoind"
@@ -338,7 +350,7 @@ alias btcinfo='bitcoin-cli -getinfo |
                egrep "\"version\"|\"balance\"|\"connections\"" &&
                bitcoin-cli getmininginfo | egrep "\"blocks\"|\"errors\""'
 
-alias btcblock="echo \`bitcoin-cli getblockcount 2>&1\`/\`wget -O - https://blockchain.info/q/getblockcount 2>/dev/null\`"
+alias btcblock="bts && echo \`bitcoin-cli getblockcount 2>&1\`/\`wget -O - https://blockchain.info/q/getblockcount 2>/dev/null\`"
 
 alias btcblock2="echo \`bitcoin-cli getblockcount 2>&1\`/\`wget -q -O - https://blockexplorer.com/api/status?q=getBlockCount | cut -d , -f3 | cut -d : -f 2\`"
 
