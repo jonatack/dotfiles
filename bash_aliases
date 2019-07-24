@@ -318,6 +318,10 @@ alias btt='cd ~/projects/bitcoin/bitcoin-test/ ; pwd && l'
 alias bts='cd ~/projects/bitcoin/bitcoin-test/src/'
 alias btd='cd ~/projects/bitcoin/jon/ && l'
 
+# Aliases for building Bitcoin
+
+# To build with clang for better errors add: CC=clang CXX=clang ./configure ...
+
 alias bcomp='./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-lcov --enable-gprof -q ; make -j"$(($(nproc)+1))"'
 
 alias btccomp='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-lcov --disable-gprof --disable-bench -q ; make -j"$(($(nproc)+1))"'
