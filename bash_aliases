@@ -172,6 +172,7 @@ alias home='cd ~ && l'
 alias projects='cd ~/projects && ls'
 alias p='cd ~/projects && l'
 alias rb='cd ~/projects/ruby && l'
+alias cpp='cd ~/projects/cpp && l'
 alias py='cd ~/projects/python && l'
 alias rust='cd ~/projects/rust && l'
 alias hask='cd ~/projects/haskell && l'
@@ -179,7 +180,6 @@ alias dot='cd ~/dotfiles && l'
 alias cl='cd /home/jon/common-lisp && l'
 alias ql='cd ~/quicklisp/ && l'
 alias lp='cd ~/quicklisp/local-projects/ && ls'
-# alias tests='cd ~/projects/ruby/tests && l'
 alias dl='cd ~/Downloads && l'
 alias doc='cd ~/Documents && l'
 alias kraken='cd ~/projects/ruby/kraken_ruby_client && l'
@@ -301,7 +301,7 @@ command -v hd > /dev/null || alias hd="hexdump -C"
 alias todo="vim +'normal Go' +'r!date' ~/Documents/Text\ files/todo.txt"
 alias did="vim +'normal Go' +'r!date' ~/Documents/Text\ files/did.txt"
 alias ndid="vim +'normal Go' +'r!date' +'normal o' +':exe \"normal "`
-      `"i=============================\<Esc>\"' ~/Documents/Text\ files/did.txt"
+          `"i=============================\<Esc>\"' ~/Documents/Text\ files/did.txt"
 alias did2="vim +'normal G' +startinsert ~/Documents/Text\ files/did.txt"
 
 alias jour=journal
@@ -318,6 +318,9 @@ alias btt='cd ~/projects/bitcoin/bitcoin-test/ ; pwd && l'
 alias bts='cd ~/projects/bitcoin/bitcoin-test/src/'
 alias btd='cd ~/projects/bitcoin/jon/ && l'
 
+alias btest="echo 'Running unit tests...' && make check ; "`
+           `"echo 'Running functional tests...' && test/functional/test_runner.py"
+
 # Aliases for building Bitcoin
 
 # To build with clang for better errors add: CC=clang CXX=clang ./configure ...
@@ -326,7 +329,9 @@ alias bcomp='./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-
 
 alias btccomp='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-lcov --disable-gprof --disable-bench -q ; make -j"$(($(nproc)+1))"'
 
-alias bttcomp='btt ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin-test/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-lcov --enable-gprof --disable-bench -q ; make -j"$(($(nproc)+1))"'
+alias bttcomp='btt ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin-test/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-debug --enable-lcov --enable-gprof --disable-bench -q ; make -j"$(($(nproc)+1))"'
+
+alias bttcompt='bttcomp ; btest'
 
 alias pyl="./test/lint/lint-python.sh " # run bitcoin-core python linter
 alias pyld="./test/lint/lint-python-dead-code.sh " # run bitcoin-core python dead code linter
