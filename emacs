@@ -288,10 +288,16 @@
   ;; (require 'slime-autoloads)
 
   (slime-setup '(slime-fancy))
-  (setq slime-contribs '(slime-fancy slime-asdf slime-indentation
-                         slime-cl-indent slime-banner slime-tramp slime-mdot-fu
-                         slime-scratch slime-editing-commands slime-quicklisp
-                         slime-repl-ansi-color))
+  (setq slime-contribs '(slime-fancy slime-indentation slime-repl
+                         slime-cl-indent slime-banner slime-tramp
+                         slime-mdot-fu slime-editing-commands
+                         slime-quicklisp slime-presentations
+                         slime-repl-ansi-color)) ; slime-asdf
+  ;;
+  ;; Note: If slime-repl-ansi-color.el is not loading, it needs to be copied from
+  ;; ~/.emacs.d/vendor/ to the elpa/slime-XXXX directory, e.g. from ~/.emacs.d do:
+  ;; cp vendor/slime-repl-ansi-color.el elpa/slime-XXXX
+
   ;; (setq slime-contribs '(slime-repl)) ; repl only
 
   (setq slime-startup-animation nil)
@@ -585,7 +591,7 @@
     :defer t
     :ensure t
     :init
-    (add-to-list 'load-path "~/emacs.d/vendor/rbenv.el/")
+    (add-to-list 'load-path "~/emacs.d/vendor/rbenv.el")
     ;; searches for .ruby-version and activates the corresponding ruby
     (rbenv-use-corresponding)
     (setq rbenv-modeline-function 'rbenv--modeline-plain) ; remove colors
@@ -737,7 +743,7 @@
     ("5c9bd73de767fa0d0ea71ee2f3ca6fe77261d931c3d4f7cca0734e2a3282f439" default)))
  '(package-selected-packages
    (quote
-    (irony slime-repl-ansi-color gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
+    (irony gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
  '(safe-local-variable-values (quote ((encoding . utf-8))))
  '(show-trailing-whitespace t))
 (custom-set-faces
