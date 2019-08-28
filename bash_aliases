@@ -36,9 +36,9 @@ alias -- -="cd -"
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
-	colorflag="--color"
+  colorflag="--color"
 else # OS X `ls`
-	colorflag="-G"
+  colorflag="-G"
 fi
 # List all files colorized in long format, including dot files
 alias l="ls -laF ${colorflag}"
@@ -77,6 +77,7 @@ alias gcm='git commit -m '
 alias gca='git commit -all '    # Unsigned commit all
 alias gcam='git commit --amend' # Amend last commit
 
+alias zeb='--color-moved=dimmed-zebra'
 # Pretty print the content or type of the supplied repository object,
 # often HEAD or a commit hash.
 alias gcf='git cat-file -p '
@@ -314,22 +315,32 @@ alias tc='t | wc -l'
 # Bitcoin  #####################################################################
 
 alias btc='cd ~/projects/bitcoin/bitcoin/ ; pwd && l'
+alias btcs='cd ~/projects/bitcoin/bitcoin/src/'
+
 alias btt='cd ~/projects/bitcoin/bitcoin-test/ ; pwd && l'
-alias bts='cd ~/projects/bitcoin/bitcoin-test/src/'
 alias btd='cd ~/projects/bitcoin/jon/ && l'
 
-alias btest="echo 'Running unit tests...' && make check ; "`
-           `"echo 'Running functional tests...' && test/functional/test_runner.py"
-
-# Aliases for building Bitcoin
+# Aliases for building Bitcoin and running tests.
 
 # To build with clang for better errors add: CC=clang CXX=clang ./configure ...
 
-alias bcomp='./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-lcov --enable-gprof -q ; make -j"$(($(nproc)+1))"'
+alias bmake='make -j"$(($(nproc)+1))"' # src/bitcoind src/bitcoin-cli src/qt/bitcoin-qt'
+alias bmakef='make -j"$(($(nproc)+1))" src/bitcoind' # faster
+alias bmakec='bmake check'
+alias bmakecf='bmakef check'
 
-alias btccomp='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-lcov --disable-gprof --disable-bench -q ; make -j"$(($(nproc)+1))"'
+alias btest="echo ; echo 'Make and run unit tests...' ; echo ; bmakec ;"`
+           `"echo ; echo 'Run functional tests...' ; echo ; test/functional/test_runner.py ; echo ;"
 
-alias bttcomp='btt ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin-test/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-debug --enable-lcov --enable-gprof --disable-bench -q ; make -j"$(($(nproc)+1))"'
+alias bcomp='./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-lcov --enable-gprof -q ; bmake'
+
+alias btccomp='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench ; bmake'
+
+alias btccompf='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench --disable-zmq --without-gui --without-libs --without-miniupnpc --without-qrencode --disable-gui-tests -q ; bmake'
+
+alias btccompt='btccomp ; btest'
+
+alias bttcomp='btt ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin-test/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-debug --enable-lcov --enable-gprof --disable-bench -q ; bmake'
 
 alias bttcompt='bttcomp ; btest'
 
@@ -340,28 +351,29 @@ alias bcdir="cd ~/.bitcoin/"
 alias btdir="cd ~/.bitcoin/testnet" # linux default bitcoin testnet path
 alias brdir="cd ~/.bitcoin/regtest" # linux default bitcoin regtest path
 
-alias btcd="/usr/local/bin/bitcoind -daemon"
 alias bd="bitcoind"
 
 alias bcstart="bitcoind -daemon"
 alias btstart="bitcoind -testnet -daemon"
 alias brstart="bitcoind -regtest -daemon"
 
-alias bci="bitcoin-cli"
-alias bti="bitcoin-cli -testnet"
-alias bri="bitcoin-cli -regtest"
-
 alias bcstop="bitcoin-cli stop"
 alias btstop="bitcoin-cli -testnet stop"
 alias brstop="bitcoin-cli -regtest stop"
+
+alias bci="bitcoin-cli"
+alias bti="bitcoin-cli -testnet"
+alias bri="bitcoin-cli -regtest"
 
 alias btcinfo='bitcoin-cli -getinfo |
                egrep "\"version\"|\"balance\"|\"connections\"" &&
                bitcoin-cli getmininginfo | egrep "\"blocks\"|\"errors\""'
 
-alias btcblock="bts && echo \`bitcoin-cli getblockcount 2>&1\`/\`wget -O - https://blockchain.info/q/getblockcount 2>/dev/null\`"
+alias btcblock="btcs && echo \`bitcoin-cli getblockcount 2>&1\`/\`wget -O - https://blockchain.info/q/getblockcount 2>/dev/null\`"
 
 alias btcblock2="echo \`bitcoin-cli getblockcount 2>&1\`/\`wget -q -O - https://blockexplorer.com/api/status?q=getBlockCount | cut -d , -f3 | cut -d : -f 2\`"
+
+alias bcst="btcblock && bci getconnectioncount"
 
 alias bcps="ps auxww | grep bitcoind"
 
