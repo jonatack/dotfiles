@@ -383,3 +383,10 @@ alias deb="rlwrap btcdeb" # Bitcoin Script debugger
 # Tor ##########################################################################
 
 alias tor="cd /usr/local/bin/tor-browser_en-US/ && start-tor-browser.desktop"
+
+# Weather reports
+alias wea='curl http://v2.wttr.in/ '
+alias nyc='curl http://v2.wttr.in/nyc'
+alias sf='curl http://v2.wttr.in/sf'
+alias paris='curl http://v2.wttr.in/paris'
+alias btz='curl http://v2.wttr.in/biarritz'
