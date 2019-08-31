@@ -91,8 +91,11 @@
 (setq inhibit-startup-screen t) ; Don’t display the Emacs splash screen
 (setq initial-scratch-message nil) ; Don't show scratch buffer on startup
 
-;; Highlight matching parentheses globally.
-(run-with-idle-timer 1 nil (lambda () (show-paren-mode t)))
+;; Highlight/blink matching parentheses globally.
+(run-with-idle-timer 1 nil (lambda ()
+                             (setf blink-matching-paren t
+                                   show-paren-mode t
+                                   show-paren-ring-bell-on-mismatch nil)))
 
 ;; Display “lambda” as “λ”
 (run-with-idle-timer 1 nil (lambda () (global-prettify-symbols-mode t)))
@@ -238,6 +241,14 @@
   (use-package auto-compile :config (auto-compile-on-load-mode))
   (setq load-prefer-newer t)
 
+  (use-package spaceline
+    :demand t
+    :init
+    (setq powerline-default-separator 'arrow-fade)
+    :config
+    (require 'spaceline-config)
+    (spaceline-spacemacs-theme))
+
   (use-package better-defaults)
 
   ;; Saveplace saves the cursor position between sessions
@@ -292,7 +303,7 @@
                          slime-cl-indent slime-banner slime-tramp
                          slime-mdot-fu slime-editing-commands
                          slime-quicklisp slime-presentations
-                         slime-repl-ansi-color)) ; slime-asdf
+                         slime-repl-ansi-color slime-company)) ; slime-asdf
   ;;
   ;; Note: If slime-repl-ansi-color.el is not loading, it needs to be copied from
   ;; ~/.emacs.d/vendor/ to the elpa/slime-XXXX directory, e.g. from ~/.emacs.d do:
@@ -349,9 +360,8 @@
   (eval-after-load 'slime
     `(define-key slime-prefix-map (kbd "M-h") 'slime-documentation-lookup))
 
-  ;; You can install packages by typing M-x package-install <package-name>. I
-  ;; recomend you install the following packages: smex, which adds an improved
-  ;; version of M-x. I highly recomend this. You can read more about smex at:
+  ;; I recommend you install the following packages: smex, which adds an
+  ;; improved version of M-x. You can read more about smex at:
   ;; https://github.com/nonsequitur/smex/
 
   ;; Another often used mode is magit, which is an interface to git, allowing
@@ -428,8 +438,13 @@
   ;; Section V: Lisp mode behavior                                              ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+  ;; Ensure Lisp mode for Lisp files
+  (add-to-list 'auto-mode-alist '("\\.cl"    . lisp-mode))
+  (add-to-list 'auto-mode-alist '("\\.lisp"  . lisp-mode))
+  (add-to-list 'auto-mode-alist '("\\.lps"   . lisp-mode))
+
   ;; Ensure Lisp mode for Lisp init files
-  (add-to-list 'auto-mode-alist '("\\clrc" . lisp-mode))
+  (add-to-list 'auto-mode-alist '("\\clrc"   . lisp-mode))
   (add-to-list 'auto-mode-alist '("\\lisprc" . lisp-mode))
 
 
@@ -533,7 +548,6 @@
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Section VIII: Ruby mode behavior                                           ;;
@@ -737,13 +751,33 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (oceanic)))
+ '(ansi-color-names-vector
+   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
+ '(custom-enabled-themes (quote (spacemacs-dark)))
  '(custom-safe-themes
    (quote
-    ("5c9bd73de767fa0d0ea71ee2f3ca6fe77261d931c3d4f7cca0734e2a3282f439" default)))
+    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "5c9bd73de767fa0d0ea71ee2f3ca6fe77261d931c3d4f7cca0734e2a3282f439" default)))
+ '(hl-todo-keyword-faces
+   (quote
+    (("TODO" . "#dc752f")
+     ("NEXT" . "#dc752f")
+     ("THEM" . "#2d9574")
+     ("PROG" . "#4f97d7")
+     ("OKAY" . "#4f97d7")
+     ("DONT" . "#f2241f")
+     ("FAIL" . "#f2241f")
+     ("DONE" . "#86dc2f")
+     ("NOTE" . "#b1951d")
+     ("KLUDGE" . "#b1951d")
+     ("HACK" . "#b1951d")
+     ("TEMP" . "#b1951d")
+     ("FIXME" . "#dc752f")
+     ("XXX+" . "#dc752f")
+     ("\\?\\?\\?+" . "#dc752f"))))
  '(package-selected-packages
    (quote
     (irony gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
+ '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
  '(safe-local-variable-values (quote ((encoding . utf-8))))
  '(show-trailing-whitespace t))
 (custom-set-faces
