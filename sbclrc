@@ -21,7 +21,7 @@
   (princ *cached-prompt* stream))
 
 (setf sb-int:*repl-prompt-fun* #'package-prompt)
-(setf sb-debug:*debug-beginner-help-p* nil)
+;;; (setf sb-debug:*debug-beginner-help-p* nil)
 (setf sb-impl::*default-external-format* :utf-8)
 
 (require 'asdf)
@@ -39,7 +39,9 @@
     ((sb-ext:implicit-generic-function-warning #'muffle-warning)
      (sb-kernel:type-proclamation-mismatch-warning #'muffle-warning)
      (style-warning #'muffle-warning)
-     (warning #'muffle-warning))
+     (warning #'muffle-warning)
+     ;; (setf *on-package-variance* (list :warn nil :error t))
+     )
 
   ;;; =======================================
   ;;; Quicksearch for finding libraries
