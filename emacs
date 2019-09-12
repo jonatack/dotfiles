@@ -1,11 +1,17 @@
+;;; package --- Emacs configuration
+
+;; -*- coding: utf-8; lexical-binding: t -*
+
+;;; Commentary:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; .emacs                                                                     ;;
 ;; Author: Jon Atack                                                          ;;
 ;; Licence: MIT                                                               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; This file configures Emacs 26 with an emphasis on Common Lisp, Ruby, C, C++.
+;; Feel free to customize it.
 
-;;; This file configures Emacs 26 with an emphasis on Common Lisp, Ruby, C, C++.
-;;; Feel free to customize it.
+;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Section I: Generic settings                                                ;;
@@ -15,8 +21,15 @@
 
 ;; Turn off GC during Emacs startup
 (setq gc-cons-threshold most-positive-fixnum)
+(setq gc-cons-percentage 0.6)
+
 ;; Resume GC after startup with 50 MB threshold, sacrificing memory for speed
-(add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 50 1000 1000))))
+;; (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 50 1000 1000))))
+
+;; Resume GC after startup with a 1 MB threshold
+(add-hook 'after-init-hook (lambda ()
+                             (setq gc-cons-threshold 800000)
+                             (setq gc-cons-percentage 0.2)))
 
 ;; Display Emacs startup stats
 (add-hook 'emacs-startup-hook
@@ -63,9 +76,12 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
+(blink-cursor-mode 0) ; Disable cursor blink
 (global-display-line-numbers-mode) ; Globally display line numbers
-
 (column-number-mode 1)
+
+(setq scroll-preserve-screen-position 'always)
+;; (global-hl-line-mode t) ; Highlight current line
 
 ;; Word-wrap (filling) in Emacs:
 ;; http://johnlaudun.org/20080321-word-wrap-filling-in-emacs/
@@ -83,8 +99,13 @@
 (setq-default require-final-newline t mode-require-final-newline t)
 
 ;; Display filepath in window title bar
-(setq-default frame-title-format '((:eval (if (buffer-file-name)
-                                              (abbreviate-file-name (buffer-file-name)) "%f"))))
+;; (setq-default frame-title-format '((:eval (if (buffer-file-name)
+;;                                              (abbreviate-file-name (buffer-file-name)) "%f"))))
+
+;; Show system name and full file path in emacs frame title
+(setq frame-title-format
+      (list (format "%s %%S: %%j " (system-name))
+            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 (setq resize-mini-windows nil) ; Do not resize the mini-buffer to keep it to one line
 
@@ -92,30 +113,17 @@
 (setq initial-scratch-message nil) ; Don't show scratch buffer on startup
 
 ;; Highlight/blink matching parentheses globally.
-(run-with-idle-timer 1 nil (lambda ()
+(run-with-idle-timer 2 nil (lambda ()
                              (setf blink-matching-paren t
                                    show-paren-mode t
                                    show-paren-ring-bell-on-mismatch nil)))
 
 ;; Display “lambda” as “λ”
-(run-with-idle-timer 1 nil (lambda () (global-prettify-symbols-mode t)))
+(run-with-idle-timer 3 nil (lambda () (global-prettify-symbols-mode t)))
 
 ;; (setq case-fold-search t) ; Make searches case-insensitive
 (setq browse-url-browser-function 'eww-browse-url)
 ;; (set-face-attribute 'default nil :height 90) ; Make the default font slightly smaller.
-
-;; Save desktop between sessions
-;;
-;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Emacs-Sessions.html
-;;
-;; M-x desktop-save -> saves the desktop manually
-;;
-(setq desktop-path '("~/.emacs.d/")) ; Load/save desktop in .emacs.d directory
-;; (setq desktop-path '("."))        ; Load/save desktop in dir Emacs opened from
-;;
-;; (desktop-save-mode t) ; Auto-save desktop on exiting, and reload on startup
-
-;; (setq default-directory "/")
 
 (setq-default indent-tabs-mode nil) ; Make indentation use spaces.
 
@@ -130,7 +138,7 @@
 
 (setq-default fill-column 80) ; Set max character line length
 (setq large-file-warning-threshold nil) ; Don’t warn me about opening large files
-(setq x-select-enable-clipboard t) ; Enable copy/past-ing from clipboard
+(setq select-enable-clipboard t) ; Enable copy/past-ing from clipboard
 (setq system-uses-terminfo nil) ; Fix weird color escape sequences
 (setq confirm-kill-emacs 'yes-or-no-p) ; Ask for confirmation before closing emacs
 
@@ -143,9 +151,9 @@
 ;; (setq mac-command-modifier 'meta) ; Treat the CMD key like meta on OSX
 ;; (setq ns-use-srgb-colorspace t) ; SRGB support for OSX
 
-;; Open splits horizontally
-(setq split-height-threshold 0)
-(setq split-width-threshold nil)
+;; Open splits vertically
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
 
 (set-fringe-mode '(5 . 4)) ; Show a fringe
 
@@ -162,6 +170,19 @@
 		  (top-bottom . nil)
 		  (empty-line . nil)
 		  (unknown . nil))))
+
+;; Save desktop between sessions
+;;
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Emacs-Sessions.html
+;;
+;; M-x desktop-save -> saves the desktop manually
+;;
+(setq desktop-path '("~/.emacs.d/")) ; Load/save desktop in .emacs.d directory
+;; (setq desktop-path '("."))        ; Load/save desktop in dir Emacs opened from
+;;
+;; (desktop-save-mode t) ; Auto-save desktop on exiting, and reload on startup
+
+;; (setq default-directory "/")
 
 ;; A simple backup setup to ensure sure I don't foo~ and #.foo files in
 ;; directories with edited files.
@@ -193,13 +214,13 @@
 (put 'upcase-region 'disabled nil) ; enable using upcase-region without warnings
 
 ;; UTF-8
-(set-language-environment "UTF-8")
-(setenv "LANG" "en_US.UTF-8")
-(setq locale-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
+(set-language-environment "UTF-8")
+(setenv "LANG" "en_US.UTF-8")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Section II: Packages                                                       ;;
@@ -229,7 +250,7 @@
       (package-refresh-contents)
       (package-install package)))
 
-  ;; Ensure Use Package library is installed and configured
+  ;; Ensure the Use Package library is installed and configured.
   ;; Repository: https://github.com/jwiegley/use-package
   ;;
   (unless (package-installed-p 'use-package)
@@ -257,20 +278,105 @@
     :ensure t
     :init
     (setq save-place-file (expand-file-name ".places" user-emacs-directory)
-          save-place t))
+          save-place-mode t))
 
   (use-package flx-ido
     :defer t
     :ensure t
     :init
     (ido-mode t)
-    (ido-everywhere t)
+    ;; (ido-everywhere t)
     (flx-ido-mode t)
     (setq ido-enable-flex-matching t
           ;; Disable ido faces to see flx highlights:
           ;; (setq ido-use-faces nil)
           ;; If you don't want to use the flx's highlights you can turn them off like this:
           flx-ido-use-faces nil))
+
+  ;; On-the-fly syntax checking
+  (use-package flycheck
+    :defer t
+    :ensure t
+    :diminish flycheck-mode
+    :init (global-flycheck-mode t)
+    :config (setq flycheck-check-syntax-automatically '(save mode-enabled)))
+
+  (when (not (display-graphic-p))
+    (setq flycheck-indication-mode nil))
+
+  ;; (eval-after-load 'flycheck
+  ;;  '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
+
+  ;; Show argument list in echo area
+  (use-package eldoc
+    :defer t
+    :diminish eldoc-mode
+    :init (add-hook 'ycmd-mode-hook 'ycmd-eldoc-setup))
+
+  ;; Autocomplete
+  (use-package company
+    :defer t
+    :ensure t
+    :commands (global-company-mode company-mode)
+    :diminish company-mode
+    :bind (:map company-active-map
+                ("M-j" . company-select-next)
+                ("M-k" . company-select-previous))
+    :custom
+    ;; no delay no autocomplete
+    (company-idle-delay 0)
+    (company-minimum-prefix-length 2)
+    (company-tooltip-limit 20)
+    :preface
+    ;; enable yasnippet everywhere
+    (defvar company-mode/enable-yas t
+      "Enable yasnippet for all backends.")
+    (defun company-mode/backend-with-yas (backend)
+      (if (or (not company-mode/enable-yas)
+              (and (listp backend) (member 'company-yasnippet backend)))
+          backend
+        (append (if (consp backend) backend (list backend))
+                '(:with company-yasnippet))))
+    :init (global-company-mode t)
+    :config
+    (delete 'company-oddmuse company-backends))
+
+  ;; Sort company candidates by statistics
+  (use-package company-statistics
+    :after company
+    :commands company-statistics-mode
+    :init (company-statistics-mode t))
+
+  ;; Snippets
+  (use-package yasnippet
+    :defer t
+    :ensure t
+    :commands yas-global-mode
+    :diminish yas-minor-mode)
+
+  ;; Code-comprehension server
+  (use-package ycmd
+    :defer t
+    :ensure t
+    :commands ycmd-mode
+    :init (add-hook 'c++-mode-hook #'ycmd-mode)
+    :config
+    (set-variable 'ycmd-server-command
+                  '("python3" "/home/jon/projects/python/ycmd/ycmd/"))
+    (set-variable 'ycmd-global-config
+                  (expand-file-name "/home/jon/projects/python/ycmd/.ycm_extra_conf.py"))
+    (set-variable 'ycmd-extra-conf-whitelist
+                  '("/home/jon/projects/*")))
+
+  (use-package flycheck-ycmd
+    :after (ycmd flycheck)
+    :commands (flycheck-ycmd-setup)
+    :init (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup))
+
+  (use-package company-ycmd
+    :after (ycmd company)
+    :commands (company-ycmd-setup)
+    :config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd)))
 
   ;; Projectile key bindings:
   ;;
@@ -373,11 +479,6 @@
   ;; Section III: Global Key Bindings                                           ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  (global-set-key (kbd "<f12>") #'slime-selector)
-  (global-set-key (kbd "C-c s") #'slime-selector)
-  (global-set-key (kbd "C-c h") #'clhs-lookup)
-  (global-set-key (kbd "C-c r") #'slime-pop-find-definition-stack)
-
   ;; Set the enter key to newline-and-indent which inserts a new line and then
   ;; indents according to the major mode. This is very convenient.
   ;; (global-set-key (kbd "RET") 'newline-and-indent)
@@ -430,7 +531,7 @@
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (add-to-list 'auto-mode-alist
-               '("\\(?:\\.elisp\\|emacs\\|/\\(?:emacs\\)\\)\\'"
+                 '("\\(?:\\.elisp\\|emacs\\|/\\(?:emacs\\)\\)\\'"
                . emacs-lisp-mode))
 
 
@@ -467,7 +568,10 @@
     ;; C-M-q on the first paren reindents an expression
     ;; C-c M-q reindents a function
     ;;
-    (local-set-key (kbd "M-q") 'slime-reindent-defun)
+    (local-set-key (kbd "M-q") #'slime-reindent-defun)
+    (local-set-key (kbd "<f12>") #'slime-selector)
+    (local-set-key (kbd "C-c s") #'slime-selector)
+    (local-set-key (kbd "C-c r") #'slime-pop-find-definition-stack)
     ;;
     ;; Set indent function so common-lisp-indent-function will indent correctly
     (set (make-local-variable lisp-indent-function) 'common-lisp-indent-function)
@@ -547,10 +651,38 @@
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
+
+  ;; Use compilation database first, clang_complete as fallback.
+  (setq-default irony-cdb-compilation-databases '(irony-cdb-libclang
+                                                  irony-cdb-clang-complete))
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'irony-mode-hook 'irony-eldoc)
+
+  (use-package cc-mode
+    :mode (("\\.[hH]\\'" . c++-mode)
+           ("\\.cpp\\'"  . c++-mode)
+           ("\\.hpp\\'"  . c++-mode)
+           ("\\.cc\\'"   . c++-mode))
+  :init (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11"))))
+
+  (use-package clang-format
+    :after cc-mode
+    :commands (clang-format-buffer))
+
+  (use-package modern-cpp-font-lock
+    :after cc-mode
+    :commands modern-c++-font-lock-mode
+    :init (add-hook 'c++-mode-hook 'modern-c++-font-lock-mode))
+
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section VIII: Ruby mode behavior                                           ;;
+  ;; Section VIII: Python mode behavior                                         ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Section IV: Ruby mode behavior                                             ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   ;; Doubt this is needed with the auto hooks.
@@ -720,25 +852,85 @@
 
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Section IX: Text mode behavior                                             ;;
+  ;; Section X: Text mode behavior                                              ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   ;; (setq default-major-mode 'text-mode)
   (add-hook 'text-mode-hook 'turn-on-auto-fill 'turn-on-visual-line-mode)
 
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Section XI: Other programming languages                                    ;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+  ;; Haskell
+  (use-package haskell-mode
+    :mode "\\.hs\\'"
+    :bind (:map haskell-mode-map
+                ("C-c c" . haskell-process-load-file))
+    :custom (haskell-interactive-popup-errors nil))
+
+  (use-package flycheck-haskell
+    :commands flycheck-haskell-setup
+    :after (flycheck haskell-mode)
+    :mode "\\.hs\\'"
+    :init (add-hook 'haskell-mode-hook #'flycheck-haskell-setup))
+
+  ;; TypeScript
+  (use-package typescript-mode
+    :ensure t
+    :mode (("\\.ts\\'" . typescript-mode)
+           ("\\.tsx\\'" . typescript-mode))
+    :custom (typescript-indent-level 2))
+
+  ;; Markdown
+  (use-package markdown-mode
+    :mode (("\\.markdown\\'" . markdown-mode)
+           ("\\.md\\'" . markdown-mode)
+           ("\\.mmd\\'" . markdown-mode))
+    :init
+    (add-hook 'markdown-mode-hook
+              (lambda()
+                (add-hook 'after-save-hook 'org-tables-to-markdown nil 'make-it-local))))
+  ;; YAML
+  (use-package yaml-mode
+    :mode (("\\.yml\\'" . yaml-mode)
+           ("\\.yaml\\'" . yaml-mode)))
+
+  ;; CMake
+  (use-package cmake-mode
+    :mode "CMakeLists.txt")
+
+  ;; SCSS
+  (use-package scss-mode
+    :mode "\\.scss\\'")
+
+  ;; Nginx config files
+  (use-package nginx-mode
+    :ensure t)
+
+  ;; Gitignore files
+  (use-package gitignore-mode
+    :mode "\\.gitignore\\'")
+
+  ;; Rust TOML files
+  (use-package toml-mode
+    :mode "\\.toml\\'")
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Section X: General behavior                                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; No GC while minibuffer is open
+;; GC tweaking according to
+;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
+
 (defun my-minibuffer-setup-hook ()
+  "No GC while the minibuffer is open."
   (setq gc-cons-threshold most-positive-fixnum))
 
 (defun my-minibuffer-exit-hook ()
-  (setq gc-cons-threshold (* 50 1000 1000)))
+  "Back to normal GC when the minibuffer is closed."
+  (setq gc-cons-threshold 800000))
 
 (add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
 (add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
@@ -753,10 +945,17 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
+ '(company-idle-delay 0)
+ '(company-minimum-prefix-length 2)
+ '(company-tooltip-limit 20)
  '(custom-enabled-themes (quote (spacemacs-dark)))
  '(custom-safe-themes
    (quote
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "5c9bd73de767fa0d0ea71ee2f3ca6fe77261d931c3d4f7cca0734e2a3282f439" default)))
+ '(fci-rule-color "gray71")
+ '(fci-rule-width 1)
+ '(fill-column 80)
+ '(haskell-interactive-popup-errors nil t)
  '(hl-todo-keyword-faces
    (quote
     (("TODO" . "#dc752f")
@@ -776,13 +975,20 @@
      ("\\?\\?\\?+" . "#dc752f"))))
  '(package-selected-packages
    (quote
-    (irony gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
+    (typescript flycheck-haskell flycheck-clang-tidy flycheck-clangcheck flycheck-rtags flycheck-rust flycheck-package flycheck-irony company-c-headers company-ycm company-rtags company-irony clang-format irony gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
  '(safe-local-variable-values (quote ((encoding . utf-8))))
- '(show-trailing-whitespace t))
+ '(show-trailing-whitespace t)
+ '(typescript-indent-level 2 t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars)
+;; End:
+
+;;; emacs ends here
