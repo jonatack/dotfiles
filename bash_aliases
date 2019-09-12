@@ -328,13 +328,14 @@ alias bmake='make -j"$(($(nproc)+1))"' # src/bitcoind src/bitcoin-cli src/qt/bit
 alias bmakef='make -j"$(($(nproc)+1))" src/bitcoind' # faster
 alias bmakec='bmake check'
 alias bmakecf='bmakef check'
+alias bmc="bmake && bmakec"
 
 alias btest="echo ; echo 'Make and run unit tests...' ; echo ; bmakec ;"`
            `"echo ; echo 'Run functional tests...' ; echo ; test/functional/test_runner.py ; echo ;"
 
 alias bcomp='./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-lcov --enable-gprof -q ; bmake'
 
-alias btccomp='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench ; bmake'
+alias btccomp='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench'
 
 alias btccompf='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench --disable-zmq --without-gui --without-libs --without-miniupnpc --without-qrencode --disable-gui-tests -q ; bmake'
 
@@ -378,6 +379,8 @@ alias bcst="btcblock && bci getconnectioncount"
 alias bcps="ps auxww | grep bitcoind"
 
 alias deb="rlwrap btcdeb" # Bitcoin Script debugger
+
+alias lci="lightning-cli "
 
 
 # Tor ##########################################################################
