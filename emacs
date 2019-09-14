@@ -19,17 +19,27 @@
 
 (setq user-full-name "Jon Atack" user-mail-address "jon@atack.com")
 
-;; Turn off GC during Emacs startup
-(setq gc-cons-threshold most-positive-fixnum)
-(setq gc-cons-percentage 0.6)
+(defun turn-off-gc ()
+  "No GC while the minibuffer is open."
+  (setq gc-cons-threshold most-positive-fixnum)
+  (setq gc-cons-percentage 0.6))
 
-;; Resume GC after startup with 50 MB threshold, sacrificing memory for speed
-;; (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold (* 50 1000 1000))))
+(defun turn-on-gc ()
+  "Back to normal GC when the minibuffer is closed."
+  (setq gc-cons-threshold 30 * 1000 * 1000)
+  (setq gc-cons-percentage 0.2))
 
-;; Resume GC after startup with a 1 MB threshold
-(add-hook 'after-init-hook (lambda ()
-                             (setq gc-cons-threshold 800000)
-                             (setq gc-cons-percentage 0.2)))
+;; Turn off GC during Emacs startup and then back on again.
+(turn-off-gc)
+(add-hook 'after-init-hook #'turn-on-gc)
+
+;; GC tweaking according to
+;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
+(add-hook 'minibuffer-setup-hook #'turn-off-gc)
+(add-hook 'minibuffer-exit-hook #'turn-on-gc)
+
+;; Display GC messages in the mini-buffer
+(setq garbage-collection-messages t)
 
 ;; Display Emacs startup stats
 (add-hook 'emacs-startup-hook
@@ -98,14 +108,14 @@
 ;; Auto-insert newline at end of file
 (setq-default require-final-newline t mode-require-final-newline t)
 
-;; Display filepath in window title bar
-;; (setq-default frame-title-format '((:eval (if (buffer-file-name)
-;;                                              (abbreviate-file-name (buffer-file-name)) "%f"))))
+;; Display full file path in emacs frame title bar.
+(setq-default frame-title-format '((:eval (if (buffer-file-name)
+                                              (abbreviate-file-name (buffer-file-name)) "%f"))))
 
-;; Show system name and full file path in emacs frame title
-(setq frame-title-format
-      (list (format "%s %%S: %%j " (system-name))
-            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+;; Show system name and full file path in emacs frame title bar.
+;; (setq frame-title-format
+;;      (list (format "%s %%S: %%j " (system-name))
+;;            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
 (setq resize-mini-windows nil) ; Do not resize the mini-buffer to keep it to one line
 
@@ -920,23 +930,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Section X: General behavior                                                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; GC tweaking according to
-;; https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/
-
-(defun my-minibuffer-setup-hook ()
-  "No GC while the minibuffer is open."
-  (setq gc-cons-threshold most-positive-fixnum))
-
-(defun my-minibuffer-exit-hook ()
-  "Back to normal GC when the minibuffer is closed."
-  (setq gc-cons-threshold 800000))
-
-(add-hook 'minibuffer-setup-hook #'my-minibuffer-setup-hook)
-(add-hook 'minibuffer-exit-hook #'my-minibuffer-exit-hook)
-
-;; Display GC messages in the mini-buffer
-(setq garbage-collection-messages t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
