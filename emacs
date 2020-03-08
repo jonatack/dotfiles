@@ -1,3 +1,4 @@
+
 ;;; package --- Emacs configuration
 
 ;; -*- coding: utf-8; lexical-binding: t -*
@@ -117,8 +118,6 @@
 ;;      (list (format "%s %%S: %%j " (system-name))
 ;;            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
-(setq resize-mini-windows nil) ; Do not resize the mini-buffer to keep it to one line
-
 (setq inhibit-startup-screen t) ; Don’t display the Emacs splash screen
 (setq initial-scratch-message nil) ; Don't show scratch buffer on startup
 
@@ -161,9 +160,9 @@
 ;; (setq mac-command-modifier 'meta) ; Treat the CMD key like meta on OSX
 ;; (setq ns-use-srgb-colorspace t) ; SRGB support for OSX
 
-;; Open splits vertically
-(setq split-height-threshold nil)
-(setq split-width-threshold 0)
+;; Open splits horizontally
+(setq split-height-threshold 0)
+(setq split-width-threshold nil)
 
 (set-fringe-mode '(5 . 4)) ; Show a fringe
 
@@ -308,14 +307,16 @@
     :defer t
     :ensure t
     :diminish flycheck-mode
-    :init (global-flycheck-mode t)
-    :config (setq flycheck-check-syntax-automatically '(save mode-enabled)))
+    ;; :init (global-flycheck-mode t)
+    :config
+    (add-hook 'c-mode-common-hook 'flycheck-mode-major-mode)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled)))
 
   (when (not (display-graphic-p))
     (setq flycheck-indication-mode nil))
 
-  ;; (eval-after-load 'flycheck
-  ;;  '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
 
   ;; Show argument list in echo area
   (use-package eldoc
@@ -371,6 +372,7 @@
     :commands ycmd-mode
     :init (add-hook 'c++-mode-hook #'ycmd-mode)
     :config
+    (setq ycmd-force-semantic-completion t)
     (set-variable 'ycmd-server-command
                   '("python3" "/home/jon/projects/python/ycmd/ycmd/"))
     (set-variable 'ycmd-global-config
@@ -380,20 +382,99 @@
 
   (use-package flycheck-ycmd
     :after (ycmd flycheck)
-    :commands (flycheck-ycmd-setup)
-    :init (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup))
+    :ensure t
+    :init (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
+          (add-hook 'c-mode-common-hook 'flycheck-ycmd-setup))
 
   (use-package company-ycmd
     :after (ycmd company)
+    :ensure t
     :commands (company-ycmd-setup)
     :config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Ivy config
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (use-package ivy
+  ;; :ensure t
+  ;; :commands (ivy-mode)
+  ;; :config  (require 'ivy)
+  ;; (ivy-mode t)
+  ;; (setq ivy-use-virtual-buffers t)
+  ;; (setq enable-recursive-minibuffers t)
+  ;; (setq ivy-wrap t)
+  ;; (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  ;; Show #/total when scrolling buffers
+  ;;(setq ivy-count-format "%d/%d "))
+
+(use-package swiper
+  :ensure t
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper)))
+
+(use-package counsel
+  :ensure t
+  :bind (("M-x"     . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ("<f1> f"  . counsel-describe-function)
+         ("<f1> v"  . counsel-describe-variable)
+         ("<f1> l"  . counsel-find-library)
+         ("<f2> i"  . counsel-info-lookup-symbol)
+         ("<f2> u"  . counsel-unicode-char)
+         ("C-c g"   . counsel-git-grep)
+         ("C-c j"   . counsel-git)
+         ("C-c k"   . counsel-ag)
+         ("C-c r"   . counsel-rg)
+         ("C-x l"   . counsel-locate)
+         :map minibuffer-local-map
+         ("C-r"     . counsel-minibuffer-add)
+         )
+  :config
+  (if (executable-find "rg")
+      ;; use ripgrep instead of grep because it's way faster
+      (setq counsel-grep-base-command "rg -i -M 120 --no-heading --line-number --color never '%s' %s"
+            counsel-rg-base-command "rg -i -M 120 --no-heading --line-number --color never %s .")
+    (warn "\nWARNING: Could not find the ripgrep executable. It is recommended you install ripgrep.")))
+
+;; Use universal ctags to build the tags database for the project.
+;; When you first want to build a TAGS database run 'touch TAGS'
+;; in the root directory of your project.
+(use-package counsel-etags
+  :ensure t
+  :init
+  (eval-when-compile
+    ;; Silence missing function warnings
+    (declare-function counsel-etags-virtual-update-tags "counsel-etags.el")
+    (declare-function counsel-etags-guess-program "counsel-etags.el")
+    (declare-function counsel-etags-locate-tags-file "counsel-etags.el"))
+  :bind (
+         ("M-." . counsel-etags-find-tag-at-point)
+         ("M-t" . counsel-etags-grep-symbol-at-point)
+         ("M-s" . counsel-etags-find-tag))
+  :config
+  ;; Ignore files above 800kb
+  (setq counsel-etags-max-file-size 800)
+  ;; Ignore build directories for tagging
+  (add-to-list 'counsel-etags-ignore-directories '"build*")
+  (add-to-list 'counsel-etags-ignore-directories '".vscode")
+  (add-to-list 'counsel-etags-ignore-filenames '".clang-format")
+  ;; Don't ask before rereading the TAGS files if they have changed
+  (setq tags-revert-without-query t)
+  ;; Don't warn when TAGS files are large
+  (setq large-file-warning-threshold nil)
+  ;; How many seconds to wait before rerunning tags for auto-update
+  (setq counsel-etags-update-interval 180)
+  ;; Set up auto-update
+  (add-hook 'prog-mode-hook
+            (lambda () (add-hook 'after-save-hook
+                            (lambda ()
+                              (counsel-etags-virtual-update-tags))))))
 
   ;; Projectile key bindings:
   ;;
   ;; Grep             ->  C-c p s g
   ;; Grep all project ->  M-- C-c p s g
   (use-package projectile
-    ;; :defer t
     :ensure t
     :config
     (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
@@ -408,6 +489,8 @@
   ;; (add-hook 'clojure-mode-hook #'smartparens-strict-mode)
 
   ;; (setq ns-pop-up-frames nil)
+
+  (setq resize-mini-windows nil) ; Do not allow resizing the mini-buffer; keep it to one line.
 
   ;; SLIME
   ;; (add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/slime-v2.24")
@@ -452,8 +535,8 @@
   ;; This setup is a bit more involved and you need to create a new core file after
   ;; updating SLIME or SBCL. The steps to execute are:
   ;;
-  ;; $ cd ~/quicklisp/dists/quicklisp/software
-  ;;  (or ~/quicklisp/local-projects or whichever directory contains Slime)
+  ;; $ cd ~/quicklisp/local-projects
+  ;;  (or ~/quicklisp/dists/quicklisp/software or whichever directory contains Slime)
   ;;
   ;; $ sbcl
   ;; * (load "slime/swank-loader.lisp")
@@ -887,20 +970,16 @@
 
   ;; TypeScript
   (use-package typescript-mode
-    :ensure t
-    :mode (("\\.ts\\'" . typescript-mode)
+    :mode (("\\.ts\\'"  . typescript-mode)
            ("\\.tsx\\'" . typescript-mode))
     :custom (typescript-indent-level 2))
 
   ;; Markdown
   (use-package markdown-mode
     :mode (("\\.markdown\\'" . markdown-mode)
-           ("\\.md\\'" . markdown-mode)
-           ("\\.mmd\\'" . markdown-mode))
-    :init
-    (add-hook 'markdown-mode-hook
-              (lambda()
-                (add-hook 'after-save-hook 'org-tables-to-markdown nil 'make-it-local))))
+           ("\\.md\\'"       . markdown-mode)
+           ("\\.mmd\\'"      . markdown-mode)))
+
   ;; YAML
   (use-package yaml-mode
     :mode (("\\.yml\\'" . yaml-mode)
@@ -968,9 +1047,9 @@
      ("\\?\\?\\?+" . "#dc752f"))))
  '(package-selected-packages
    (quote
-    (typescript flycheck-haskell flycheck-clang-tidy flycheck-clangcheck flycheck-rtags flycheck-rust flycheck-package flycheck-irony company-c-headers company-ycm company-rtags company-irony clang-format irony gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
+    (mediawiki minimap projectile-ripgrep ripgrep counsel-gtags counsel-etags typescript flycheck-haskell flycheck-clang-tidy flycheck-clangcheck flycheck-rtags flycheck-rust flycheck-package flycheck-irony company-c-headers company-ycm company-rtags company-irony clang-format irony gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
- '(safe-local-variable-values (quote ((encoding . utf-8))))
+ '(safe-local-variable-values (quote ((syntax . common-lisp) (encoding . utf-8))))
  '(show-trailing-whitespace t)
  '(typescript-indent-level 2 t))
 (custom-set-faces
