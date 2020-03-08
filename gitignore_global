@@ -20,13 +20,22 @@
 *.tar
 *.zip
 
+# Emacs packages #
+##################
+,ycm_extra_conf.py
+
 # Logs and databases #
 ######################
 *.log
 *.sql
 *.sqlite
 
-# OS generated files  #
+# Emacs packages #
+##################
+.ycm_extra_conf.py
+compile_commands.json
+
+# OS-generated files  #
 #######################
 .DS_Store
 .DS_Store?
