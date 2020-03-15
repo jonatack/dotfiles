@@ -137,7 +137,7 @@ alias copa='rubocop --auto-gen-config'
 
 # Common Lisps
 # Comment out ABCL here because we defined a bash script at /usr/local/bin/abcl.
-# abcl_jar=/home/jon/quicklisp/local-projects/abcl/dist/abcl.jar
+# abcl_jar=~/quicklisp/local-projects/abcl/dist/abcl.jar
 # alias abcl='rlwrap java -jar ${abcl_jar}' # Armed Bear Common Lisp on the JVM
 alias ccl='rlwrap ccl' # Clozure Common Lisp with history but not completion.
 alias clasp='rlwrap ~/quicklisp/local-projects/clasp/build/boehm/cclasp-boehm'
@@ -179,14 +179,16 @@ alias py='cd ~/projects/python && l'
 alias rust='cd ~/projects/rust && l'
 alias hask='cd ~/projects/haskell && l'
 alias dot='cd ~/dotfiles && l'
-alias cl='cd /home/jon/common-lisp && l'
+alias cl='cd ~/common-lisp && l'
 alias ql='cd ~/quicklisp/ && l'
 alias lp='cd ~/quicklisp/local-projects/ && ls'
 alias dl='cd ~/Downloads && l'
 alias doc='cd ~/Documents && l'
 alias kraken='cd ~/projects/ruby/kraken_ruby_client && l'
 alias clk='cd ~/common-lisp/cl-kraken && l'
+alias jon='cd ~/common-lisp/jonatack.github.io && l'
 alias bpr='cd ~/common-lisp/bitcoin-core-pr-reviews && l'
+alias brv='cd ~/projects/bitcoin/review-club && l'
 alias ff='cd ~/projects/ruby/fallenfest && l'
 # alias ransack='cd ~/projects/ruby/ransack-activerecord-hackery & l'
 # alias poly='cd ~/projects/ruby/polyamorous-activerecord-hackery & l'
@@ -339,21 +341,21 @@ alias btest="echo ; echo 'Make and run unit tests...' ; echo ; bmakec ;"`
 # To build with clang for better errors add: CC=clang CXX=clang ./configure ...
 # Clang -ftrivial-auto-init-var=pattern
 
-alias btcclangsan='make distclean ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CC=clang CXX=clang++ --enable-debug --with-sanitizers=address,undefined EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time" ; bmake'
+alias btcclangsan='btc ; make distclean ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CC=clang CXX=clang++ --enable-debug --with-sanitizers=address,undefined EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time" ; bmake'
 
-alias btcclang='make distclean ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CC=clang CXX=clang++ --enable-debug EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time" ; bmake'
+alias btcclang='btc ; make distclean ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CC=clang CXX=clang++ --enable-debug EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time" ; bmake'
 
-alias btcclangwerror='make clean ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CXXFLAGS=-Wthread-safety --enable-werror --enable-debug ; bmake'
+alias btcclangwerror='btc ; make clean ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CXXFLAGS=-Wthread-safety --enable-werror --enable-debug ; bmake'
 
-alias btccomp='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-debug --disable-bench EXTRA_CXXFLAGS="-Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wmaybe-uninitialized -Wthread-safety -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time" ; make -j"$(($(nproc)+1))"'
+alias btccomp='btc ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-debug --disable-bench EXTRA_CXXFLAGS="-Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wmaybe-uninitialized -Wthread-safety -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time" ; bmake'
 
-alias btcbench='btc ; make clean ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-bench CXXFLAGS="-O2" ; bmake'
+alias btcbench='btc ; make clean ; ./autogen.sh ; export BDB_PREFIX="~/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-bench CXXFLAGS="-O2" ; bmake'
 
-alias btccompf='btc ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench --disable-zmq --without-gui --without-libs --without-miniupnpc --without-qrencode --disable-gui-tests -q ; bmake'
+alias btccompf='btc ; ./autogen.sh ; export BDB_PREFIX="~/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench --disable-zmq --without-gui --without-libs --without-miniupnpc --without-qrencode --disable-gui-tests -q ; bmake'
 alias btccompt='btccomp ; btest'
 
 # test
-alias bttcomp='btt ; ./autogen.sh ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin-test/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-debug --enable-lcov --enable-gprof --disable-bench -q ; bmake'
+alias bttcomp='btt ; ./autogen.sh ; export BDB_PREFIX="~/projects/bitcoin/bitcoin-test/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-debug --enable-lcov --enable-gprof --disable-bench -q ; bmake'
 alias bttcompt='bttcomp ; btest'
 # CXXFLAGS="-O0 -g -ggdb3"
 # CFLAGS="-O0 -g"
@@ -369,6 +371,7 @@ alias btcfuzz='make distclean ; ./autogen.sh ; ./configure CC=clang CXX=clang++ 
 # Latest try
 # mkdir /dev/shm/fuzz_temp_seeds
 # export TMPDIR=/dev/shm ; time src/test/fuzz/utxo_total_supply /dev/shm/fuzz_temp_seeds
+
 
 alias pyl="./test/lint/lint-python.sh " # run bitcoin-core python linter
 alias pyld="./test/lint/lint-python-dead-code.sh " # run bitcoin-core python dead code linter
@@ -407,8 +410,6 @@ alias bcps2="ps -ef | grep bitcoind"
 alias deb="rlwrap btcdeb" # Bitcoin Script debugger
 
 alias lci="lightning-cli "
-
-alias brv='cd ~/projects/bitcoin/review-club && l'
 
 alias pow='grep "proof of work failed" ~/.bitcoin/debug.log'
 
