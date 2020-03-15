@@ -10,7 +10,7 @@
   gpgsign = true
 
 [credential]
-  helper = gnome-keyring
+  helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
 
 [gpg]
   program = /home/jon/projects/python/opentimestamps-client/ots-git-gpg-wrapper.sh
@@ -38,7 +38,7 @@
   co = checkout
 
   # List contributors with number of commits
-  contributors = shortlog --summary --numbered
+  contributors = shortlog --summary --numbered --no-merges
 
   # Credit an author on the latest commit
   credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
@@ -118,6 +118,11 @@
 [apply]
   # Detect whitespace errors when applying a patch
   whitespace = fix
+
+[checkout]
+  # Always have unspecified checkouts refer to the 'origin' remote
+  # Replaces: git checkout --track origin/<name>
+  defaultRemote=origin
 
 [core]
   # Use custom `.gitignore` and `.gitattributes`
@@ -212,7 +217,7 @@
 # Enable pulling in remote PRs and testing locally with: git checkout pr/999
 # See this gist: https://gist.github.com/piscisaureus/3342247
 [remote "origin"]
-  fetch = +refs/heads/*:refs/remotes/origin/*
+  # fetch = +refs/heads/*:refs/remotes/origin/*
   fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
 
 # Reference Bitcoin PRs easily with refspecs.
@@ -223,6 +228,9 @@
 # [remote "upstream-pull"]
 #   fetch = +refs/pull/*:refs/remotes/upstream-pull/*
 #   url = git@github.com:bitcoin/bitcoin.git
+
+# Luke Jr: To avoid all the /merge branches, configure the origin-pull remote as
+# fetch = +refs/pull/*/head:refs/remotes/origin-pull//head
 
 [secrets]
   # Git Secrets patterns, see [init] above.
