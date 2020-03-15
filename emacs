@@ -53,8 +53,8 @@
       (setq initial-frame-alist
             '(
               ; (tool-bar-lines . 0)
-              (width . 105) ; chars
-              (height . 88) ; lines
+              (width . 128) ; chars
+              (height . 101) ; lines
               ; (background-color . "honeydew")
               (left . 0)
               (top . 0)))
@@ -118,7 +118,7 @@
 ;;      (list (format "%s %%S: %%j " (system-name))
 ;;            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
-(setq inhibit-startup-screen t) ; Don’t display the Emacs splash screen
+;; (setq inhibit-startup-screen t) ; Don’t display the Emacs splash screen
 (setq initial-scratch-message nil) ; Don't show scratch buffer on startup
 
 ;; Highlight/blink matching parentheses globally.
@@ -372,22 +372,25 @@
     :commands ycmd-mode
     :init (add-hook 'c++-mode-hook #'ycmd-mode)
     :config
-    (setq ycmd-force-semantic-completion t)
     (set-variable 'ycmd-server-command
                   '("python3" "/home/jon/projects/python/ycmd/ycmd/"))
     (set-variable 'ycmd-global-config
                   (expand-file-name "/home/jon/projects/python/ycmd/.ycm_extra_conf.py"))
     (set-variable 'ycmd-extra-conf-whitelist
-                  '("/home/jon/projects/*")))
+                  '("/home/jon/projects/*"))
+    (set-variable 'ycmd-startup-timeout 30)
+    (setq ycmd-force-semantic-completion t))
 
   (use-package flycheck-ycmd
     :after (ycmd flycheck)
+    :defer t
     :ensure t
     :init (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
           (add-hook 'c-mode-common-hook 'flycheck-ycmd-setup))
 
   (use-package company-ycmd
     :after (ycmd company)
+    :defer t
     :ensure t
     :commands (company-ycmd-setup)
     :config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd)))
