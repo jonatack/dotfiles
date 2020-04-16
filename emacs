@@ -424,11 +424,11 @@
          ("<f1> l"  . counsel-find-library)
          ("<f2> i"  . counsel-info-lookup-symbol)
          ("<f2> u"  . counsel-unicode-char)
-         ("C-c g"   . counsel-git-grep)
-         ("C-c j"   . counsel-git)
+         ("C-c g"   . counsel-git-grep) ; git grepping!
+         ("C-c j"   . counsel-git)      ; find file?
          ("C-c k"   . counsel-ag)
-         ("C-c r"   . counsel-rg)
-         ("C-x l"   . counsel-locate)
+         ("C-c r"   . counsel-rg)       ; grep
+         ("C-x l"   . counsel-locate)   ; find files
          :map minibuffer-local-map
          ("C-r"     . counsel-minibuffer-add)
          )
