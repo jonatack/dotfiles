@@ -35,3 +35,5 @@ export GPG_TTY=$(tty)
 
 # irc
 export IRCNICK=jonatack IRCSERVER=irc.freenode.net
+
+export QT_QPA_PLATFORMTHEME=gtk2
