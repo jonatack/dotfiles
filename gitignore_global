@@ -45,6 +45,11 @@ compile_commands.json
 ehthumbs.db
 Thumbs.db
 
+# Fuzzing #
+###########
+slow-unit-*
+crash-*
+
 # Ruby on Rails files #
 #######################
 *.rbc
