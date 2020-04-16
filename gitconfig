@@ -65,6 +65,8 @@
   # Find tags containing commit
   ft = "!f() { git describe --always --contains $1; }; f"
 
+  g = grep
+
   # Switch to a branch, creating it if necessary
   go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
 
@@ -94,10 +96,11 @@
 
   # Interactive rebase with the given number of latest commits
   reb = "!r() { git rebase -i HEAD~$1; }; r"
-
   rba = rebase --abort
   rbc = rebase --continue
+  rbe = rebase --edit-todo
   rbi = rebase --ignore
+  rbs = rebase --skip
 
   # Show verbose output
   remotes = remote -v
