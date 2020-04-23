@@ -343,21 +343,23 @@ alias btest="echo ; echo 'Make and run unit tests...' ; echo ; bmakec ;"`
 # To build with clang for better errors add: CC=clang CXX=clang ./configure ...
 # Clang -ftrivial-auto-init-var=pattern
 
-alias btcclangsan='btc ; make distclean ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CC=clang CXX=clang++ --enable-debug --with-sanitizers=address,undefined EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare" ; bmake'
+alias marco='./autogen.sh && ./configure && make distclean && ./configure CC=clang CXX=clang++ && make -j 5 check'
 
-alias btcclang='btc ; make distclean ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CC=clang CXX=clang++ --enable-debug EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wmaybe-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare -Wundef" ; bmake'
+alias btcclangsan='btc ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./autogen.sh && ./configure && make distclean && ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CC=clang CXX=clang++ --enable-debug --with-sanitizers=address,undefined --enable-wleveldb EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare" ; bmake'
 
-alias btcclangwerror='btc ; make clean ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CXXFLAGS=-Wthread-safety --enable-werror --enable-debug ; bmake'
+alias btcclang='btc ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./autogen.sh && ./configure && make distclean && ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CC=clang CXX=clang++ --enable-debug --enable-wleveldb EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wmaybe-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare -Wundef" ; bmake'
 
-alias btccomp='btc ; ./autogen.sh ; export BDB_PREFIX="../db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench EXTRA_CXXFLAGS="-Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wmaybe-uninitialized -Wthread-safety -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare -Wundef" ; bmake'
+alias btcclangwerror='btc ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./autogen.sh && ./configure && make distclean && ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" CXXFLAGS=-Wthread-safety --enable-werror --enable-debug ; bmake'
 
-alias btcbench='btc ; make clean ; ./autogen.sh ; export BDB_PREFIX="~/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-bench CXXFLAGS="-O2" ; bmake'
+alias btccomp='btc ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./autogen.sh && ./configure && make distclean && ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench EXTRA_CXXFLAGS="-Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wmaybe-uninitialized -Wthread-safety -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare -Wundef" ; bmake'
 
-alias btccompf='btc ; ./autogen.sh ; export BDB_PREFIX="~/projects/bitcoin/bitcoin/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench --disable-zmq --without-gui --without-libs --without-miniupnpc --without-qrencode --disable-gui-tests -q ; bmake'
+alias btcbench='btc ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./autogen.sh && ./configure && make distclean && ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-bench CXXFLAGS="-O2" ; bmake'
+
+alias btccompf='btc ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./autogen.sh && ./configure && make distclean && ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --disable-bench --disable-zmq --without-gui --without-libs --without-miniupnpc --without-qrencode --disable-gui-tests -q ; bmake'
 alias btccompt='btccomp ; btest'
 
 # test
-alias bttcomp='btt ; ./autogen.sh ; export BDB_PREFIX="~/projects/bitcoin/bitcoin-test/db4" ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-debug --enable-lcov --enable-gprof --disable-bench -q ; bmake'
+alias bttcomp='btt ; export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4" ; ./autogen.sh ; ./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-debug --enable-lcov --enable-gprof --disable-bench -q ; bmake'
 alias bttcompt='bttcomp ; btest'
 # CXXFLAGS="-O0 -g -ggdb3"
 # CFLAGS="-O0 -g"
@@ -375,7 +377,6 @@ alias btcfuzz='make distclean ; ./autogen.sh ; ./configure CC=clang CXX=clang++ 
 # export TMPDIR=/dev/shm ; time src/test/fuzz/utxo_total_supply /dev/shm/fuzz_temp_seeds
 
 alias pyl="btc ; ./test/lint/lint-python.sh " # run bitcoin-core python linter
-alias pyld="btc ; ./test/lint/lint-python-dead-code.sh " # run bitcoin-core python dead code linter
 
 alias bcdir="cd ~/.bitcoin/"
 alias btdir="cd ~/.bitcoin/testnet" # linux default bitcoin testnet path
