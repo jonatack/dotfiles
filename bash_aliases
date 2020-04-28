@@ -391,14 +391,17 @@ alias bd="bitcoind"
 alias bcstart="bitcoind -daemon"
 alias btstart="bitcoind -testnet -daemon"
 alias brstart="bitcoind -regtest -daemon"
+alias bsstart="bitcoind -datadir=signet -daemon"
 
 alias bcstop="bitcoin-cli stop"
 alias btstop="bitcoin-cli -testnet stop"
 alias brstop="bitcoin-cli -regtest stop"
+alias bsstop="bitcoin-cli -datadir=signet stop"
 
 alias bci="bitcoin-cli"
 alias bti="bitcoin-cli -testnet"
 alias bri="bitcoin-cli -regtest"
+alias bsi="bitcoin-cli -datadir=signet"
 
 alias btcblock="btcs && echo \`bitcoin-cli getblockcount 2>&1\`/\`wget -O - https://blockchain.info/q/getblockcount 2>/dev/null\`"
 
