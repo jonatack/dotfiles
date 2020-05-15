@@ -349,13 +349,13 @@ alias export_bdb='export BDB_PREFIX="/home/jon/projects/bitcoin/bitcoin/db4"'
 alias configure='./configure BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include"'
 alias setup='btc ; export_bdb ; ./autogen.sh && configure && make distclean && configure'
 
-alias btcclangsan='setup CC=clang CXX=clang++ --enable-debug --disable-bench --with-sanitizers=address,undefined --enable-wleveldb EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare" ; bmake'
+alias btcclangsan='setup CC=clang CXX=clang++ --enable-debug --disable-bench --with-sanitizers=address,undefined --enable-wleveldb EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare -Wundef -Wtype-limits -Wshadow -Wunreachable-code-loop-increment -DDEBUG_LOCKORDER" ; bmake'
 
-alias btcclang='setup CC=clang CXX=clang++ --disable-bench --enable-werror --enable-wleveldb EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wmaybe-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare -Wundef" ; bmake'
+alias btcclang='setup CC=clang CXX=clang++ --enable-debug --disable-bench --enable-werror --enable-wleveldb EXTRA_CXXFLAGS="-Weverything -Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wmaybe-uninitialized -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare -Wundef -Wtype-limits -Wshadow -Wunreachable-code-loop-increment -DDEBUG_LOCKORDER" ; bmake'
 
 alias btcclangwerror='setup CXXFLAGS=-Wthread-safety --enable-werror --enable-debug ; bmake'
 
-alias btccomp='setup --disable-bench EXTRA_CXXFLAGS="-Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wmaybe-uninitialized -Wthread-safety -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare -Wundef" ; bmake'
+alias btccomp='setup --enable-debug --disable-bench EXTRA_CXXFLAGS="-Wall -Werror -Wextra -Wformat -Wvla -Wswitch -Wformat-security -Wconditional-uninitialized -Wmaybe-uninitialized -Wthread-safety -Wthread-safety-analysis -Wrange-loop-analysis -Wredundant-decls -Wunused-variable -Wdate-time -Wsign-compare -Wundef -Wshadow -Wunreachable-code-loop-increment -DDEBUG_LOCKORDER" ; bmake'
 
 alias btcbench='setup --enable-bench CXXFLAGS="-O2" ; bmake'
 
@@ -369,7 +369,7 @@ alias bttcompt='bttcomp ; btest'
 # CFLAGS="-O0 -g"
 
 # Fuzzing
-alias btcfuzz='make distclean ; ./autogen.sh ; ./configure CC=clang CXX=clang++ --enable-fuzz --with-sanitizers=address,fuzzer,undefined ; bmake'
+alias btcfuzz='make distclean ; ./autogen.sh ; ./configure --enable-fuzz --with-sanitizers=address,fuzzer,undefined --enable-c++17 CC=clang CXX=clang++ ; bmake'
 # alias btcfuzz='make distclean ; ./autogen.sh ; export BDB_PREFIX="../db4" ; CC=clang CXX=clang++ ./configure --disable-ccache --enable-tests --enable-fuzz --with-sanitizers=address,fuzzer,undefined BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include" --enable-debug ; bmake'
 # time export TMPDIR=/dev/shm src/test/fuzz/utxo_total_supply -jobs=12 -print_final_stats=1 -workers=6 ../qa-assets/fuzz_seed_corpus/utxo_total_supply
 # export TMPDIR=/dev/shm ; time src/test/fuzz/utxo_total_supply -jobs=12 -print_final_stats=1 -workers=6
