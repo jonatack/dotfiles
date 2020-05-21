@@ -210,6 +210,9 @@
   # Use Emacs as the mergetool for git
   cmd = emacs --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
 
+[pull]
+  rebase = true
+
 [push]
   # Use the Git 1.x.x default to avoid errors on machines with old Git
   # installations. To use `simple` instead, add this to your `~/.extra` file:
@@ -234,6 +237,9 @@
 
 # Luke Jr: To avoid all the /merge branches, configure the origin-pull remote as
 # fetch = +refs/pull/*/head:refs/remotes/origin-pull//head
+
+[rebase]
+  autosquash = true
 
 [secrets]
   # Git Secrets patterns, see [init] above.
