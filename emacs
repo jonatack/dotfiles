@@ -40,7 +40,7 @@
 (add-hook 'minibuffer-exit-hook #'turn-on-gc)
 
 ;; Display GC messages in the mini-buffer
-(setq garbage-collection-messages t)
+(setq garbage-collection-messages nil)
 
 ;; Display Emacs startup stats
 (add-hook 'emacs-startup-hook
@@ -118,7 +118,7 @@
 ;;      (list (format "%s %%S: %%j " (system-name))
 ;;            '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
 
-;; (setq inhibit-startup-screen t) ; Don’t display the Emacs splash screen
+(setq inhibit-startup-screen t) ; Don’t display the Emacs splash screen
 (setq initial-scratch-message nil) ; Don't show scratch buffer on startup
 
 ;; Highlight/blink matching parentheses globally.
