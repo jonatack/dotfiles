@@ -1,4 +1,3 @@
-
 ;;; package --- Emacs configuration
 
 ;; -*- coding: utf-8; lexical-binding: t -*
@@ -304,23 +303,31 @@
 
   ;; On-the-fly syntax checking
   (use-package flycheck
-    :defer t
+    ;; :defer t
     :ensure t
     :diminish flycheck-mode
     ;; :init (global-flycheck-mode t)
     :config
-    (add-hook 'c-mode-common-hook 'flycheck-mode-major-mode)
+    (add-hook 'c-mode-common-hook 'flycheck-mode)
+    (add-hook 'c++-mode-hook 'flycheck-mode)
+    (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
     (setq flycheck-check-syntax-automatically '(save mode-enabled)))
 
-  (when (not (display-graphic-p))
-    (setq flycheck-indication-mode nil))
+  (use-package flycheck-irony
+    :after flycheck
+    :ensure t
+    :init (flycheck-irony-setup))
 
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
 
+  ;; (when (not (display-graphic-p))
+  ;;  (setq flycheck-indication-mode nil))
+
   ;; Show argument list in echo area
   (use-package eldoc
     :defer t
+    :ensure t
     :diminish eldoc-mode
     :init (add-hook 'ycmd-mode-hook 'ycmd-eldoc-setup))
 
@@ -365,6 +372,17 @@
     :commands yas-global-mode
     :diminish yas-minor-mode)
 
+ (use-package company-try-hard
+    :defer t
+    :ensure t
+    :bind (("C-<tab>" . company-try-hard)
+           :map company-active-map ("C-<tab>" . company-try-hard)))
+
+  (use-package company-quickhelp
+    :defer t
+    :ensure t
+    :config (company-quickhelp-mode))
+
   ;; Code-comprehension server
   (use-package ycmd
     :defer t
@@ -394,6 +412,11 @@
     :ensure t
     :commands (company-ycmd-setup)
     :config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd)))
+
+  (eval-after-load 'company
+    '(add-to-list
+      'company-backends '(company-rtags company-irony-c-headers company-irony)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Ivy config
@@ -496,7 +519,7 @@
   (setq resize-mini-windows nil) ; Do not allow resizing the mini-buffer; keep it to one line.
 
   ;; SLIME
-  ;; (add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/slime-v2.24")
+  ;; (add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/slime-v2.27")
   ;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
   ;; (require 'slime-autoloads)
 
@@ -739,27 +762,12 @@
   ;; The following line inverses that to treat them as C++ files instead:
   (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode));
 
-  ;; Irony-Mode, an Emacs minor-mode that aims at improving the editing
-  ;; experience for the C, C++ and Objective-C languages. It works by using a
-  ;; combination of an Emacs package and a C++ program (irony-server) exposing
-  ;; libclang. It adds code completion, syntax checking, eldoc integration, and
-  ;; counsel integration. Repository: https://github.com/Sarcasm/irony-mode
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-
-  ;; Use compilation database first, clang_complete as fallback.
-  (setq-default irony-cdb-compilation-databases '(irony-cdb-libclang
-                                                  irony-cdb-clang-complete))
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-hook 'irony-mode-hook 'irony-eldoc)
-
   (use-package cc-mode
     :mode (("\\.[hH]\\'" . c++-mode)
            ("\\.cpp\\'"  . c++-mode)
            ("\\.hpp\\'"  . c++-mode)
            ("\\.cc\\'"   . c++-mode))
-  :init (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11"))))
+    :init (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17"))))
 
   (use-package clang-format
     :after cc-mode
@@ -770,11 +778,85 @@
     :commands modern-c++-font-lock-mode
     :init (add-hook 'c++-mode-hook 'modern-c++-font-lock-mode))
 
+  ;; Irony-Mode, an Emacs minor-mode that aims at improving the editing
+  ;; experience for the C, C++ and Objective-C languages. It works by using a
+  ;; combination of an Emacs package and a C++ program (irony-server) exposing
+  ;; libclang. It adds code completion, syntax checking, eldoc integration, and
+  ;; counsel integration. Repository: https://github.com/Sarcasm/irony-mode
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+
+  ;; Use compilation database first, clang_complete as fallback.
+  (setq-default irony-cdb-compilation-databases '(irony-cdb-libclang
+                                                  irony-cdb-clang-complete))
+
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'irony-mode-hook 'irony-eldoc)
+
+  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+  ;; (setq company-backends (delete 'company-semantic company-backends))
+
+  (require 'rtags)
+  (require 'company-rtags)
+  (setq rtags-completions-enabled t)
+  (require 'company-irony-c-headers)
+  (eval-after-load 'company
+    '(add-to-list
+      'company-backends '(company-rtags company-irony-c-headers company-irony)))
+
+  (setq company-idle-delay 0) ; enable tab-completion with no delay
+  (define-key c-mode-map [(tab)] 'company-complete)
+  (define-key c++-mode-map [(tab)] 'company-complete)
+
+  (setq rtags-autostart-diagnostics t)
+  (rtags-enable-standard-keybindings)
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Section VIII: Python mode behavior                                         ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+  ;; C-c C-c        elpy-shell-send-region-or-buffer
+  ;; Send code to the REPL (the region, if selected, otherwise whole buffer)
+
+  ;; C-c C-d        elpy-doc
+  ;; Show documentation of the function/class under cursor in a new window
+
+  ;; M-.            elpy-goto-definition (of the function/class under cursor)
+
+  ;; M-(left/right) elpy-nav-indent-shift-(left/right)
+
+  ;; C-M-(n/p)      elpy-nav-(forward/backward)-block
+
+  ;; M-(up/down)    elpy-nav-move-line-or-region-(up/down)
+  ;; Move an entire block of code up/down. This is helpful for moving code around.
+
+  (use-package elpy
+    :ensure t
+    :defer t
+    :bind
+    (:map elpy-mode-map
+          ("C-M-n" . elpy-nav-forward-block)
+          ("C-M-p" . elpy-nav-backward-block))
+    :hook ((elpy-mode . flycheck-mode)
+           (elpy-mode . (lambda ()
+                          (set (make-local-variable 'company-backends)
+                               '((elpy-company-backend :with company-yasnippet))))))
+    :init
+    (elpy-enable)
+    :config
+    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+    ;; fix for MacOS, see https://github.com/jorgenschaefer/elpy/issues/1550
+    (setq elpy-shell-echo-output nil)
+    (setq elpy-rpc-python-command "python3")
+    (setq elpy-rpc-timeout 2))
 
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -960,12 +1042,14 @@
 
   ;; Haskell
   (use-package haskell-mode
+    :defer t
     :mode "\\.hs\\'"
     :bind (:map haskell-mode-map
                 ("C-c c" . haskell-process-load-file))
     :custom (haskell-interactive-popup-errors nil))
 
   (use-package flycheck-haskell
+    :defer t
     :commands flycheck-haskell-setup
     :after (flycheck haskell-mode)
     :mode "\\.hs\\'"
@@ -973,39 +1057,53 @@
 
   ;; TypeScript
   (use-package typescript-mode
+    :defer t
     :mode (("\\.ts\\'"  . typescript-mode)
            ("\\.tsx\\'" . typescript-mode))
     :custom (typescript-indent-level 2))
 
   ;; Markdown
   (use-package markdown-mode
+    :defer t
     :mode (("\\.markdown\\'" . markdown-mode)
            ("\\.md\\'"       . markdown-mode)
            ("\\.mmd\\'"      . markdown-mode)))
 
+  ;; Mediawiki
+  ;; (use-package mediawiki-mode
+  ;;  :defer t
+  ;;  :mode (("\\.mediawiki\\'" . mediawiki-mode)))
+
   ;; YAML
   (use-package yaml-mode
+    :defer t
     :mode (("\\.yml\\'" . yaml-mode)
            ("\\.yaml\\'" . yaml-mode)))
 
   ;; CMake
   (use-package cmake-mode
-    :mode "CMakeLists.txt")
+    :defer t
+    :ensure t
+    :mode "CMakeLists.txt"
+    :init (cmake-ide-setup))
 
   ;; SCSS
-  (use-package scss-mode
-    :mode "\\.scss\\'")
+  ;; (use-package scss-mode
+  ;;  :defer t
+  ;;  :mode "\\.scss\\'")
 
   ;; Nginx config files
   (use-package nginx-mode
-    :ensure t)
+    :defer t)
 
   ;; Gitignore files
   (use-package gitignore-mode
+    :defer t
     :mode "\\.gitignore\\'")
 
   ;; Rust TOML files
   (use-package toml-mode
+    :defer t
     :mode "\\.toml\\'")
 )
 
@@ -1023,17 +1121,15 @@
  '(company-idle-delay 0)
  '(company-minimum-prefix-length 2)
  '(company-tooltip-limit 20)
- '(custom-enabled-themes (quote (spacemacs-dark)))
+ '(custom-enabled-themes '(spacemacs-dark))
  '(custom-safe-themes
-   (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "5c9bd73de767fa0d0ea71ee2f3ca6fe77261d931c3d4f7cca0734e2a3282f439" default)))
+   '("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "5c9bd73de767fa0d0ea71ee2f3ca6fe77261d931c3d4f7cca0734e2a3282f439" default))
  '(fci-rule-color "gray71")
  '(fci-rule-width 1)
  '(fill-column 80)
  '(haskell-interactive-popup-errors nil t)
  '(hl-todo-keyword-faces
-   (quote
-    (("TODO" . "#dc752f")
+   '(("TODO" . "#dc752f")
      ("NEXT" . "#dc752f")
      ("THEM" . "#2d9574")
      ("PROG" . "#4f97d7")
@@ -1047,12 +1143,14 @@
      ("TEMP" . "#b1951d")
      ("FIXME" . "#dc752f")
      ("XXX+" . "#dc752f")
-     ("\\?\\?\\?+" . "#dc752f"))))
+     ("\\?\\?\\?+" . "#dc752f")))
  '(package-selected-packages
-   (quote
-    (mediawiki minimap projectile-ripgrep ripgrep counsel-gtags counsel-etags typescript flycheck-haskell flycheck-clang-tidy flycheck-clangcheck flycheck-rtags flycheck-rust flycheck-package flycheck-irony company-c-headers company-ycm company-rtags company-irony clang-format irony gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace)))
- '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
- '(safe-local-variable-values (quote ((syntax . common-lisp) (encoding . utf-8))))
+   '(company-ctags company-irony-c-headers cmake-ide rtags-xref clang-format+ clang-capf mediawiki minimap projectile-ripgrep ripgrep counsel-gtags counsel-etags typescript flycheck-haskell flycheck-clang-tidy flycheck-clangcheck flycheck-rtags flycheck-rust flycheck-package flycheck-irony company-c-headers company-ycm company-rtags company-irony clang-format irony gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace))
+ '(pdf-view-midnight-colors '("#b2b2b2" . "#292b2e"))
+ '(safe-local-variable-values
+   '((cmake-ide-build-dir . /build-aux/)
+     (syntax . common-lisp)
+     (encoding . utf-8)))
  '(show-trailing-whitespace t)
  '(typescript-indent-level 2 t))
 (custom-set-faces
