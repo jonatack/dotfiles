@@ -96,6 +96,8 @@
 
   # Interactive rebase with the given number of latest commits
   reb = "!r() { git rebase -i HEAD~$1; }; r"
+  # git rebase -i --keep-base origin/master
+  rebk = "!r() { git rebase -i --keep-base origin/master HEAD~$1; }; r"
   rba = rebase --abort
   rbc = rebase --continue
   rbe = rebase --edit-todo
@@ -117,6 +119,7 @@
   tags = tag -l
 
   unstage = reset HEAD --
+  recent = branch --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
 
 [apply]
   # Detect whitespace errors when applying a patch
@@ -189,6 +192,13 @@
 [diff]
   # Detect copies as well as renames
   renames = copies
+	colorMoved = dimmed-zebra
+	colorMovedWs = allow-indentation-change
+
+[gc]
+	auto = 0
+	reflogExpire = never
+	reflogExpireUnreachable = never
 
 [grep]
   lineNumber = true
@@ -222,8 +232,10 @@
 
 # Enable pulling in remote PRs and testing locally with: git checkout pr/999
 # See this gist: https://gist.github.com/piscisaureus/3342247
+# Comment out the first one when git cloning, as otherwise git raises with
+# "fatal: multiple updates for ref 'refs/remotes/origin/master' not allowed"
 [remote "origin"]
-  # fetch = +refs/heads/*:refs/remotes/origin/*
+  fetch = +refs/heads/*:refs/remotes/origin/*
   fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
 
 # Reference Bitcoin PRs easily with refspecs.
