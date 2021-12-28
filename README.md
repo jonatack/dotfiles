@@ -1,7 +1,7 @@
 # Dotfiles
 
 This repository is where I manage my dotfiles and configs. They are currently
-focused on my Common Lisp, Ruby, and C++ work using Emacs and Git.
+focused on my C++, Common Lisp, and Ruby work using Emacs and Git.
 
 There are Common Lisp init files for the following implementations:
 
@@ -57,4 +57,4 @@ Happy dotfile-ing!
 
 ------------------------------------------------------------------------------
 
-Copyright © 2019 Jon Atack - email jon@atack.com - https://keybase.io/jonatack
+Copyright © Jon Atack - email jon@atack.com - https://keybase.io/jonatack
