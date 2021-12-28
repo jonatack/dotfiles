@@ -301,123 +301,6 @@
           ;; If you don't want to use the flx's highlights you can turn them off like this:
           flx-ido-use-faces nil))
 
-  ;; On-the-fly syntax checking
-  (use-package flycheck
-    ;; :defer t
-    :ensure t
-    :diminish flycheck-mode
-    ;; :init (global-flycheck-mode t)
-    :config
-    (add-hook 'c-mode-common-hook 'flycheck-mode)
-    (add-hook 'c++-mode-hook 'flycheck-mode)
-    (add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled)))
-
-  (use-package flycheck-irony
-    :after flycheck
-    :ensure t
-    :init (flycheck-irony-setup))
-
-  (eval-after-load 'flycheck
-    '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
-
-  ;; (when (not (display-graphic-p))
-  ;;  (setq flycheck-indication-mode nil))
-
-  ;; Show argument list in echo area
-  (use-package eldoc
-    :defer t
-    :ensure t
-    :diminish eldoc-mode
-    :init (add-hook 'ycmd-mode-hook 'ycmd-eldoc-setup))
-
-  ;; Autocomplete
-  (use-package company
-    :defer t
-    :ensure t
-    :commands (global-company-mode company-mode)
-    :diminish company-mode
-    :bind (:map company-active-map
-                ("M-j" . company-select-next)
-                ("M-k" . company-select-previous))
-    :custom
-    ;; no delay no autocomplete
-    (company-idle-delay 0)
-    (company-minimum-prefix-length 2)
-    (company-tooltip-limit 20)
-    :preface
-    ;; enable yasnippet everywhere
-    (defvar company-mode/enable-yas t
-      "Enable yasnippet for all backends.")
-    (defun company-mode/backend-with-yas (backend)
-      (if (or (not company-mode/enable-yas)
-              (and (listp backend) (member 'company-yasnippet backend)))
-          backend
-        (append (if (consp backend) backend (list backend))
-                '(:with company-yasnippet))))
-    :init (global-company-mode t)
-    :config
-    (delete 'company-oddmuse company-backends))
-
-  ;; Sort company candidates by statistics
-  (use-package company-statistics
-    :after company
-    :commands company-statistics-mode
-    :init (company-statistics-mode t))
-
-  ;; Snippets
-  (use-package yasnippet
-    :defer t
-    :ensure t
-    :commands yas-global-mode
-    :diminish yas-minor-mode)
-
- (use-package company-try-hard
-    :defer t
-    :ensure t
-    :bind (("C-<tab>" . company-try-hard)
-           :map company-active-map ("C-<tab>" . company-try-hard)))
-
-  (use-package company-quickhelp
-    :defer t
-    :ensure t
-    :config (company-quickhelp-mode))
-
-  ;; Code-comprehension server
-  (use-package ycmd
-    :defer t
-    :ensure t
-    :commands ycmd-mode
-    :init (add-hook 'c++-mode-hook #'ycmd-mode)
-    :config
-    (set-variable 'ycmd-server-command
-                  '("python3" "/home/jon/projects/python/ycmd/ycmd/"))
-    (set-variable 'ycmd-global-config
-                  (expand-file-name "/home/jon/projects/python/ycmd/.ycm_extra_conf.py"))
-    (set-variable 'ycmd-extra-conf-whitelist
-                  '("/home/jon/projects/*"))
-    (set-variable 'ycmd-startup-timeout 30)
-    (setq ycmd-force-semantic-completion t))
-
-  (use-package flycheck-ycmd
-    :after (ycmd flycheck)
-    :defer t
-    :ensure t
-    :init (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
-          (add-hook 'c-mode-common-hook 'flycheck-ycmd-setup))
-
-  (use-package company-ycmd
-    :after (ycmd company)
-    :defer t
-    :ensure t
-    :commands (company-ycmd-setup)
-    :config (add-to-list 'company-backends (company-mode/backend-with-yas 'company-ycmd)))
-
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends '(company-rtags company-irony-c-headers company-irony)))
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Ivy config
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -745,7 +628,7 @@
   ;;              style as part of its initialization & doesn't modify it afterwards.
   ;;
   ;; Customizations for all of c-mode, c++-mode, objc-mode, java-mode, etc.
-  (setq c-default-style '((c-mode    . "stroustrup")
+  (setq c-default-style '((c-mode    . "gnu")
                           (c++-mode  . "stroustrup")
                           (java-mode . "java")
                           (awk-mode  . "awk")
@@ -766,8 +649,8 @@
     :mode (("\\.[hH]\\'" . c++-mode)
            ("\\.cpp\\'"  . c++-mode)
            ("\\.hpp\\'"  . c++-mode)
-           ("\\.cc\\'"   . c++-mode))
-    :init (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17"))))
+           ("\\.cc\\'"   . c++-mode)))
+  ;; :init (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++17"))))
 
   (use-package clang-format
     :after cc-mode
@@ -777,47 +660,6 @@
     :after cc-mode
     :commands modern-c++-font-lock-mode
     :init (add-hook 'c++-mode-hook 'modern-c++-font-lock-mode))
-
-  ;; Irony-Mode, an Emacs minor-mode that aims at improving the editing
-  ;; experience for the C, C++ and Objective-C languages. It works by using a
-  ;; combination of an Emacs package and a C++ program (irony-server) exposing
-  ;; libclang. It adds code completion, syntax checking, eldoc integration, and
-  ;; counsel integration. Repository: https://github.com/Sarcasm/irony-mode
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-
-  ;; Use compilation database first, clang_complete as fallback.
-  (setq-default irony-cdb-compilation-databases '(irony-cdb-libclang
-                                                  irony-cdb-clang-complete))
-
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  (add-hook 'irony-mode-hook 'irony-eldoc)
-
-  (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-  ;; (setq company-backends (delete 'company-semantic company-backends))
-
-  (require 'rtags)
-  (require 'company-rtags)
-  (setq rtags-completions-enabled t)
-  (require 'company-irony-c-headers)
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends '(company-rtags company-irony-c-headers company-irony)))
-
-  (setq company-idle-delay 0) ; enable tab-completion with no delay
-  (define-key c-mode-map [(tab)] 'company-complete)
-  (define-key c++-mode-map [(tab)] 'company-complete)
-
-  (setq rtags-autostart-diagnostics t)
-  (rtags-enable-standard-keybindings)
 
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; Section VIII: Python mode behavior                                         ;;
@@ -845,8 +687,7 @@
     (:map elpy-mode-map
           ("C-M-n" . elpy-nav-forward-block)
           ("C-M-p" . elpy-nav-backward-block))
-    :hook ((elpy-mode . flycheck-mode)
-           (elpy-mode . (lambda ()
+    :hook ((elpy-mode . (lambda ()
                           (set (make-local-variable 'company-backends)
                                '((elpy-company-backend :with company-yasnippet))))))
     :init
@@ -911,16 +752,17 @@
   (add-hook 'after-init-hook 'inf-ruby-switch-setup)
 
   ;; rbenv
-  (use-package rbenv
-    :defer t
-    :ensure t
-    :init
-    (add-to-list 'load-path "~/emacs.d/vendor/rbenv.el")
-    ;; searches for .ruby-version and activates the corresponding ruby
-    (rbenv-use-corresponding)
-    (setq rbenv-modeline-function 'rbenv--modeline-plain) ; remove colors
-    ;; (global-rbenv-mode)
-    (add-hook 'enh-ruby-mode-hook 'global-rbenv-mode))
+  ;; (use-package rbenv
+  ;;   :defer t
+  ;;   :ensure t
+  ;;   :init
+  ;;   (add-to-list 'load-path "~/emacs.d/vendor/rbenv.el")
+  ;;   ;; searches for .ruby-version and activates the corresponding ruby
+  ;;  (rbenv-use-corresponding)
+  ;;   (setq rbenv-modeline-function 'rbenv--modeline-plain) ; remove colors
+  ;;   ;; (global-rbenv-mode)
+  ;;   (add-hook 'enh-ruby-mode-hook 'global-rbenv-mode))
+
   ;; (setq rbenv-show-active-ruby-in-modeline nil)
   ;; (rbenv-use-global) ; activates global ruby
   ;; (rbenv-use) ; allows you to choose what ruby version you want to use
@@ -1040,28 +882,6 @@
   ;; Section XI: Other programming languages                                    ;;
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  ;; Haskell
-  (use-package haskell-mode
-    :defer t
-    :mode "\\.hs\\'"
-    :bind (:map haskell-mode-map
-                ("C-c c" . haskell-process-load-file))
-    :custom (haskell-interactive-popup-errors nil))
-
-  (use-package flycheck-haskell
-    :defer t
-    :commands flycheck-haskell-setup
-    :after (flycheck haskell-mode)
-    :mode "\\.hs\\'"
-    :init (add-hook 'haskell-mode-hook #'flycheck-haskell-setup))
-
-  ;; TypeScript
-  (use-package typescript-mode
-    :defer t
-    :mode (("\\.ts\\'"  . typescript-mode)
-           ("\\.tsx\\'" . typescript-mode))
-    :custom (typescript-indent-level 2))
-
   ;; Markdown
   (use-package markdown-mode
     :defer t
@@ -1080,31 +900,10 @@
     :mode (("\\.yml\\'" . yaml-mode)
            ("\\.yaml\\'" . yaml-mode)))
 
-  ;; CMake
-  (use-package cmake-mode
-    :defer t
-    :ensure t
-    :mode "CMakeLists.txt"
-    :init (cmake-ide-setup))
-
-  ;; SCSS
-  ;; (use-package scss-mode
-  ;;  :defer t
-  ;;  :mode "\\.scss\\'")
-
-  ;; Nginx config files
-  (use-package nginx-mode
-    :defer t)
-
   ;; Gitignore files
   (use-package gitignore-mode
     :defer t
     :mode "\\.gitignore\\'")
-
-  ;; Rust TOML files
-  (use-package toml-mode
-    :defer t
-    :mode "\\.toml\\'")
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1145,7 +944,7 @@
      ("XXX+" . "#dc752f")
      ("\\?\\?\\?+" . "#dc752f")))
  '(package-selected-packages
-   '(company-ctags company-irony-c-headers cmake-ide rtags-xref clang-format+ clang-capf mediawiki minimap projectile-ripgrep ripgrep counsel-gtags counsel-etags typescript flycheck-haskell flycheck-clang-tidy flycheck-clangcheck flycheck-rtags flycheck-rust flycheck-package flycheck-irony company-c-headers company-ycm company-rtags company-irony clang-format irony gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp haskell-mode rust-mode grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace))
+   '(nhexl-mode clang-format+ clang-capf mediawiki minimap projectile-ripgrep ripgrep counsel-gtags counsel-etags clang-format gnu-elpa-keyring-update markdown-mode comment-or-uncomment-sexp grizzl enh-ruby-mode popwin ruby-tools rubocop minitest slime flx-ido scpaste smex magit whitespace-cleanup-mode select-themes oceanic-theme projectile projectile-rails seeing-is-believing inf-ruby saveplace))
  '(pdf-view-midnight-colors '("#b2b2b2" . "#292b2e"))
  '(safe-local-variable-values
    '((cmake-ide-build-dir . /build-aux/)
